@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "games-88897": {
+      "hosting": {
+        "games": [
+          "games-88897"
+        ]
+      }
+    }
+  }
+}
