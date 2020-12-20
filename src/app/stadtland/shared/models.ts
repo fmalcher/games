@@ -16,6 +16,12 @@ export interface Round {
   started: any;
 }
 
+export interface Answer {
+  answers: string[];
+  points: number[];
+  playerId: string;
+}
+
 /****************************/
 
 export enum GameState {

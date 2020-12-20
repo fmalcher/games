@@ -6,6 +6,7 @@
         <ng-container *ngIf="p.isMe">
             (ich)
         </ng-container>
+        (💰 {{ p.score }})
         <button (click)="removePlayer(p.id)" *ngIf="(p.isMe || (gameCreatedByMe$ | async)) && !(gameStarted$ | async)">X</button>
     </li>
 </ul>

@@ -31,9 +31,13 @@ export class GameRoundLetterComponent implements OnInit {
     this.sls.renewCurrentRound().subscribe();
   }
 
-  start() {}
+  start() {
+    this.sls.setGameState(GameState.RoundWriting).subscribe();
+  }
 
   cancel() {
-    this.sls.setGameState(GameState.StartedIdle);
+    if (window.confirm('Möchtest Du die Runde wirklich abbrechen?')) {
+      this.sls.setGameState(GameState.StartedIdle).subscribe();
+    }
   }
 }
