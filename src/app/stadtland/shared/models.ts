@@ -21,5 +21,5 @@ export enum GameState {
   StartedIdle,
   RoundDicing,
   RoundWriting,
-  RoundEnded,
+  RoundGivingPoints,
 }

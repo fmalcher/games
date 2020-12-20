@@ -193,4 +193,14 @@ export class StadtlandService {
       of(targetLetter).pipe(delay(stepTime))
     );
   }
+  getRouteForGameState(state: GameState) {
+    const routeMap: { [s: number]: string } = {
+      [GameState.StartedIdle]: 'landing',
+      [GameState.RoundDicing]: 'dice',
+      [GameState.RoundWriting]: 'write',
+      [GameState.RoundGivingPoints]: 'points',
+    };
+
+    return routeMap[state] || null;
+  }
 }
