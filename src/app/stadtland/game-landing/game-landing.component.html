@@ -1,0 +1,11 @@
+<h2>Landing</h2>
+<app-categories-form *ngIf="(gameCreatedByMe$ | async) && !(gameStarted$ | async)"></app-categories-form>
+<app-categories-list></app-categories-list>
+
+<app-game-player-list></app-game-player-list>
+
+<button *ngIf="!(gameStarted$ | async) && (gameCreatedByMe$ | async)" (click)="startGame()">Spiel starten</button>
+
+<ng-container *ngIf="(gameStarted$ | async) && (gameCreatedByMe$ | async)">
+    <button (click)="newRound()">Neue Runde</button>
+</ng-container>
