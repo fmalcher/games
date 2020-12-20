@@ -173,7 +173,7 @@ export class StadtlandService {
   setGameState(state: GameState) {
     return this.currentGame$
       .pipe(take(1))
-      .pipe(switchMap((game) => from(game.update({ state }))));
+      .pipe(switchMap((game) => game.update({ state })));
   }
 
   setCategories(categories: string[]) {
@@ -198,9 +198,7 @@ export class StadtlandService {
   removePlayer(id: string): Observable<any> {
     return this.currentGame$.pipe(
       take(1),
-      switchMap((game) =>
-        from(game.collection<Player>('players').doc(id).delete())
-      )
+      switchMap((game) => game.collection<Player>('players').doc(id).delete())
     );
   }
 
@@ -233,12 +231,10 @@ export class StadtlandService {
         this.currentGame$.pipe(
           take(1),
           switchMap((game) =>
-            from(
-              game
-                .collection<Round>('rounds')
-                .doc(round.id)
-                .update({ letter, started })
-            )
+            game
+              .collection<Round>('rounds')
+              .doc(round.id)
+              .update({ letter, started })
           )
         )
       )
@@ -314,14 +310,12 @@ export class StadtlandService {
       ),
       withLatestFrom(this.currentGame$),
       mergeMap(([data, gameRef]) =>
-        from(
-          gameRef
-            .collection('players')
-            .doc(data.playerId)
-            .update({
-              score: firebase.firestore.FieldValue.increment(data.points),
-            })
-        )
+        gameRef
+          .collection('players')
+          .doc(data.playerId)
+          .update({
+            score: firebase.firestore.FieldValue.increment(data.points),
+          })
       )
     );
   }
