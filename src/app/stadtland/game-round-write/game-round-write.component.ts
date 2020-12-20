@@ -25,7 +25,7 @@ export class GameRoundWriteComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject();
   private countdownSeconds = 5;
 
-  categories: string[];
+  categories$ = this.sls.currentRoundCategories$;
   form: FormGroup;
   letter$ = this.sls.currentRound$.pipe(map((round) => round.letter));
 
@@ -54,8 +54,7 @@ export class GameRoundWriteComponent implements OnInit, OnDestroy {
       answers: new FormArray([]),
     });
 
-    this.sls.categories$.pipe(take(1)).subscribe((categories) => {
-      this.categories = categories;
+    this.categories$.pipe(take(1)).subscribe((categories) => {
       this.form.setControl(
         'answers',
         new FormArray(

@@ -13,6 +13,7 @@ export interface Game {
 
 export interface Round {
   letter: string;
+  categories: string[];
   started: any;
 }
 
