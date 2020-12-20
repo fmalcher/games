@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 import { GameState } from '../shared/models';
 import { StadtlandService } from '../shared/stadtland.service';
 
@@ -11,10 +11,16 @@ import { StadtlandService } from '../shared/stadtland.service';
 export class GameRoundLetterComponent implements OnInit {
   currentRound$ = this.sls.currentRound$;
 
-  letterRoll$ = this.currentRound$.pipe(
-    map((round) => round?.letter),
-    filter((e) => !!e),
-    switchMap((letter) => this.sls.generateTimedDiceRoll(letter))
+  diceRoll$ = this.currentRound$.pipe(
+    filter((round) => !!(round && round.letter)),
+    switchMap((round) => this.sls.generateTimedDiceRoll(round.letter))
+  );
+
+  letter$ = this.diceRoll$.pipe(map((roll) => roll.letter));
+
+  rollIsFinal$ = this.diceRoll$.pipe(
+    map((roll) => roll.final),
+    distinctUntilChanged()
   );
 
   constructor(private sls: StadtlandService) {}
