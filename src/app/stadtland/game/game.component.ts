@@ -12,10 +12,8 @@ import { StadtlandService } from '../shared/stadtland.service';
 })
 export class GameComponent implements OnInit, OnDestroy {
   state$ = this.sls.state$;
-  game$ = this.sls.game$;
-  myScore$ = this.sls.myScore$;
+  myPlayer$ = this.sls.myPlayer$;
   gameCreatedByMe$ = this.sls.gameCreatedByMe$;
-  currentRound$ = this.sls.currentRound$;
 
   private destroy$ = new Subject();
 

@@ -3,5 +3,8 @@
 <div class="letter" [class.final]="rollIsFinal$ | async">{{ letter$ | async }}</div>
 
 <button (click)="renew()">Neu würfeln</button>
-<button (click)="start()">Starten</button>
-<button (click)="cancel()">Abbrechen</button>
+
+<ng-container *ngIf="gameCreatedByMe$ | async">
+    <button (click)="start()">Starten</button>
+    <button (click)="cancel()">Abbrechen</button>
+</ng-container>

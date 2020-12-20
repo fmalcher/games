@@ -11,15 +11,20 @@
             <td>{{ row.player.name }}</td>
             <td>{{ reduceRowPoints(row.answers) }}</td>
             <td *ngFor="let a of row.answers; index as i" [class.points1]="a.points === 10" [class.points2]="a.points === 20">
-                {{ a.value }} ({{ a.points }})<br>
-                <button type="button" (click)="setPoints(row.answerId, i, 0)">0</button>
-                <button type="button" (click)="setPoints(row.answerId, i, 10)">10</button>
-                <button type="button" (click)="setPoints(row.answerId, i, 20)">20</button>
+                {{ a.value }} ({{ a.points }})
+                <div *ngIf="gameCreatedByMe$ | async">
+                    <button type="button" (click)="setPoints(row.answerId, i, 0)">0</button>
+                    <button type="button" (click)="setPoints(row.answerId, i, 10)">10</button>
+                    <button type="button" (click)="setPoints(row.answerId, i, 20)">20</button>
+                </div>
             </td>
         </tr>
     </tbody>
 </table>
 
 
-<button (click)="finishRound()">Runde beenden</button>
+<ng-container *ngIf="gameCreatedByMe$ | async">
+    <button (click)="finishRound()">Punkte speichern und Runde beenden</button>
+</ng-container>
+
 <pre>{{ players$ | async | json }}</pre>
