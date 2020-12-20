@@ -1,0 +1,13 @@
+<h3>Spieler</h3>
+
+<ul *ngIf="players$ | async as players">
+    <li *ngFor="let p of players">
+        {{ p.name }}
+        <ng-container *ngIf="p.isMe">
+            (ich)
+        </ng-container>
+        <button (click)="removePlayer(p.id)" *ngIf="(p.isMe || (gameCreatedByMe$ | async)) && !(gameStarted$ | async)">X</button>
+    </li>
+</ul>
+
+<app-game-add-my-player *ngIf="!(myPlayer$ | async) && !(gameStarted$ | async)"></app-game-add-my-player>

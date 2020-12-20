@@ -1,0 +1,10 @@
+<form [formGroup]="form" (ngSubmit)="save()">
+    <div formArrayName="categories">
+        <button type="button" (click)="addField()">+</button>
+        <div *ngFor="let c of categoriesArray.controls; index as i">
+            <input [formControlName]="i">
+        </div>
+    </div>
+
+    <button type="submit">Speichern</button>
+</form>

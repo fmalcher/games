@@ -1,0 +1,7 @@
+<h2>State {{ state$ | async }}</h2>
+
+<div style="color: green; font-weight: bold;" *ngIf="gameCreatedByMe$ | async">👑 Spielleiter</div>
+<div style="color: red; font-weight: bold;">💰 Mein Punktestand: {{ myScore$ | async }}</div>
+
+
+<router-outlet></router-outlet>
