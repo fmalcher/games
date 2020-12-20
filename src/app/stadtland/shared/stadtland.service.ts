@@ -39,14 +39,16 @@ export class StadtlandService {
   private alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
   private currentGameId$ = new BehaviorSubject<string>(null);
-  private currentGame$: Observable<
-    AngularFirestoreDocument<Game>
-  > = this.currentGameId$.pipe(
+  private currentGame$ = this.currentGameId$.pipe(
     filter((e) => !!e),
     map((gameId) => this.afs.collection<Game>('games').doc(gameId))
   );
 
-  game$ = this.currentGame$.pipe(switchMap((game) => game.valueChanges()));
+  game$ = this.currentGame$.pipe(
+    switchMap((game) => game.valueChanges()),
+    shareReplay(1)
+  );
+
   state$ = this.game$.pipe(
     map((game) => game.state),
     distinctUntilChanged()
@@ -115,6 +117,8 @@ export class StadtlandService {
     )
   );
 
+  currentRoundCategories$ = this.currentRound$.pipe(map((r) => r.categories));
+
   currentRoundRef$ = this.currentRound$.pipe(
     switchMap(({ id: roundId }) =>
       this.currentGame$.pipe(
@@ -127,7 +131,7 @@ export class StadtlandService {
   cumulatedRoundData$ = this.currentRoundRef$.pipe(
     switchMap((roundRef) =>
       combineLatest([
-        this.categories$,
+        this.currentRoundCategories$,
         this.players$,
         roundRef.collection<Answer>('answers').valueChanges({ idField: 'id' }),
       ]).pipe(
@@ -205,11 +209,15 @@ export class StadtlandService {
     const letter = this.getRandomLetter();
 
     return this.currentGame$.pipe(
+      withLatestFrom(this.categories$),
+      tap((e) => console.log(e)),
       take(1),
-      switchMap((game) =>
-        from(game.collection<Round>('rounds').add({ letter, started })).pipe(
-          map((docRef) => docRef.id)
-        )
+      switchMap(([gameRef, categories]) =>
+        from(
+          gameRef
+            .collection<Round>('rounds')
+            .add({ letter, started, categories })
+        ).pipe(map((docRef) => docRef.id))
       )
     );
   }
