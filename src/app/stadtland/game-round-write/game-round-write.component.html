@@ -1,1 +1,16 @@
-<p>game-round-write works!</p>
+<strong>Buchstabe: {{ letter$ | async }}</strong>
+
+<form [formGroup]="form" (ngSubmit)="stop()">
+    <div formArrayName="answers">
+        <div *ngFor="let c of categories; index as i">
+            <label>{{ c }}</label><br>
+            <input type="text" [formControlName]="i">
+        </div>
+    </div>
+
+    <button type="submit" [disabled]="form.invalid">Speichern und STOP</button>
+</form>
+
+{{ form.value | json }}
+
+<div style="font-size: 3em; color: red" *ngIf="countDown$ | async as countDown">Runde vorbei in {{ countDown.value }} s</div>

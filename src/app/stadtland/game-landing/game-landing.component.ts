@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { concatMap, map } from 'rxjs/operators';
 import { GameState } from '../shared/models';
 import { StadtlandService } from '../shared/stadtland.service';
 
@@ -17,12 +17,13 @@ export class GameLandingComponent implements OnInit {
   ngOnInit(): void {}
 
   startGame() {
-    this.sls.setGameState(GameState.StartedIdle);
+    this.sls.setGameState(GameState.StartedIdle).subscribe();
   }
 
   newRound() {
-    this.sls.createNewRoundWithRandomLetter().subscribe(() => {
-      this.sls.setGameState(GameState.RoundDicing);
-    });
+    this.sls
+      .createNewRoundWithRandomLetter()
+      .pipe(concatMap(() => this.sls.setGameState(GameState.RoundDicing)))
+      .subscribe();
   }
 }

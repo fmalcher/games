@@ -1,1 +1,25 @@
-<p>game-round-points works!</p>
+<table *ngIf="data$ | async as data">
+    <thead>
+        <tr>
+            <th>Spieler</th>
+            <th>Punkte</th>
+            <th *ngFor="let c of data.categories">{{ c }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let row of data.answerRows">
+            <td>{{ row.player.name }}</td>
+            <td>{{ reduceRowPoints(row.answers) }}</td>
+            <td *ngFor="let a of row.answers; index as i" [class.points1]="a.points === 10" [class.points2]="a.points === 20">
+                {{ a.value }} ({{ a.points }})<br>
+                <button type="button" (click)="setPoints(row.answerId, i, 0)">0</button>
+                <button type="button" (click)="setPoints(row.answerId, i, 10)">10</button>
+                <button type="button" (click)="setPoints(row.answerId, i, 20)">20</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+<button (click)="finishRound()">Runde beenden</button>
+<pre>{{ players$ | async | json }}</pre>
