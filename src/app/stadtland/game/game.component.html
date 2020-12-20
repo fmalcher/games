@@ -1,4 +1,7 @@
 <div style="color: green; font-weight: bold;" *ngIf="gameCreatedByMe$ | async">👑 Spielleiter</div>
-<div *ngIf="myPlayer$ | async as myPlayer" style="color: red; font-weight: bold;">💰 Mein Punktestand: {{ myPlayer.score }}</div>
+<div *ngIf="myPlayer$ | async as myPlayer" style="color: red; font-weight: bold;">
+    👩‍🦰 {{ myPlayer.name }}<br>
+    💰 Mein Punktestand: {{ myPlayer.score }}
+</div>
 
 <router-outlet></router-outlet>
