@@ -14,7 +14,7 @@ import {
   take,
   tap,
 } from 'rxjs/operators';
-import { Game, GameState, Player, Round } from './models';
+import { DiceRollStep, Game, GameState, Player, Round } from './models';
 import { StorageService } from './storage.service';
 import firebase from 'firebase/app';
 
@@ -183,12 +183,18 @@ export class StadtlandService {
     return this.alphabet.charAt(pos);
   }
 
-  generateTimedDiceRoll(targetLetter: string): Observable<string> {
+  generateTimedDiceRoll(targetLetter: string): Observable<DiceRollStep> {
     const stepTime = 80;
+    const steps = 20;
     return concat(
       interval(stepTime).pipe(
-        take(20),
-        map(() => this.getRandomLetter())
+        take(steps),
+        map(() => ({ letter: this.getRandomLetter(), final: false }))
+      ),
+      of({ letter: targetLetter, final: true }).pipe(delay(stepTime))
+    );
+  }
+
       ),
       of(targetLetter).pipe(delay(stepTime))
     );

@@ -16,10 +16,17 @@ export interface Round {
   started: any;
 }
 
+/****************************/
+
 export enum GameState {
   Created,
   StartedIdle,
   RoundDicing,
   RoundWriting,
   RoundGivingPoints,
+}
+
+export interface DiceRollStep {
+  letter: string;
+  final: boolean;
 }

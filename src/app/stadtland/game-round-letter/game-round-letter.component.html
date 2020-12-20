@@ -1,7 +1,7 @@
-<ng-container *ngIf="currentRound$ | async as round">
-    <div style="font-weight: bold; font-size: 6em;">{{ letterRoll$ | async }}</div>
+<h2>Runde starten: Buchstabe</h2>
 
-    <button (click)="renew()">Neu würfeln</button>
-    <button (click)="start()">Starten</button>
-    <button (click)="cancel()">Abbrechen</button>
-</ng-container>
+<div class="letter" [class.final]="rollIsFinal$ | async">{{ letter$ | async }}</div>
+
+<button (click)="renew()">Neu würfeln</button>
+<button (click)="start()">Starten</button>
+<button (click)="cancel()">Abbrechen</button>
