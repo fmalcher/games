@@ -41,6 +41,10 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
     this.categoriesArray.push(new FormControl());
   }
 
+  removeField(index: number) {
+    this.categoriesArray.removeAt(index);
+  }
+
   save(): void {
     const categories = this.categoriesArray.value.filter((e) => !!e);
     this.sls.setCategories(categories);

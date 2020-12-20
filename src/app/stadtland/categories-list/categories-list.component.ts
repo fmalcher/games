@@ -6,8 +6,8 @@ import { StadtlandService } from '../shared/stadtland.service';
 
 @Component({
   selector: 'app-categories-list',
-  templateUrl: './categories.component.html',
-  styleUrls: ['./categories.component.scss'],
+  templateUrl: './categories-list.component.html',
+  styleUrls: ['./categories-list.component.scss'],
 })
 export class CategoriesListComponent implements OnInit {
   categories$ = this.sls.categories$;

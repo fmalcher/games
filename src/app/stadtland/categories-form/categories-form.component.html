@@ -3,6 +3,7 @@
         <button type="button" (click)="addField()">+</button>
         <div *ngFor="let c of categoriesArray.controls; index as i">
             <input [formControlName]="i">
+            <button type="button" (click)="removeField(i)">X</button>
         </div>
     </div>
 
