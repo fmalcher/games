@@ -294,27 +294,11 @@ export class StadtlandService {
   }
 
   setRoundPoints(answerId: string, position: number, points: number) {
-    const answerDoc$ = this.currentRoundRef$.pipe(
-      map((roundRef) => roundRef.collection<Answer>('answers').doc(answerId)),
-      take(1)
-    );
-
-    const currentPoints$ = answerDoc$.pipe(
-      concatMap((answerDoc) =>
-        answerDoc.valueChanges().pipe(map((a) => a.points))
-      )
-    );
-
-    return currentPoints$.pipe(
+    return this.currentRoundRef$.pipe(
       take(1),
-      map((pointsArray) => {
-        const newPointsArray = [...pointsArray];
-        newPointsArray[position] = points;
-        return newPointsArray;
-      }),
-      withLatestFrom(answerDoc$),
-      concatMap(([newPointsArray, answerDoc]) =>
-        from(answerDoc.update({ points: newPointsArray }))
+      map((roundRef) => roundRef.collection<Answer>('answers').doc(answerId)),
+      concatMap((answerDoc) =>
+        answerDoc.update({ [`points.${position}`]: points })
       )
     );
   }
