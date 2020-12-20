@@ -10,6 +10,7 @@ import { StadtlandService } from '../shared/stadtland.service';
 })
 export class GameRoundLetterComponent implements OnInit {
   currentRound$ = this.sls.currentRound$;
+  gameCreatedByMe$ = this.sls.gameCreatedByMe$;
 
   diceRoll$ = this.currentRound$.pipe(
     filter((round) => !!(round && round.letter)),

@@ -8,9 +8,7 @@
         </div>
     </div>
 
-    <button type="submit" [disabled]="form.invalid">Speichern und STOP</button>
+    <button type="submit" [disabled]="form.invalid">STOP</button>
 </form>
 
-{{ form.value | json }}
-
-<div style="font-size: 3em; color: red" *ngIf="countDown$ | async as countDown">Runde vorbei in {{ countDown.value }} s</div>
+<div style="font-size: 2em; color: red" *ngIf="countDown$ | async as countDown">Runde vorbei in {{ countDown.value }} s</div>

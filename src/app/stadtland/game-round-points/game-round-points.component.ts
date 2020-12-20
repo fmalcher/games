@@ -12,6 +12,7 @@ import { StadtlandService } from '../shared/stadtland.service';
 export class GameRoundPointsComponent implements OnInit {
   data$ = this.sls.cumulatedRoundData$;
   players$ = this.sls.players$;
+  gameCreatedByMe$ = this.sls.gameCreatedByMe$;
 
   constructor(private sls: StadtlandService) {}
 
