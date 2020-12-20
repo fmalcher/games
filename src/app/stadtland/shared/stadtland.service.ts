@@ -208,7 +208,6 @@ export class StadtlandService {
 
     return this.currentGame$.pipe(
       withLatestFrom(this.categories$),
-      tap((e) => console.log(e)),
       take(1),
       switchMap(([gameRef, categories]) =>
         from(
