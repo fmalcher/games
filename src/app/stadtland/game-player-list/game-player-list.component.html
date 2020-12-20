@@ -1,14 +1,24 @@
 <h3>Spieler</h3>
 
-<ul *ngIf="players$ | async as players">
-    <li *ngFor="let p of players">
-        {{ p.name }}
-        <ng-container *ngIf="p.isMe">
-            (ich)
-        </ng-container>
-        (💰 {{ p.score }})
-        <button (click)="removePlayer(p.id)" *ngIf="(p.isMe || (gameCreatedByMe$ | async)) && !(gameStarted$ | async)">X</button>
-    </li>
-</ul>
+<table *ngIf="players$ | async as players">
+    <thead>
+        <tr>
+            <th>👨‍🌾 Name</th>
+            <th>💰 Punkte</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let p of players">
+            <td>
+                <button (click)="removePlayer(p.id)" *ngIf="!(gameStarted$ | async) && (p.isMe || (gameCreatedByMe$ | async))">X</button>
+                {{ p.name }}
+                <ng-container *ngIf="p.isMe">(ich)</ng-container>
+            </td>
+            <td>{{ p.score }}</td>
+        </tr>
+    </tbody>
+</table>
+
+
 
 <app-game-add-my-player *ngIf="!(myPlayer$ | async) && !(gameStarted$ | async)"></app-game-add-my-player>
