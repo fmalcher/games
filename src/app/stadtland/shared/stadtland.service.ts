@@ -143,7 +143,7 @@ export class StadtlandService {
               answerId: a.id,
               answers: a.answers.map((value, i) => ({
                 value,
-                points: a.points[i] || 0,
+                points: a.points[i] >= 0 ? a.points[i] : null,
               })),
             };
           });
@@ -267,7 +267,7 @@ export class StadtlandService {
 
   submitMyAnswers(answers: string[]) {
     this.myPlayer$.subscribe();
-    const points = answers.map(() => 0);
+    const points = answers.map(() => null);
     return this.currentRound$.pipe(
       take(1),
       filter((e) => !!e),
