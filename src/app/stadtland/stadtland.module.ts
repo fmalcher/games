@@ -13,6 +13,8 @@ import { GameScoreTableComponent } from './game-score-table/game-score-table.com
 import { GamePlayerListComponent } from './game-player-list/game-player-list.component';
 import { CategoriesFormComponent } from './categories-form/categories-form.component';
 import { GameRoundLetterComponent } from './game-round-letter/game-round-letter.component';
+import { GameRoundWriteComponent } from './game-round-write/game-round-write.component';
+import { GameRoundPointsComponent } from './game-round-points/game-round-points.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { GameRoundLetterComponent } from './game-round-letter/game-round-letter.
     GamePlayerListComponent,
     CategoriesFormComponent,
     GameRoundLetterComponent,
+    GameRoundWriteComponent,
+    GameRoundPointsComponent,
   ],
   imports: [CommonModule, StadtlandRoutingModule, ReactiveFormsModule],
 })
