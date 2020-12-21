@@ -8,7 +8,7 @@
         </div>
     </div>
 
-    <button type="button" (click)="stop()" [disabled]="form.invalid || (stopped$ | async)">STOP</button>
+    <button type="button" (click)="stop()" [disabled]="(stopped$ | async) || (form.invalid && !(gameCreatedByMe$ | async))">STOP</button>
 </form>
 
 <div style="font-size: 2em; color: red" *ngIf="countDown$ | async as countDown">Runde vorbei in {{ countDown.value }} s</div>
