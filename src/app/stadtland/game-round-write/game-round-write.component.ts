@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { interval, of, range, Subject, timer, zip } from 'rxjs';
+import { combineLatest, interval, of, range, Subject, timer, zip } from 'rxjs';
 import {
   delay,
   exhaustMap,
@@ -28,6 +28,7 @@ export class GameRoundWriteComponent implements OnInit, OnDestroy {
   form: FormGroup;
   categories$ = this.sls.currentRoundCategories$;
   letter$ = this.sls.currentRoundLetter$;
+  gameCreatedByMe$ = this.sls.gameCreatedByMe$;
 
   /** signal for tate transition from "writing" to "givingspoints". this happens when someone hits "STOP" */
   stopped$ = this.sls.state$.pipe(
