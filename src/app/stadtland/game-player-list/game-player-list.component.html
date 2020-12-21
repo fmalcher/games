@@ -10,9 +10,9 @@
     <tbody>
         <tr *ngFor="let p of players">
             <td>
-                <button (click)="removePlayer(p.id)" *ngIf="!(gameStarted$ | async) && (p.isMe || (gameCreatedByMe$ | async))">X</button>
-                {{ p.name }}
+                {{ p.emoji }} {{ p.name }}
                 <ng-container *ngIf="p.isMe">(ich)</ng-container>
+                <button (click)="removePlayer(p.id)" *ngIf="!(gameStarted$ | async) && (p.isMe || (gameCreatedByMe$ | async))">X</button>
             </td>
             <td>{{ p.score }}</td>
         </tr>
