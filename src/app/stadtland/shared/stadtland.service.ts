@@ -26,24 +26,14 @@ import { Answer, DiceRollStep, Game, GameState, Player, Round } from './models';
 import { ClientIdService } from './clientid.service';
 import firebase from 'firebase/app';
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
+import { slfConfig } from './config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StadtlandService {
-  /** **********
-   * SETTINGS
-   * ***********
-   */
-
-  /** alphabet for dice rolls */
-  private alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
   /** firestore collection name for games */
   private gamesCollection = 'stadtlandGames';
-
-  /** seconds to wait before a round ends after stop */
-  roundEndCountdownSeconds = 4;
 
   /** **********
    * GAME
@@ -254,7 +244,7 @@ export class StadtlandService {
   /** create a new round with random letter in the current game */
   createNewRoundWithRandomLetter() {
     const started = firebase.firestore.Timestamp.now();
-    const letter = this.getRandomLetter();
+    const letter = this.getRandomLetter(slfConfig.alphabet);
 
     return this.currentGameRef$.pipe(
       withLatestFrom(this.categories$),
@@ -276,7 +266,7 @@ export class StadtlandService {
   /** refresh the current round and assign a new letter */
   renewCurrentRound() {
     const started = firebase.firestore.Timestamp.now();
-    const letter = this.getRandomLetter();
+    const letter = this.getRandomLetter(slfConfig.alphabet);
 
     return this.currentRound$.pipe(
       take(1),
@@ -372,7 +362,10 @@ export class StadtlandService {
     return concat(
       interval(stepTimeMs).pipe(
         take(steps),
-        map(() => ({ letter: this.getRandomLetter(), final: false }))
+        map(() => ({
+          letter: this.getRandomLetter(slfConfig.alphabet),
+          final: false,
+        }))
       ),
       of({ letter: targetLetter, final: true }).pipe(delay(stepTimeMs))
     );
@@ -384,9 +377,9 @@ export class StadtlandService {
    */
 
   /** generate a random letter from the alphabet */
-  private getRandomLetter() {
-    const pos = Math.floor(Math.random() * this.alphabet.length);
-    return this.alphabet.charAt(pos);
+  private getRandomLetter(alphabet: string) {
+    const pos = Math.floor(Math.random() * alphabet.length);
+    return alphabet.charAt(pos);
   }
 
   /** generate a countdown to 0 in seconds */
@@ -395,16 +388,5 @@ export class StadtlandService {
       take(seconds + 1),
       map((i) => seconds - i)
     );
-  }
-
-  getRouteForGameState(state: GameState) {
-    const routeMap: { [s: number]: string } = {
-      [GameState.StartedIdle]: 'landing',
-      [GameState.RoundDicing]: 'dice',
-      [GameState.RoundWriting]: 'write',
-      // [GameState.RoundGivingPoints]: 'points',
-    };
-
-    return routeMap[state] || null;
   }
 }

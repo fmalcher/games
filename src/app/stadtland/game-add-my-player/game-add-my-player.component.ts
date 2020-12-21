@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { slfConfig } from '../shared/config';
 import { StadtlandService } from '../shared/stadtland.service';
 
 @Component({
@@ -10,38 +11,20 @@ import { StadtlandService } from '../shared/stadtland.service';
 export class GameAddMyPlayerComponent implements OnInit {
   form: FormGroup;
   emojiPanelVisible = false;
-  emojis = [
-    '😅',
-    '👑',
-    '🐟',
-    '🧈',
-    '👩‍🦰',
-    '👨‍🌾',
-    '😈',
-    '💀',
-    '😸',
-    '👧🏻',
-    '🎅🏻',
-    '🙋🏼‍♂️',
-    '🦊',
-    '🐻',
-    '🦁',
-    '🐥',
-    '🐨',
-  ];
+  emojis = slfConfig.emojis;
 
   constructor(private sls: StadtlandService) {}
 
   ngOnInit(): void {
     this.form = new FormGroup({
       name: new FormControl(''),
-      emoji: new FormControl(this.randomEmoji()),
+      emoji: new FormControl(this.randomEmoji(this.emojis)),
     });
   }
 
-  randomEmoji() {
-    const rnd = Math.floor(Math.random() * this.emojis.length);
-    return this.emojis[rnd];
+  randomEmoji(emojis: string[]) {
+    const rnd = Math.floor(Math.random() * emojis.length);
+    return emojis[rnd];
   }
 
   toggleEmojiPanel() {
