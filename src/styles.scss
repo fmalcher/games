@@ -47,3 +47,23 @@ input[type="text"] {
 .categories-panel {
   background-color: lightgray;
 }
+
+.points0 {
+  @apply bg-red-200 text-red-900;
+}
+
+.points5 {
+  @apply bg-yellow-600 bg-opacity-30 text-yellow-900;
+}
+
+.points10 {
+  @apply bg-yellow-200 text-yellow-700;
+}
+
+.points20 {
+  @apply bg-green-100 text-green-800;
+}
+
+.player-stopped-border {
+  @apply border-l-8 border-red-300;
+}
