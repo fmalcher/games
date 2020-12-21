@@ -9,3 +9,7 @@
 <ng-container *ngIf="(gameStarted$ | async) && (gameCreatedByMe$ | async)">
     <button (click)="newRound()">Neue Runde</button>
 </ng-container>
+
+<div *ngIf="pathToRunningRound$ | async as roundPath">
+    Es läuft gerade eine Runde. <a [routerLink]="['..', roundPath]">Mitmachen</a>
+</div>
