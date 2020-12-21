@@ -86,7 +86,8 @@ export class StadtlandService {
             }))
           )
         )
-    )
+    ),
+    shareReplay(1)
   );
 
   /** my player */
@@ -125,11 +126,9 @@ export class StadtlandService {
           ref.orderBy('started', 'desc').limit(1)
         )
         .valueChanges({ idField: 'id' })
-        .pipe(
-          map((rounds) => rounds[0] || null),
-          shareReplay(1)
-        )
-    )
+        .pipe(map((rounds) => rounds[0] || null))
+    ),
+    shareReplay(1)
   );
 
   /** reference to the current round document */
@@ -176,7 +175,8 @@ export class StadtlandService {
           };
         })
       )
-    )
+    ),
+    shareReplay(1)
   );
 
   /*************************************************** */
