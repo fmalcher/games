@@ -1,7 +1,14 @@
-<div style="color: green; font-weight: bold;" *ngIf="gameCreatedByMe$ | async">👑 Spielleiter</div>
-<div *ngIf="myPlayer$ | async as myPlayer" style="color: red; font-weight: bold;">
-    {{ myPlayer.emoji }} {{ myPlayer.name }}<br>
-    💰 Mein Punktestand: {{ myPlayer.score }}
+<div class="block w-full flex space-x-5">
+    <div *ngIf="myPlayer$ | async as myPlayer" class="block font-semibold flex space-x-5 mb-3 bg-red-100 py-4">
+        <div>
+            {{ myPlayer.emoji }} {{ myPlayer.name }}
+        </div>
+        <div>
+            💰 Punkte: <span class="font-bold">{{ myPlayer.score }}</span>
+        </div>
+    </div>
+    <div class="text-color-green" style="font-weight: bold;" *ngIf="gameCreatedByMe$ | async">👑
+        <!--Spielleiter-->
+    </div>
 </div>
-
 <router-outlet></router-outlet>

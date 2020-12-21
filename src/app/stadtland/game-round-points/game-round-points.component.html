@@ -1,9 +1,9 @@
-<table *ngIf="data$ | async as data">
+<table *ngIf="data$ | async as data" class="table-fixed">
     <thead>
         <tr>
-            <th>Spieler</th>
-            <th>Punkte</th>
-            <th *ngFor="let c of data.categories">{{ c }}</th>
+            <th class="w-1">Spieler</th>
+            <th class="w-1">Punkte</th>
+            <th *ngFor="let c of data.categories" class="w-1">{{ c }}</th>
         </tr>
     </thead>
     <tbody>
@@ -17,7 +17,8 @@
                 {{ a.value }}
                 <span *ngIf="a.points >= 0" style="font-weight: bold; color: red">{{ a.points }}</span>
                 <div *ngIf="gameCreatedByMe$ | async">
-                    <button type="button" *ngFor="let points of [0, 5, 10, 20]" (click)="setPoints(row.answerId, i, points)">{{ points }}</button>
+                    <button type="button" *ngFor="let points of [0, 5, 10, 20]"
+                        (click)="setPoints(row.answerId, i, points)">{{ points }}</button>
                 </div>
             </td>
         </tr>

@@ -1,10 +1,9 @@
-<h2>Runde starten: Buchstabe</h2>
+<div class="letter text-center w-full font-light text-gray-300" [class.final]="rollIsFinal$ | async">
+    {{ letter$ | async }}</div>
 
-<div class="letter" [class.final]="rollIsFinal$ | async">{{ letter$ | async }}</div>
 
-<button (click)="renew()" [disabled]="renewDisabled$ | async">Neu würfeln</button>
-
-<ng-container *ngIf="gameCreatedByMe$ | async">
-    <button (click)="start()">Starten</button>
-    <button (click)="cancel()">Abbrechen</button>
-</ng-container>
+<div class="flex space-x-4 mx-auto my-0 justify-center w-full">
+    <button *ngIf="gameCreatedByMe$ | async" class="primary-button text-gray-50" (click)="start()">Starten</button>
+    <button (click)="renew()" [disabled]="renewDisabled$ | async">Neu würfeln</button>
+    <button *ngIf="gameCreatedByMe$ | async" (click)="cancel()">Abbrechen</button>
+</div>

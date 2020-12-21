@@ -1,3 +1,49 @@
-// @import "tailwindcss/base";
-// @import "tailwindcss/components";
-// @import "tailwindcss/utilities";
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+input {
+  @apply border-green-800;
+}
+
+button {
+  @apply border-green-800 rounded-sm h-10 text-lg text-green-800 border-2 p-2 py-1 my-2 font-semibold outline-none focus:outline-none;
+
+  &.primary-button {
+    color: white;
+    background: teal;
+  }
+
+  &:disabled {
+    @apply bg-opacity-20 bg-green-800 text-opacity-70;
+  }
+
+  &:focus {
+    @apply border-green-800 border-4;
+  }
+}
+
+input[type="text"] {
+  @apply border-2 p-2 my-2 border-opacity-30 h-10 rounded-none;
+}
+
+.write-letter {
+  width: 150px;
+  height: 150px;
+}
+.letter {
+  font-size: 30rem;
+  line-height: 1;
+
+  &.final {
+    @apply transition ease-in duration-200 text-green-800;
+  }
+}
+
+.sub-headline {
+  @apply text-2xl mt-5 mb-2 font-normal;
+}
+
+.categories-panel {
+  background-color: lightgray;
+}

@@ -1,6 +1,6 @@
 <app-url-copy></app-url-copy>
 
-<h2>Übersicht</h2>
+<h2 class="sub-headline">Übersicht</h2>
 
 <div>
     <button *ngIf="!(gameStarted$ | async) && (gameCreatedByMe$ | async)" (click)="startGame()">Spiel starten</button>
@@ -13,7 +13,7 @@
     Es läuft gerade eine Runde. <a [routerLink]="['..', roundPath]">Mitmachen</a>
 </div>
 
-<h3>Kategorien</h3>
+<h3 class="sub-headline">Kategorien</h3>
 <ng-container *ngIf="(gameCreatedByMe$ | async)">
     <a routerLink="../categories">Kategorien bearbeiten</a>
 </ng-container>
@@ -21,6 +21,3 @@
 <app-categories-list></app-categories-list>
 
 <app-game-player-list></app-game-player-list>
-
-<hr>
-
