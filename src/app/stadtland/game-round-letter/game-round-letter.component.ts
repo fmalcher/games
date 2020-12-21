@@ -7,6 +7,7 @@ import {
   map,
   switchMap,
 } from 'rxjs/operators';
+import { slfConfig } from '../shared/config';
 import { GameState } from '../shared/models';
 import { StadtlandService } from '../shared/stadtland.service';
 
@@ -38,7 +39,10 @@ export class GameRoundLetterComponent implements OnInit {
   renewDisabled$ = combineLatest([
     this.gameCreatedByMe$,
     this.rollIsFinal$.pipe(
-      delayWhen((final) => (final ? timer(1500) : of(null))) // after roll became final, wait before activating renewal again
+      delayWhen((final) =>
+        // after roll became final, wait before activating renewal again
+        final ? timer(slfConfig.roundRenewTimeout * 1000) : of(null)
+      )
     ),
   ]).pipe(
     map(
