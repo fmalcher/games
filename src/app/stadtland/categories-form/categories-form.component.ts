@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 import { StadtlandService } from '../shared/stadtland.service';
 
 @Component({
@@ -20,11 +20,18 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      categories: new FormArray([]),
+      categories: new FormArray([
+        new FormControl(''),
+        new FormControl(''),
+        new FormControl(''),
+      ]),
     });
 
     this.categories$
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        filter((categories) => categories.length > 0),
+        takeUntil(this.destroy$)
+      )
       .subscribe((categories) =>
         this.form.setControl(
           'categories',
