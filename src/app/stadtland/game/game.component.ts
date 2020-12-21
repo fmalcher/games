@@ -41,8 +41,8 @@ export class GameComponent implements OnInit, OnDestroy {
         return 'dice';
       case GameState.RoundWriting:
         return 'write';
-      case GameState.RoundGivingPoints:
-        return 'points';
+      // transition to "points" is done in the writing component
+      // case GameState.RoundGivingPoints: return 'points';
     }
   }
 
