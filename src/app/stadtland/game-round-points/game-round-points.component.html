@@ -13,13 +13,11 @@
                 <span *ngIf="row.player.id === data.stoppedByPlayer">🛑</span>
             </td>
             <td>{{ reduceRowPoints(row.answers) }}</td>
-            <td *ngFor="let a of row.answers; index as i" [ngClass]="{ points0: a.points === 0, points1: a.points === 10, points2: a.points === 20 }">
+            <td *ngFor="let a of row.answers; index as i" [ngClass]="getCellClasses(a.points)">
                 {{ a.value }}
                 <span *ngIf="a.points >= 0" style="font-weight: bold; color: red">{{ a.points }}</span>
                 <div *ngIf="gameCreatedByMe$ | async">
-                    <button type="button" (click)="setPoints(row.answerId, i, 0)">0</button>
-                    <button type="button" (click)="setPoints(row.answerId, i, 10)">10</button>
-                    <button type="button" (click)="setPoints(row.answerId, i, 20)">20</button>
+                    <button type="button" *ngFor="let points of [0, 5, 10, 20]" (click)="setPoints(row.answerId, i, points)">{{ points }}</button>
                 </div>
             </td>
         </tr>
