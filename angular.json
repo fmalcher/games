@@ -128,8 +128,10 @@
           }
         },
         "deploy": {
-          "builder": "@angular/fire:deploy",
-          "options": {}
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {
+            "cname": "games-b8pwixcxq6nbx8ifsue92mpdgwz.rls23.de"
+          }
         }
       }
     }
