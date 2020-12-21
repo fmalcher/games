@@ -79,18 +79,6 @@ export class StadtlandService {
     map((state) => state === GameState.StartedIdle)
   );
 
-  /** indicates whether there is a round active */
-  roundRunning$ = this.state$.pipe(
-    map((state) =>
-      [
-        GameState.RoundDicing,
-        GameState.RoundWriting,
-        GameState.RoundGivingPoints,
-      ].includes(state)
-    ),
-    distinctUntilChanged()
-  );
-
   /** list of categories of the current game */
   categories$ = this.game$.pipe(map((game) => game.categories));
 
@@ -202,16 +190,7 @@ export class StadtlandService {
 
   /*************************************************** */
 
-  constructor(
-    private afs: AngularFirestore,
-    private cis: ClientIdService,
-    router: Router,
-    route: ActivatedRoute
-  ) {
-    router.events
-      .pipe(filter((e) => e instanceof NavigationStart))
-      .subscribe(console.log);
-  }
+  constructor(private afs: AngularFirestore, private cis: ClientIdService) {}
 
   /** **********
    * GAME
