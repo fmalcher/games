@@ -83,7 +83,7 @@ export class GameRoundWriteComponent implements OnInit, OnDestroy {
   }
 
   stop() {
-    this.sls.setGameState(GameState.RoundGivingPoints).subscribe();
+    this.sls.stopCurrentRound().subscribe();
   }
 
   ngOnDestroy() {

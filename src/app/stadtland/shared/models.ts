@@ -16,6 +16,7 @@ export interface Round {
   letter: string;
   categories: string[];
   started: any;
+  stoppedByPlayer: string;
 }
 
 export interface Answer {

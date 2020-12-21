@@ -175,11 +175,11 @@ export class StadtlandService {
   cumulatedRoundData$ = this.currentRoundRef$.pipe(
     switchMap((roundRef) =>
       combineLatest([
-        this.currentRoundCategories$,
+        this.currentRound$,
         this.players$,
         roundRef.collection<Answer>('answers').valueChanges({ idField: 'id' }),
       ]).pipe(
-        map(([categories, players, answers]) => {
+        map(([round, players, answers]) => {
           const answerRows = answers.map((a) => {
             const player = players.find((p) => p.id === a.playerId);
             return {
@@ -192,7 +192,11 @@ export class StadtlandService {
             };
           });
 
-          return { categories, answerRows };
+          return {
+            stoppedByPlayer: round.stoppedByPlayer,
+            categories: round.categories,
+            answerRows,
+          };
         })
       )
     )
@@ -302,6 +306,18 @@ export class StadtlandService {
           )
         )
       )
+    );
+  }
+
+  /** Stop current round: set my user as "stoppedBy" and change state */
+  stopCurrentRound() {
+    return this.currentRoundRef$.pipe(
+      take(1),
+      withLatestFrom(this.myPlayer$),
+      mergeMap(([roundRef, player]) =>
+        roundRef.update({ stoppedByPlayer: player.id })
+      ),
+      mergeMap(() => this.setGameState(GameState.RoundGivingPoints))
     );
   }
 
