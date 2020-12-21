@@ -98,7 +98,8 @@ export class StadtlandService {
         )
         .valueChanges({ idField: 'id' })
         .pipe(map((players) => players[0] || null))
-    )
+    ),
+    shareReplay(1)
   );
 
   /** score of my player */
