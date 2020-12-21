@@ -13,6 +13,7 @@ import {
   take,
   takeUntil,
 } from 'rxjs/operators';
+import { slfConfig } from '../shared/config';
 import { GameState } from '../shared/models';
 import { StadtlandService } from '../shared/stadtland.service';
 
@@ -40,7 +41,7 @@ export class GameRoundWriteComponent implements OnInit, OnDestroy {
 
   countDown$ = this.stopped$.pipe(
     exhaustMap(() =>
-      this.sls.generateCountdown(this.sls.roundEndCountdownSeconds)
+      this.sls.generateCountdown(slfConfig.roundEndCountdownSeconds)
     ),
     map((value) => ({ value }))
   );
@@ -70,7 +71,7 @@ export class GameRoundWriteComponent implements OnInit, OnDestroy {
     // after this: save my answers and and navigate to points view
     this.stopped$
       .pipe(
-        delay(this.sls.roundEndCountdownSeconds * 1000),
+        delay(slfConfig.roundEndCountdownSeconds * 1000),
         switchMap(() => {
           const answers = this.form.get('answers').value as string[];
           return this.sls.submitMyAnswers(answers);

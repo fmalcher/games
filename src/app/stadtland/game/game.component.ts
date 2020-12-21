@@ -26,11 +26,24 @@ export class GameComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // when game state changes, redirect accordingly
     this.state$.pipe(takeUntil(this.destroy$)).subscribe((state) => {
-      const redirectPath = this.sls.getRouteForGameState(state);
+      const redirectPath = this.getRedirects(state);
       if (redirectPath) {
         this.router.navigate([redirectPath], { relativeTo: this.route });
       }
     });
+  }
+
+  private getRedirects(state: GameState): string {
+    switch (state) {
+      case GameState.StartedIdle:
+        return 'landing';
+      case GameState.RoundDicing:
+        return 'dice';
+      case GameState.RoundWriting:
+        return 'write';
+      case GameState.RoundGivingPoints:
+        return 'points';
+    }
   }
 
   ngOnDestroy() {
