@@ -215,9 +215,10 @@ export class StadtlandService {
 
   /** set the category list of the current game */
   setCategories(categories: string[]) {
-    this.currentGameRef$.pipe(take(1)).subscribe((game) => {
-      game.update({ categories });
-    });
+    return this.currentGameRef$.pipe(
+      take(1),
+      mergeMap((game) => game.update({ categories }))
+    );
   }
 
   /** add a player to the current game and return its new ID */

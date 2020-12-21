@@ -11,6 +11,7 @@ import { StadtlandService } from '../shared/stadtland.service';
 export class GameLandingComponent implements OnInit {
   gameCreatedByMe$ = this.sls.gameCreatedByMe$;
   gameStarted$ = this.sls.gameStarted$;
+  myPlayer$ = this.sls.myPlayer$;
 
   pathToRunningRound$ = this.sls.state$.pipe(
     map((state) => {

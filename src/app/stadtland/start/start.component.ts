@@ -18,7 +18,7 @@ export class StartComponent implements OnInit {
 
   createNewGame(): void {
     this.sls.createNewGame().subscribe((id) => {
-      this.router.navigate([id], { relativeTo: this.route });
+      this.router.navigate([id, 'categories'], { relativeTo: this.route });
     });
   }
 }

@@ -1,14 +1,21 @@
 <h2>Übersicht</h2>
 
-<button *ngIf="!(gameStarted$ | async) && (gameCreatedByMe$ | async)" (click)="startGame()">Spiel starten</button>
-<button *ngIf="(gameStarted$ | async) && (gameCreatedByMe$ | async)" (click)="newRound()">Neue Runde</button>
+<div>
+    <button *ngIf="!(gameStarted$ | async) && (gameCreatedByMe$ | async)" (click)="startGame()">Spiel starten</button>
+    <button *ngIf="(gameStarted$ | async) && (gameCreatedByMe$ | async)" (click)="newRound()">Neue Runde</button>
+</div>
+
+<app-game-add-my-player *ngIf="!(myPlayer$ | async) && !(gameStarted$ | async)"></app-game-add-my-player>
 
 <div *ngIf="pathToRunningRound$ | async as roundPath">
     Es läuft gerade eine Runde. <a [routerLink]="['..', roundPath]">Mitmachen</a>
 </div>
 
 <h3>Kategorien</h3>
-<app-categories-form *ngIf="(gameCreatedByMe$ | async)"></app-categories-form>
+<ng-container *ngIf="(gameCreatedByMe$ | async)">
+    <a routerLink="../categories">Kategorien bearbeiten</a>
+</ng-container>
+
 <app-categories-list></app-categories-list>
 
 <app-game-player-list></app-game-player-list>

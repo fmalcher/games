@@ -1,37 +1,67 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
+import {
+  filter,
+  map,
+  shareReplay,
+  startWith,
+  takeUntil,
+  tap,
+} from 'rxjs/operators';
+import { slfConfig } from '../shared/config';
 import { StadtlandService } from '../shared/stadtland.service';
 
 @Component({
   selector: 'app-categories-form',
   templateUrl: './categories-form.component.html',
   styleUrls: ['./categories-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoriesFormComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject();
 
-  categories$ = this.sls.categories$;
+  categoriesFromGame$ = this.sls.categories$;
   gameCreatedByMe$ = this.sls.gameCreatedByMe$;
-  form: FormGroup;
+  form = new FormGroup(
+    {
+      categories: new FormArray([]),
+    },
+    { updateOn: 'blur' }
+  );
 
-  constructor(private sls: StadtlandService) {}
+  categoriesListTagged$ = this.form.valueChanges.pipe(
+    tap((e) => console.log(e)),
+    map((value) => value.categories),
+    startWith(this.categoriesFormArray.value),
+    filter((e) => !!e),
+    map((formValues: string[]) =>
+      slfConfig.categories.map((value) => {
+        const added = formValues.includes(value);
+        return { value, added };
+      })
+    ),
+    shareReplay(1)
+  );
+
+  constructor(
+    private sls: StadtlandService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.form = new FormGroup({
-      categories: new FormArray([
-        new FormControl(''),
-        new FormControl(''),
-        new FormControl(''),
-      ]),
-    });
+    this.categoriesListTagged$.subscribe(); // first trigger
 
-    this.categories$
-      .pipe(
-        filter((categories) => categories.length > 0),
-        takeUntil(this.destroy$)
-      )
+    // write values from game to the form
+    this.categoriesFromGame$
+      .pipe(takeUntil(this.destroy$))
       .subscribe((categories) =>
         this.form.setControl(
           'categories',
@@ -40,21 +70,26 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
       );
   }
 
-  get categoriesArray(): FormArray {
+  get categoriesFormArray(): FormArray {
     return this.form.get('categories') as FormArray;
   }
 
-  addField(): void {
-    this.categoriesArray.push(new FormControl());
+  addField(value?: string): void {
+    this.categoriesFormArray.push(new FormControl(value || ''));
   }
 
   removeField(index: number) {
-    this.categoriesArray.removeAt(index);
+    this.categoriesFormArray.removeAt(index);
+  }
+
+  getCategoryValuesFiltered() {
+    return this.categoriesFormArray.value.filter((e) => !!e);
   }
 
   save(): void {
-    const categories = this.categoriesArray.value.filter((e) => !!e);
-    this.sls.setCategories(categories);
+    this.sls.setCategories(this.getCategoryValuesFiltered()).subscribe(() => {
+      this.router.navigate(['../landing'], { relativeTo: this.route });
+    });
   }
 
   ngOnDestroy(): void {
