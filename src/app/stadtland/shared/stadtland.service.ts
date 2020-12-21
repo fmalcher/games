@@ -76,7 +76,7 @@ export class StadtlandService {
   players$ = this.currentGameRef$.pipe(
     switchMap((game) =>
       game
-        .collection<Player>('players')
+        .collection<Player>('players', (ref) => ref.orderBy('score', 'desc'))
         .valueChanges({ idField: 'id' })
         .pipe(
           map((players) =>
