@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { combineLatest } from 'rxjs';
 import { distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 import { GameState } from '../shared/models';
 import { StadtlandService } from '../shared/stadtland.service';
@@ -11,6 +12,8 @@ import { StadtlandService } from '../shared/stadtland.service';
 export class GameRoundLetterComponent implements OnInit {
   currentRound$ = this.sls.currentRound$;
   gameCreatedByMe$ = this.sls.gameCreatedByMe$;
+
+  roundRenewedByMe = false;
 
   // long-running stream of rolls for display
   diceRoll$ = this.currentRound$.pipe(
@@ -26,12 +29,24 @@ export class GameRoundLetterComponent implements OnInit {
     distinctUntilChanged()
   );
 
+  renewDisabled$ = combineLatest([
+    this.gameCreatedByMe$,
+    this.rollIsFinal$,
+  ]).pipe(
+    map(
+      ([createdByMe, final]) =>
+        !final || (!createdByMe && this.roundRenewedByMe)
+    ),
+    distinctUntilChanged()
+  );
+
   constructor(private sls: StadtlandService) {}
 
   ngOnInit(): void {}
 
   renew() {
     this.sls.renewCurrentRound().subscribe();
+    this.roundRenewedByMe = true;
   }
 
   start() {
