@@ -8,7 +8,7 @@
     <div formArrayName="categories">
         <button type="button" (click)="addField()">+</button>
         <div *ngFor="let c of categoriesFormArray.controls; index as i">
-            <input type="text" [name]="'cat' + i" [formControlName]="i">
+            <input type="text" [name]="'cat' + i" [formControlName]="i" autocomplete="off">
             <button type="button" (click)="removeField(i)">X</button>
         </div>
     </div>

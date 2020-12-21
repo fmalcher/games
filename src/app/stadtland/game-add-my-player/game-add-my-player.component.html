@@ -3,7 +3,7 @@ Gib deinen Namen ein!
     <button type="button" (click)="toggleEmojiPanel()">{{ form.value.emoji }}</button>
 
     
-    <input type="text" name="playerName" formControlName="name">
+    <input type="text" name="playerName" formControlName="name" autocomplete="off">
     <button type="submit">Speichern</button>
     
     <div class="emoji-panel" *ngIf="emojiPanelVisible">
