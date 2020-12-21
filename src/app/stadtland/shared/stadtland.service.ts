@@ -25,6 +25,7 @@ import {
 import { Answer, DiceRollStep, Game, GameState, Player, Round } from './models';
 import { ClientIdService } from './clientid.service';
 import firebase from 'firebase/app';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -49,10 +50,7 @@ export class StadtlandService {
    * ***********
    */
 
-  /**
-   * ID of the currently active game.
-   * can be set with `setCurrentGame()`, from the routed game component
-   */
+  /** ID of the currently active game, can be set with `setCurrentGame()` */
   private currentGameId$ = new BehaviorSubject<string>(null);
 
   /** reference to the current game doc */
@@ -204,14 +202,23 @@ export class StadtlandService {
 
   /*************************************************** */
 
-  constructor(private afs: AngularFirestore, private cis: ClientIdService) {}
+  constructor(
+    private afs: AngularFirestore,
+    private cis: ClientIdService,
+    router: Router,
+    route: ActivatedRoute
+  ) {
+    router.events
+      .pipe(filter((e) => e instanceof NavigationStart))
+      .subscribe(console.log);
+  }
 
   /** **********
    * GAME
    * ***********
    */
 
-  /** set the ID of the current game. happens from the routed component */
+  /** set the ID of the current game according to the route */
   setCurrentGame(gameId?: string): void {
     this.currentGameId$.next(gameId);
   }
@@ -276,7 +283,7 @@ export class StadtlandService {
       switchMap(([gameRef, categories]) =>
         gameRef
           .collection<Round>('rounds')
-          .add({ letter, started, categories })
+          .add({ letter, started, categories, stoppedByPlayer: null })
           .then((docRef) => docRef.id)
       )
     );
