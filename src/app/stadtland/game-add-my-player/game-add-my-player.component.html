@@ -1,4 +1,12 @@
 <form [formGroup]="form" (ngSubmit)="submitForm()">
+    <button type="button" (click)="toggleEmojiPanel()">{{ form.value.emoji }}</button>
+
+    
     <input type="text" name="playerName" formControlName="name">
     <button type="submit">Speichern</button>
+    
+    <div class="emoji-panel" *ngIf="emojiPanelVisible">
+        <button type="button" *ngFor="let e of emojis" (click)="setEmoji(e)">{{ e }}</button>
+    </div>
+    
 </form>

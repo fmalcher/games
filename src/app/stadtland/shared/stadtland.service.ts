@@ -241,13 +241,13 @@ export class StadtlandService {
   }
 
   /** add a player to the current game and return its new ID */
-  addPlayer(name: string): Observable<string> {
+  addPlayer(name: string, emoji: string): Observable<string> {
     return this.currentGameRef$.pipe(
       take(1),
       switchMap((game) =>
         game
           .collection<Player>('players')
-          .add({ name, score: 0, client: this.cis.clientId })
+          .add({ name, emoji, score: 0, client: this.cis.clientId })
           .then((docRef) => docRef.id)
       )
     );

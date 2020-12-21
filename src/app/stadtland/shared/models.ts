@@ -1,5 +1,6 @@
 export interface Player {
   name: string;
+  emoji: string;
   score: number;
   client: string;
   isMe?: boolean;
