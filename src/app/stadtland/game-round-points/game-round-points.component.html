@@ -8,7 +8,10 @@
     </thead>
     <tbody>
         <tr *ngFor="let row of data.answerRows">
-            <td>{{ row.player.emoji }} {{ row.player.name }}</td>
+            <td>
+                {{ row.player.emoji }} {{ row.player.name }}
+                <span *ngIf="row.player.id === data.stoppedByPlayer">🛑</span>
+            </td>
             <td>{{ reduceRowPoints(row.answers) }}</td>
             <td *ngFor="let a of row.answers; index as i" [ngClass]="{ points0: a.points === 0, points1: a.points === 10, points2: a.points === 20 }">
                 {{ a.value }}
