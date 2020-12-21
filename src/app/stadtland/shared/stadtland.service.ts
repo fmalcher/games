@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  AngularFirestore,
-  AngularFirestoreDocument,
-} from '@angular/fire/firestore';
-import { ActivatedRoute } from '@angular/router';
+import { AngularFirestore } from '@angular/fire/firestore';
 import {
   BehaviorSubject,
   combineLatest,
@@ -21,43 +17,71 @@ import {
   filter,
   map,
   mergeMap,
-  share,
   shareReplay,
   switchMap,
   take,
-  tap,
   withLatestFrom,
 } from 'rxjs/operators';
 import { Answer, DiceRollStep, Game, GameState, Player, Round } from './models';
-import { StorageService } from './storage.service';
+import { ClientIdService } from './clientid.service';
 import firebase from 'firebase/app';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StadtlandService {
+  /** **********
+   * SETTINGS
+   * ***********
+   */
+
+  /** alphabet for dice rolls */
   private alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
+  /** firestore collection name for games */
+  private gamesCollection = 'stadtlandGames';
+
+  /** seconds to wait before a round ends after stop */
+  roundEndCountdownSeconds = 4;
+
+  /** **********
+   * GAME
+   * ***********
+   */
+
+  /**
+   * ID of the currently active game.
+   * can be set with `setCurrentGame()`, from the routed game component
+   */
   private currentGameId$ = new BehaviorSubject<string>(null);
-  private currentGame$ = this.currentGameId$.pipe(
+
+  /** reference to the current game doc */
+  private currentGameRef$ = this.currentGameId$.pipe(
     filter((e) => !!e),
-    map((gameId) => this.afs.collection<Game>('games').doc(gameId))
+    map((gameId) => this.afs.collection<Game>(this.gamesCollection).doc(gameId))
   );
 
-  game$ = this.currentGame$.pipe(
+  /** the current game data */
+  game$ = this.currentGameRef$.pipe(
     switchMap((game) => game.valueChanges()),
     shareReplay(1)
   );
 
+  /** state of the current game */
   state$ = this.game$.pipe(
     map((game) => game.state),
     distinctUntilChanged()
   );
 
+  /**
+   * flag that indicates whether the current game has been started.
+   * after start the player list cannot be changed anymore
+   */
   gameStarted$ = this.state$.pipe(
     map((state) => state === GameState.StartedIdle)
   );
 
+  /** indicates whether there is a round active */
   roundRunning$ = this.state$.pipe(
     map((state) =>
       [
@@ -69,8 +93,11 @@ export class StadtlandService {
     distinctUntilChanged()
   );
 
+  /** list of categories of the current game */
   categories$ = this.game$.pipe(map((game) => game.categories));
-  players$ = this.currentGame$.pipe(
+
+  /** list of all players in the current game */
+  players$ = this.currentGameRef$.pipe(
     switchMap((game) =>
       game
         .collection<Player>('players')
@@ -79,31 +106,42 @@ export class StadtlandService {
           map((players) =>
             players.map((player) => ({
               ...player,
-              isMe: player.client === this.ss.clientId,
+              isMe: this.cis.isMyClientId(player.client),
             }))
           )
         )
     )
   );
-  myPlayer$ = this.currentGame$.pipe(
+
+  /** my player */
+  myPlayer$ = this.currentGameRef$.pipe(
     switchMap((game) =>
       game
         .collection<Player>('players', (ref) =>
-          ref.where('client', '==', this.ss.clientId)
+          ref.where('client', '==', this.cis.clientId)
         )
         .valueChanges({ idField: 'id' })
         .pipe(map((players) => players[0] || null))
     )
   );
+
+  /** score of my player */
   myScore$ = this.myPlayer$.pipe(map((p) => p?.score));
 
+  /** flag that describes whether I am the game master */
   gameCreatedByMe$ = this.game$.pipe(
     map((g) => g.client),
     distinctUntilChanged(),
-    map((cid) => cid === this.ss.clientId)
+    map((cid) => this.cis.isMyClientId(cid))
   );
 
-  currentRound$ = this.currentGame$.pipe(
+  /** **********
+   * ROUND
+   * ***********
+   */
+
+  /** the current round (is always the latest created) */
+  currentRound$ = this.currentGameRef$.pipe(
     switchMap((game) =>
       game
         .collection<Round>('rounds', (ref) =>
@@ -117,17 +155,23 @@ export class StadtlandService {
     )
   );
 
-  currentRoundCategories$ = this.currentRound$.pipe(map((r) => r.categories));
-
+  /** reference to the current round document */
   currentRoundRef$ = this.currentRound$.pipe(
     switchMap(({ id: roundId }) =>
-      this.currentGame$.pipe(
+      this.currentGameRef$.pipe(
         map((gameRef) => gameRef.collection('rounds').doc(roundId))
       )
     ),
     shareReplay(1)
   );
 
+  /** categories of the current round */
+  currentRoundCategories$ = this.currentRound$.pipe(map((r) => r.categories));
+
+  /** letter of the current round */
+  currentRoundLetter$ = this.currentRound$.pipe(map((r) => r.letter));
+
+  /** all data from the round necessary to display the points/results table */
   cumulatedRoundData$ = this.currentRoundRef$.pipe(
     switchMap((roundRef) =>
       combineLatest([
@@ -154,71 +198,92 @@ export class StadtlandService {
     )
   );
 
-  constructor(private afs: AngularFirestore, private ss: StorageService) {}
+  /*************************************************** */
 
+  constructor(private afs: AngularFirestore, private cis: ClientIdService) {}
+
+  /** **********
+   * GAME
+   * ***********
+   */
+
+  /** set the ID of the current game. happens from the routed component */
   setCurrentGame(gameId?: string): void {
     this.currentGameId$.next(gameId);
   }
 
+  /** create a new game and return the ID of the new document */
   createNewGame(): Observable<string> {
     return from(
-      this.afs.collection<Game>('games').add({
-        categories: [],
-        state: 0,
-        client: this.ss.clientId,
-      })
-    ).pipe(map((docRef) => docRef.id));
+      this.afs
+        .collection<Game>(this.gamesCollection)
+        .add({
+          categories: [],
+          state: 0,
+          client: this.cis.clientId,
+        })
+        .then((docRef) => docRef.id)
+    );
   }
 
+  /** change the state of the game */
   setGameState(state: GameState) {
-    return this.currentGame$
+    return this.currentGameRef$
       .pipe(take(1))
       .pipe(switchMap((game) => game.update({ state })));
   }
 
+  /** set the category list of the current game */
   setCategories(categories: string[]) {
-    this.currentGame$.pipe(take(1)).subscribe((game) => {
+    this.currentGameRef$.pipe(take(1)).subscribe((game) => {
       game.update({ categories });
     });
   }
 
+  /** add a player to the current game and return its new ID */
   addPlayer(name: string): Observable<string> {
-    return this.currentGame$.pipe(
+    return this.currentGameRef$.pipe(
       take(1),
       switchMap((game) =>
-        from(
-          game
-            .collection<Player>('players')
-            .add({ name, score: 0, client: this.ss.clientId })
-        ).pipe(map((docRef) => docRef.id))
+        game
+          .collection<Player>('players')
+          .add({ name, score: 0, client: this.cis.clientId })
+          .then((docRef) => docRef.id)
       )
     );
   }
 
+  /** remove a player from the current game */
   removePlayer(id: string): Observable<any> {
-    return this.currentGame$.pipe(
+    return this.currentGameRef$.pipe(
       take(1),
       switchMap((game) => game.collection<Player>('players').doc(id).delete())
     );
   }
 
+  /** create a new round with random letter in the current game */
   createNewRoundWithRandomLetter() {
     const started = firebase.firestore.Timestamp.now();
     const letter = this.getRandomLetter();
 
-    return this.currentGame$.pipe(
+    return this.currentGameRef$.pipe(
       withLatestFrom(this.categories$),
       take(1),
       switchMap(([gameRef, categories]) =>
-        from(
-          gameRef
-            .collection<Round>('rounds')
-            .add({ letter, started, categories })
-        ).pipe(map((docRef) => docRef.id))
+        gameRef
+          .collection<Round>('rounds')
+          .add({ letter, started, categories })
+          .then((docRef) => docRef.id)
       )
     );
   }
 
+  /** **********
+   * ROUND
+   * ***********
+   */
+
+  /** refresh the current round and assign a new letter */
   renewCurrentRound() {
     const started = firebase.firestore.Timestamp.now();
     const letter = this.getRandomLetter();
@@ -227,7 +292,7 @@ export class StadtlandService {
       take(1),
       filter((e) => !!e),
       switchMap((round) =>
-        this.currentGame$.pipe(
+        this.currentGameRef$.pipe(
           take(1),
           switchMap((game) =>
             game
@@ -240,54 +305,30 @@ export class StadtlandService {
     );
   }
 
-  private getRandomLetter() {
-    const pos = Math.floor(Math.random() * this.alphabet.length);
-    return this.alphabet.charAt(pos);
-  }
-
-  generateTimedDiceRoll(targetLetter: string): Observable<DiceRollStep> {
-    const stepTime = 80;
-    const steps = 20;
-    return concat(
-      interval(stepTime).pipe(
-        take(steps),
-        map(() => ({ letter: this.getRandomLetter(), final: false }))
-      ),
-      of({ letter: targetLetter, final: true }).pipe(delay(stepTime))
-    );
-  }
-
-  generateCountdown(seconds: number = 5): Observable<number> {
-    return timer(0, 1000).pipe(
-      take(seconds + 1),
-      map((i) => seconds - i)
-    );
-  }
-
+  /** save my answers in the current round */
   submitMyAnswers(answers: string[]) {
-    this.myPlayer$.subscribe();
     const points = answers.map(() => null);
     return this.currentRound$.pipe(
       take(1),
       filter((e) => !!e),
       withLatestFrom(this.myPlayer$),
       concatMap(([round, player]) =>
-        this.currentGame$.pipe(
+        this.currentGameRef$.pipe(
           take(1),
           concatMap((game) =>
-            from(
-              game
-                .collection<Round>('rounds')
-                .doc(round.id)
-                .collection<Answer>('answers')
-                .add({ answers, points, playerId: player.id })
-            ).pipe(map((docRef) => docRef.id))
+            game
+              .collection<Round>('rounds')
+              .doc(round.id)
+              .collection<Answer>('answers')
+              .add({ answers, points, playerId: player.id })
+              .then((docRef) => docRef.id)
           )
         )
       )
     );
   }
 
+  /** set points for a single answer in the current round */
   setRoundPoints(answerId: string, position: number, points: number) {
     return this.currentRoundRef$.pipe(
       take(1),
@@ -298,6 +339,7 @@ export class StadtlandService {
     );
   }
 
+  /** transfer all points from the round to the score of the players */
   moveRoundPointsToPlayerScore() {
     return this.cumulatedRoundData$.pipe(
       take(1),
@@ -307,7 +349,7 @@ export class StadtlandService {
           points: row.answers.reduce((acc, item) => acc + item.points, 0),
         }))
       ),
-      withLatestFrom(this.currentGame$),
+      withLatestFrom(this.currentGameRef$),
       mergeMap(([data, gameRef]) =>
         gameRef
           .collection('players')
@@ -316,6 +358,40 @@ export class StadtlandService {
             score: firebase.firestore.FieldValue.increment(data.points),
           })
       )
+    );
+  }
+
+  /** generate a dice roll stream that emits random letters in sequence and ends with the chosen letter */
+  generateTimedDiceRoll(
+    targetLetter: string,
+    stepTimeMs = 80,
+    steps = 20
+  ): Observable<DiceRollStep> {
+    return concat(
+      interval(stepTimeMs).pipe(
+        take(steps),
+        map(() => ({ letter: this.getRandomLetter(), final: false }))
+      ),
+      of({ letter: targetLetter, final: true }).pipe(delay(stepTimeMs))
+    );
+  }
+
+  /** **********
+   * UTILITY
+   * ***********
+   */
+
+  /** generate a random letter from the alphabet */
+  private getRandomLetter() {
+    const pos = Math.floor(Math.random() * this.alphabet.length);
+    return this.alphabet.charAt(pos);
+  }
+
+  /** generate a countdown to 0 in seconds */
+  generateCountdown(seconds: number = 5): Observable<number> {
+    return timer(0, 1000).pipe(
+      take(seconds + 1),
+      map((i) => seconds - i)
     );
   }
 

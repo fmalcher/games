@@ -24,6 +24,7 @@ export class GameComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    // when gameId changes, submit this to the service state
     this.route.paramMap
       .pipe(
         map((params) => params.get('gameId')),
@@ -31,6 +32,7 @@ export class GameComponent implements OnInit, OnDestroy {
       )
       .subscribe((gameId) => this.sls.setCurrentGame(gameId));
 
+    // when game state changes, redirect accordingly
     this.state$.pipe(takeUntil(this.destroy$)).subscribe((state) => {
       const redirectPath = this.sls.getRouteForGameState(state);
       if (redirectPath) {

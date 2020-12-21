@@ -23,12 +23,12 @@ import { StadtlandService } from '../shared/stadtland.service';
 })
 export class GameRoundWriteComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject();
-  private countdownSeconds = 5;
 
-  categories$ = this.sls.currentRoundCategories$;
   form: FormGroup;
-  letter$ = this.sls.currentRound$.pipe(map((round) => round.letter));
+  categories$ = this.sls.currentRoundCategories$;
+  letter$ = this.sls.currentRoundLetter$;
 
+  /** signal for tate transition from "writing" to "givingspoints". this happens when someone hits "STOP" */
   stopped$ = this.sls.state$.pipe(
     pairwise(),
     filter(
@@ -39,7 +39,9 @@ export class GameRoundWriteComponent implements OnInit, OnDestroy {
   );
 
   countDown$ = this.stopped$.pipe(
-    exhaustMap(() => this.sls.generateCountdown(this.countdownSeconds)),
+    exhaustMap(() =>
+      this.sls.generateCountdown(this.sls.roundEndCountdownSeconds)
+    ),
     map((value) => ({ value }))
   );
 
@@ -54,6 +56,7 @@ export class GameRoundWriteComponent implements OnInit, OnDestroy {
       answers: new FormArray([]),
     });
 
+    // create form fields from categories
     this.categories$.pipe(take(1)).subscribe((categories) => {
       this.form.setControl(
         'answers',
@@ -63,9 +66,11 @@ export class GameRoundWriteComponent implements OnInit, OnDestroy {
       );
     });
 
+    // when stopped, start timeout
+    // after this: save my answers and and navigate to points view
     this.stopped$
       .pipe(
-        delay(this.countdownSeconds * 1000),
+        delay(this.sls.roundEndCountdownSeconds * 1000),
         switchMap(() => {
           const answers = this.form.get('answers').value as string[];
           return this.sls.submitMyAnswers(answers);
