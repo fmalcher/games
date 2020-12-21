@@ -3,7 +3,7 @@
 <table *ngIf="players$ | async as players">
     <thead>
         <tr>
-            <th>👨‍🌾 Name</th>
+            <th>Name</th>
             <th>💰 Punkte</th>
         </tr>
     </thead>
@@ -12,7 +12,7 @@
             <td>
                 {{ p.emoji }} {{ p.name }}
                 <ng-container *ngIf="p.isMe">(ich)</ng-container>
-                <button (click)="removePlayer(p.id)" *ngIf="!(gameStarted$ | async) && (p.isMe || (gameCreatedByMe$ | async))">X</button>
+                <button (click)="removePlayer(p.id)" *ngIf="(p.isMe || (gameCreatedByMe$ | async)) && !(gameStarted$ | async)">X</button>
             </td>
             <td>{{ p.score }}</td>
         </tr>

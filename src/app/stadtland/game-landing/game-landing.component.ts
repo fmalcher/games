@@ -32,7 +32,13 @@ export class GameLandingComponent implements OnInit {
   ngOnInit(): void {}
 
   startGame() {
-    this.sls.setGameState(GameState.StartedIdle).subscribe();
+    if (
+      window.confirm(
+        'Spiel starten? Danach können die Spieler nicht mehr gelöscht werden.'
+      )
+    ) {
+      this.sls.setGameState(GameState.StartedIdle).subscribe();
+    }
   }
 
   newRound() {

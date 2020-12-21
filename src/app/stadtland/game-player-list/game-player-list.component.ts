@@ -18,9 +18,7 @@ export class GamePlayerListComponent implements OnInit {
 
   removePlayer(id: string): void {
     if (
-      window.confirm(
-        'Der Spieler verliert seine Punkte und wird aus dem Spiel entfernt!'
-      )
+      window.confirm('Der Spieler wird aus dem Spiel entfernt. Fortfahren?')
     ) {
       this.sls.removePlayer(id).subscribe();
     }

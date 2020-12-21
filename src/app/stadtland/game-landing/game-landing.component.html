@@ -7,7 +7,7 @@
     <button *ngIf="(gameStarted$ | async) && (gameCreatedByMe$ | async)" (click)="newRound()">Neue Runde</button>
 </div>
 
-<app-game-add-my-player *ngIf="!(myPlayer$ | async) && !(gameStarted$ | async)"></app-game-add-my-player>
+<app-game-add-my-player *ngIf="!(myPlayer$ | async)"></app-game-add-my-player>
 
 <div *ngIf="pathToRunningRound$ | async as roundPath">
     Es läuft gerade eine Runde. <a [routerLink]="['..', roundPath]">Mitmachen</a>
