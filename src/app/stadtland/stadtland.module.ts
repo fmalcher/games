@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 import { StadtlandRoutingModule } from './stadtland-routing.module';
 import { StadtlandComponent } from './stadtland/stadtland.component';
@@ -15,6 +16,7 @@ import { CategoriesFormComponent } from './categories-form/categories-form.compo
 import { GameRoundLetterComponent } from './game-round-letter/game-round-letter.component';
 import { GameRoundWriteComponent } from './game-round-write/game-round-write.component';
 import { GameRoundPointsComponent } from './game-round-points/game-round-points.component';
+import { UrlCopyComponent } from './url-copy/url-copy.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,13 @@ import { GameRoundPointsComponent } from './game-round-points/game-round-points.
     GameRoundLetterComponent,
     GameRoundWriteComponent,
     GameRoundPointsComponent,
+    UrlCopyComponent,
   ],
-  imports: [CommonModule, StadtlandRoutingModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    StadtlandRoutingModule,
+    ReactiveFormsModule,
+    ClipboardModule,
+  ],
 })
 export class StadtlandModule {}
