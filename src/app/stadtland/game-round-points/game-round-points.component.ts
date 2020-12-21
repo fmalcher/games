@@ -32,4 +32,13 @@ export class GameRoundPointsComponent implements OnInit {
   setPoints(answerId: string, position: number, points: number) {
     this.sls.setRoundPoints(answerId, position, points).subscribe();
   }
+
+  getCellClasses(points: number) {
+    return {
+      points0: points === 0,
+      points5: points === 5,
+      points10: points === 10,
+      points20: points === 20,
+    };
+  }
 }

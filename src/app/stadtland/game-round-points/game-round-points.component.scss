@@ -1,13 +1,17 @@
 td {
   &.points0 {
+    background: white;
+  }
+
+  &.points5 {
     background: rgb(255, 209, 209);
   }
 
-  &.points1 {
+  &.points10 {
     background: rgb(255, 239, 200);
   }
 
-  &.points2 {
+  &.points20 {
     background: rgb(221, 255, 227);
   }
 }
