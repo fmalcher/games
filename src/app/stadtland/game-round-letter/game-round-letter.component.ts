@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { combineLatest } from 'rxjs';
-import { distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
+import { combineLatest, EMPTY, of, timer } from 'rxjs';
+import {
+  delayWhen,
+  distinctUntilChanged,
+  filter,
+  map,
+  switchMap,
+} from 'rxjs/operators';
 import { GameState } from '../shared/models';
 import { StadtlandService } from '../shared/stadtland.service';
 
@@ -31,7 +37,9 @@ export class GameRoundLetterComponent implements OnInit {
 
   renewDisabled$ = combineLatest([
     this.gameCreatedByMe$,
-    this.rollIsFinal$,
+    this.rollIsFinal$.pipe(
+      delayWhen((final) => (final ? timer(1500) : of(null))) // after roll became final, wait before activating renewal again
+    ),
   ]).pipe(
     map(
       ([createdByMe, final]) =>
