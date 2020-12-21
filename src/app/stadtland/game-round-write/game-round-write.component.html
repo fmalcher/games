@@ -1,14 +1,22 @@
-<strong>Buchstabe: {{ letter$ | async }}</strong>
+<div class="flex justify-center w-full">
+    <div
+        class="write-letter text-gray-100 font-bold text-8xl flex justify-center align-middle p-6 rounded-full bg-red-400">
+        {{ letter$ | async }}
+    </div>
+</div>
 
 <form [formGroup]="form">
-    <div formArrayName="answers">
+    <div formArrayName="answers" class="grid grid-cols-3 my-5">
         <div *ngFor="let c of categories$ | async; index as i">
-            <label>{{ c }}</label><br>
-            <input type="text" [name]="'answer' + i" [formControlName]="i" autocomplete="off">
+            <label class="text-2xl">{{ c }}</label>
+            <input type="text" [name]="'answer' + i" [formControlName]="i" class="w-full max-w-md text-2xl"
+                autocomplete="off">
         </div>
     </div>
 
-    <button type="button" (click)="stop()" [disabled]="(stopped$ | async) || (form.invalid && !(gameCreatedByMe$ | async))">STOP</button>
+    <button type="button" (click)="stop()"
+        [disabled]="(stopped$ | async) || (form.invalid && !(gameCreatedByMe$ | async))">STOP</button>
 </form>
 
-<div style="font-size: 2em; color: red" *ngIf="countDown$ | async as countDown">Runde vorbei in {{ countDown.value }} s</div>
+<div style="font-size: 2em; color: red" *ngIf="countDown$ | async as countDown">Runde vorbei in {{ countDown.value }} s
+</div>

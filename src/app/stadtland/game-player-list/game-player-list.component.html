@@ -1,7 +1,7 @@
-<h3>Spieler</h3>
+<h3 class="sub-headline">Spieler</h3>
 
-<table *ngIf="players$ | async as players">
-    <thead>
+<table *ngIf="players$ | async as players" class="table-fixed w-full max-w-sm text-left p-2">
+    <thead class="bg-gray-100">
         <tr>
             <th>Name</th>
             <th>💰 Punkte</th>
@@ -12,7 +12,8 @@
             <td>
                 {{ p.emoji }} {{ p.name }}
                 <ng-container *ngIf="p.isMe">(ich)</ng-container>
-                <button (click)="removePlayer(p.id)" *ngIf="(p.isMe || (gameCreatedByMe$ | async)) && !(gameStarted$ | async)">X</button>
+                <button (click)="removePlayer(p.id)"
+                    *ngIf="(p.isMe || (gameCreatedByMe$ | async)) && !(gameStarted$ | async)">X</button>
             </td>
             <td>{{ p.score }}</td>
         </tr>

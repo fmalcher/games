@@ -1,2 +1,4 @@
-<input type="text" readonly [value]="url" #input (focus)="input.select();">
-<button type="button" (click)="copy()">{{ copyText$ | async }}</button>
+<div class="flex">
+  <input class="w-full max-w-md" type="text" readonly [value]="url" #input (focus)="input.select();">
+  <button type="button" (click)="copy()">{{ copyText$ | async }}</button>
+</div>

@@ -1,7 +1,9 @@
-<h2>Kategorien festlegen</h2>
+<h2 class="sub-headline">Kategorien festlegen</h2>
 
-<div class="categories-panel">
-    <button type="button" (click)="addField(c.value)" *ngFor="let c of categoriesListTagged$ | async" [disabled]="c.added">{{ c.value }}</button>
+<div class="categories-panel space-x-2 p-2">
+    <button class="categories-panel-button rounded-md hover:bg-green-800 hover:bg-opacity-20 text-md font-medium"
+        type="button" (click)="addField(c.value)" *ngFor="let c of categoriesListTagged$ | async"
+        [disabled]="c.added">{{ c.value }}</button>
 </div>
 
 <form [formGroup]="form" (ngSubmit)="save()">
@@ -15,4 +17,3 @@
 
     <button type="submit">Speichern</button>
 </form>
-
