@@ -12,6 +12,7 @@ export class GameRoundLetterComponent implements OnInit {
   currentRound$ = this.sls.currentRound$;
   gameCreatedByMe$ = this.sls.gameCreatedByMe$;
 
+  // long-running stream of rolls for display
   diceRoll$ = this.currentRound$.pipe(
     filter((round) => !!(round && round.letter)),
     switchMap((round) => this.sls.generateTimedDiceRoll(round.letter))
@@ -19,6 +20,7 @@ export class GameRoundLetterComponent implements OnInit {
 
   letter$ = this.diceRoll$.pipe(map((roll) => roll.letter));
 
+  // indicates whether the roll shows the final letter
   rollIsFinal$ = this.diceRoll$.pipe(
     map((roll) => roll.final),
     distinctUntilChanged()

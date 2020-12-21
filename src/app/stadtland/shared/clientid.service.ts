@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export class StorageService {
+export class ClientIdService {
   constructor() {
     if (!this.clientId) {
       this.clientId = this.generateRandomId();
@@ -16,6 +16,10 @@ export class StorageService {
 
   set clientId(id: string) {
     localStorage.setItem('slfClientId', id);
+  }
+
+  isMyClientId(id: string) {
+    return id === this.clientId;
   }
 
   private generateRandomId(len = 32): string {
