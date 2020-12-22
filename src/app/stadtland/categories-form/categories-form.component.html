@@ -9,6 +9,7 @@
         type="button"
         class="category-pill"
         [class.added]="c.added"
+        [disabled]="!(gameCreatedByMe$ | async)"
         (click)="c.added ? removeFieldByValue(c.value) : addField(c.value)"
         *ngFor="let c of categoriesListTagged$ | async"
       >
@@ -17,23 +18,33 @@
     </div>
   </div>
 
-  <form [formGroup]="form" (ngSubmit)="save()">
-    <div class="mb-2">
-      <button class="primary inline-flex items-center mr-2 mb-2" type="submit">
-        <svg
-          class="m-0 -ml-1 mr-2 h-5 w-5"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            d="M7.707 10.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V6h5a2 2 0 012 2v7a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2h5v5.586l-1.293-1.293zM9 4a1 1 0 012 0v2H9V4z"
-          />
-        </svg>
+  <form [formGroup]="form">
+    <button
+      class="primary inline-flex items-center mr-2 mb-2"
+      type="button"
+      routerLink="../landing"
+    >
+      <svg
+        class="m-0 -ml-1 mr-2 h-5 w-5"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+          clip-rule="evenodd"
+        />
+      </svg>
 
-        Speichern
-      </button>
+      Zurück zur Übersicht
+    </button>
 
+    <span class="font-bold text-green-700 mb-3" *ngIf="saveMessage$ | async">
+      Gespeichert
+    </span>
+
+    <div class="mb-2" *ngIf="gameCreatedByMe$ | async">
       <button
         type="button"
         class="inline-flex items-center secondary mr-2 mb-2"
@@ -105,12 +116,16 @@
           type="text"
           [formControlName]="i"
           autocomplete="off"
-          class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-3 pr-12 sm:text-sm border-gray-300 rounded-md"
+          [readonly]="!(gameCreatedByMe$ | async)"
+          class="focus:ring-green-500 focus:border-green-500 block w-full pl-3 pr-12 py-2 sm:text-sm border-gray-300 rounded-md"
         />
-        <div class="absolute inset-y-0 right-0 flex items-center">
+        <div
+          class="absolute inset-y-0 right-0 flex items-center"
+          *ngIf="gameCreatedByMe$ | async"
+        >
           <button
             type="button"
-            class="focus:ring-indigo-500 focus:border-indigo-500 h-full py-0 px-3 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md"
+            class="focus:ring-green-500 h-full py-0 px-3 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md"
             (click)="removeField(i)"
           >
             <svg

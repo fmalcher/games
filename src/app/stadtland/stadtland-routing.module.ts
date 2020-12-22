@@ -24,7 +24,6 @@ const routes: Routes = [
       {
         path: 'categories',
         component: CategoriesFormComponent,
-        canActivate: [OnlyCreatedByMeGuard],
       },
       {
         path: 'dice',

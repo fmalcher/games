@@ -6,15 +6,20 @@ import {
 } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { interval, Observable, Subject, timer } from 'rxjs';
+import { interval, Observable, of, Subject, timer } from 'rxjs';
 import {
+  concatMap,
+  debounceTime,
   filter,
   map,
+  mapTo,
   shareReplay,
   startWith,
+  switchMap,
   take,
   takeUntil,
   tap,
+  withLatestFrom,
 } from 'rxjs/operators';
 import { slfConfig } from '../shared/config';
 import { StadtlandService } from '../shared/stadtland.service';
@@ -37,8 +42,10 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
     { updateOn: 'blur' }
   );
 
+  saveMessage$: Observable<boolean>;
+
   categoriesListTagged$ = this.form.valueChanges.pipe(
-    tap((e) => console.log(e)),
+    // tap((e) => console.log(e)),
     map((value) => value.categories),
     startWith(this.categoriesFormArray.value),
     filter((e) => !!e),
@@ -62,8 +69,28 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
 
     // write values from game to the form
     this.categoriesFromGame$
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        filter(
+          (gameCats) =>
+            !this.categoryListsEqual(
+              gameCats,
+              this.categoriesFormArray.value.filter((e) => !!e)
+            )
+        ),
+        takeUntil(this.destroy$)
+      )
       .subscribe((categories) => this.replaceCategoryFields(categories));
+
+    this.saveMessage$ = this.form.valueChanges.pipe(
+      debounceTime(500),
+      map((value) => value.categories.filter((e) => !!e)),
+      withLatestFrom(this.categoriesFromGame$),
+      filter(
+        ([formCats, gameCats]) => !this.categoryListsEqual(formCats, gameCats)
+      ),
+      switchMap(([categories]) => this.sls.setCategories(categories)),
+      switchMap(() => timer(1000).pipe(mapTo(false), startWith(true)))
+    );
   }
 
   private replaceCategoryFields(categories: string[]) {
@@ -118,8 +145,13 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
 
   save(): void {
     this.sls.setCategories(this.getCategoryValuesFiltered()).subscribe(() => {
-      this.router.navigate(['../landing'], { relativeTo: this.route });
+      console.log('saved');
+      // this.router.navigate(['../landing'], { relativeTo: this.route });
     });
+  }
+
+  private categoryListsEqual(a: string[], b: string[]) {
+    return JSON.stringify(a) == JSON.stringify(b);
   }
 
   ngOnDestroy(): void {
