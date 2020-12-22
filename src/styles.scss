@@ -14,7 +14,8 @@ button {
     background: teal;
   }
 
-  &:disabled {
+  &:disabled,
+  &.disabled {
     @apply bg-opacity-20 bg-green-800 text-opacity-70 cursor-not-allowed;
   }
 
