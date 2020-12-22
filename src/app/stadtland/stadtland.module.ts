@@ -18,6 +18,8 @@ import { GameRoundWriteComponent } from './game-round-write/game-round-write.com
 import { GameRoundPointsComponent } from './game-round-points/game-round-points.component';
 import { UrlCopyComponent } from './url-copy/url-copy.component';
 import { AlarmPulseComponent } from './alarm-pulse/alarm-pulse.component';
+import { HeadlineComponent } from './headline/headline.component';
+import { PlayerAvatarMetaComponent } from './player-avatar-meta/player-avatar-meta.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,8 @@ import { AlarmPulseComponent } from './alarm-pulse/alarm-pulse.component';
     GameRoundPointsComponent,
     UrlCopyComponent,
     AlarmPulseComponent,
+    HeadlineComponent,
+    PlayerAvatarMetaComponent,
   ],
   imports: [
     CommonModule,

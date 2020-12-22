@@ -10,64 +10,57 @@ import { CurrentGameGuard } from './shared/current-game.guard';
 import { GameState } from './shared/models';
 import { OnlyCreatedByMeGuard } from './shared/only-created-by-me.guard';
 import { StateRedirectGuard } from './shared/state-redirect.guard';
-import { StadtlandComponent } from './stadtland/stadtland.component';
 import { StartComponent } from './start/start.component';
 
 const routes: Routes = [
+  { path: '', component: StartComponent },
   {
-    path: '',
-    component: StadtlandComponent,
+    path: ':gameId',
+    component: GameComponent,
+    canActivate: [CurrentGameGuard],
     children: [
-      { path: '', component: StartComponent },
+      { path: '', redirectTo: 'landing', pathMatch: 'full' },
+      { path: 'landing', component: GameLandingComponent },
       {
-        path: ':gameId',
-        component: GameComponent,
-        canActivate: [CurrentGameGuard],
-        children: [
-          { path: '', redirectTo: 'landing', pathMatch: 'full' },
-          { path: 'landing', component: GameLandingComponent },
-          {
-            path: 'categories',
-            component: CategoriesFormComponent,
-            canActivate: [OnlyCreatedByMeGuard],
+        path: 'categories',
+        component: CategoriesFormComponent,
+        canActivate: [OnlyCreatedByMeGuard],
+      },
+      {
+        path: 'dice',
+        component: GameRoundLetterComponent,
+        data: {
+          redirectWhenState: {
+            [GameState.RoundGivingPoints]: 'points',
+            [GameState.RoundWriting]: 'write',
+            [GameState.StartedIdle]: 'landing',
           },
-          {
-            path: 'dice',
-            component: GameRoundLetterComponent,
-            data: {
-              redirectWhenState: {
-                [GameState.RoundGivingPoints]: 'points',
-                [GameState.RoundWriting]: 'write',
-                [GameState.StartedIdle]: 'landing',
-              },
-            },
-            canActivate: [StateRedirectGuard],
+        },
+        canActivate: [StateRedirectGuard],
+      },
+      {
+        path: 'write',
+        component: GameRoundWriteComponent,
+        data: {
+          redirectWhenState: {
+            [GameState.RoundDicing]: 'dice',
+            [GameState.RoundGivingPoints]: 'points',
+            [GameState.StartedIdle]: 'landing',
           },
-          {
-            path: 'write',
-            component: GameRoundWriteComponent,
-            data: {
-              redirectWhenState: {
-                [GameState.RoundDicing]: 'dice',
-                [GameState.RoundGivingPoints]: 'points',
-                [GameState.StartedIdle]: 'landing',
-              },
-            },
-            canActivate: [StateRedirectGuard],
+        },
+        canActivate: [StateRedirectGuard],
+      },
+      {
+        path: 'points',
+        component: GameRoundPointsComponent,
+        data: {
+          redirectWhenState: {
+            [GameState.RoundDicing]: 'dice',
+            [GameState.RoundWriting]: 'write',
+            [GameState.StartedIdle]: 'landing',
           },
-          {
-            path: 'points',
-            component: GameRoundPointsComponent,
-            data: {
-              redirectWhenState: {
-                [GameState.RoundDicing]: 'dice',
-                [GameState.RoundWriting]: 'write',
-                [GameState.StartedIdle]: 'landing',
-              },
-            },
-            canActivate: [StateRedirectGuard],
-          },
-        ],
+        },
+        canActivate: [StateRedirectGuard],
       },
     ],
   },
