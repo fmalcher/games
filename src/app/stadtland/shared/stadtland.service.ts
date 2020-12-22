@@ -110,7 +110,8 @@ export class StadtlandService {
   gameCreatedByMe$ = this.game$.pipe(
     map((g) => g.client),
     distinctUntilChanged(),
-    map((cid) => this.cis.isMyClientId(cid))
+    map((cid) => this.cis.isMyClientId(cid)),
+    shareReplay(1)
   );
 
   /** **********
