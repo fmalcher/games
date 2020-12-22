@@ -161,6 +161,7 @@ export class StadtlandService {
             return {
               player,
               answerId: a.id,
+              rowPoints: a.points.reduce((acc, item) => acc + item, 0),
               answers: a.answers.map((value, i) => ({
                 value,
                 points: a.points[i] >= 0 ? a.points[i] : null,

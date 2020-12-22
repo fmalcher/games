@@ -14,19 +14,15 @@ export class GameRoundPointsComponent implements OnInit {
   players$ = this.sls.players$;
   gameCreatedByMe$ = this.sls.gameCreatedByMe$;
 
-  constructor(private sls: StadtlandService) { }
+  constructor(private sls: StadtlandService) {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   finishRound() {
     this.sls
       .moveRoundPointsToPlayerScore()
       .pipe(concatMap(() => this.sls.setGameState(GameState.StartedIdle)))
       .subscribe();
-  }
-
-  reduceRowPoints(answers: { points: number }[]): number {
-    return answers.reduce((acc, item) => acc + item.points, 0);
   }
 
   setPoints(answerId: string, position: number, points: number) {
@@ -36,7 +32,7 @@ export class GameRoundPointsComponent implements OnInit {
   getPointClasses(points: number) {
     return {
       points0: points === 0,
-      points5: points === 5, //opacity, text-color
+      points5: points === 5,
       points10: points === 10,
       points20: points === 20,
     };
