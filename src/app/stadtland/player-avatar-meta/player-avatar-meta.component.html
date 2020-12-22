@@ -1,0 +1,16 @@
+<div *ngIf="myPlayer$ | async as myPlayer">
+    <button class="px-1 relative border-none cursor-default rounded-full focus:outline-none -mt-6" aria-label="Cart">
+        <span class="text-8xl">{{ myPlayer.emoji }}</span>
+        <span class="absolute inset-0 object-right-top -mr-16">
+          <div class="inline-flex items-center px-1.5 py-0.5 border-2 border-white rounded-full text-xs font-semibold leading-4 bg-red-500 text-white">
+            {{ myPlayer.score }}
+          </div>
+        </span>
+        <span class="absolute inset-0 mt-24 object-bottom">
+          <div class="inline-flex items-center px-1.5 py-0.5 border-2 border-white rounded-full text-xs font-semibold leading-4 bg-gray-400 text-white">
+            {{ myPlayer.name }}
+            <span *ngIf="gameCreatedByMe$ | async" class="ml-2">⭐️</span>
+          </div>
+        </span>
+    </button>
+</div> 

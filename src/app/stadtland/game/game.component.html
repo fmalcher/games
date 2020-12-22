@@ -1,14 +1,8 @@
-<div class="block w-full flex space-x-5">
-    <div *ngIf="myPlayer$ | async as myPlayer" class="block font-semibold flex space-x-5 mb-3 bg-red-100 py-4">
-        <div>
-            {{ myPlayer.emoji }} {{ myPlayer.name }}
-        </div>
-        <div>
-            💰 Punkte: <span class="font-bold">{{ myPlayer.score }}</span>
-        </div>
-    </div>
-    <div class="text-color-green" style="font-weight: bold;" *ngIf="gameCreatedByMe$ | async">👑
-        <!--Spielleiter-->
-    </div>
+<div class="flex justify-between mb-6">
+    <app-headline></app-headline>
+    <app-player-avatar-meta></app-player-avatar-meta>  
 </div>
+
+<div class="w-full mt-5">
 <router-outlet></router-outlet>
+</div>
