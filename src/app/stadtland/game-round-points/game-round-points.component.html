@@ -1,4 +1,4 @@
-<table class="min-w-full divide-y divide-gray-200" *ngIf="data$ | async as data">
+<table *ngIf="data$ | async as data" class="row-points min-w-full divide-y divide-gray-200">
     <thead class="bg-gray-50">
         <tr>
             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -23,39 +23,37 @@
                     </div>
                     <div class="ml-2 text-sm font-medium text-gray-900">
                         {{ row.player.name }}
-                        <span *ngIf="row.player.id === data.stoppedByPlayer">🛑</span>
                     </div>
                 </div>
             </td>
+            <!-- Row points -->
             <td class="px-6 py-4 whitespace-nowrap">
                 <span
-                    class="px-2 inline-flex text-lg leading-5 font-semibold rounded-full bg-green-100 text-green-800 py-1 px-2">
-                    {{ reduceRowPoints(row.answers) }}
+                    class="px-2 inline-flex text-lg leading-5 font-semibold rounded-full py-1 px-2"
+                    [ngClass]="{ 'row-points-gray': row.rowPoints === 0, 'row-points-green': row.rowPoints > 0 }">
+                    {{ row.rowPoints }}
                 </span>
             </td>
+            <!-- Answer cells -->
             <td class="px-6 py-4 whitespace-nowrap" *ngFor="let a of row.answers; index as i">
                 <div><span class="text-lg text-gray-900 mr-2">{{ a.value }}</span>
-
+                    <!-- Answer points pill -->
                     <span *ngIf="a.points >= 0" [ngClass]="getPointClasses(a.points)"
                         class="px-2 py-1 text-md leading-5 font-semibold rounded-full text-center">
                         {{ a.points }}
                     </span>
                 </div>
+                <!-- Points buttons -->
                 <div *ngIf="gameCreatedByMe$ | async" class="relative z-0 inline-flex -space-x-px">
                     <button type="button" *ngFor="let points of [0, 5, 10, 20]; first as f; last as l"
                         class="relative inline-flex items-center px-2 py-1 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
                         (click)="setPoints(row.answerId, i, points)"
-                        [ngClass]="{'rounded-l-md': first, 'rounded-r-md': last}">{{ points }}</button>
-
+                        [ngClass]="{'rounded-l-md': f, 'rounded-r-md': l }">{{ points }}</button>
                 </div>
             </td>
         </tr>
-
-        <!-- More rows... -->
     </tbody>
 </table>
 
 
-<ng-container *ngIf="gameCreatedByMe$ | async">
-    <button (click)="finishRound()">Punkte speichern und Runde beenden</button>
-</ng-container>
+<button (click)="finishRound()" *ngIf="gameCreatedByMe$ | async" class="mt-4">Punkte speichern und Runde beenden</button>
