@@ -94,6 +94,10 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
     }
   }
 
+  removeAllFields() {
+    this.replaceCategoryFields([]);
+  }
+
   setRandomCategories(n = 5) {
     const categories = this.sls.getRandomElementsFromArray(
       slfConfig.categories,
