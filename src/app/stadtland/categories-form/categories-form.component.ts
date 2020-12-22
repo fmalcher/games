@@ -6,12 +6,13 @@ import {
 } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
+import { interval, Observable, Subject, timer } from 'rxjs';
 import {
   filter,
   map,
   shareReplay,
   startWith,
+  take,
   takeUntil,
   tap,
 } from 'rxjs/operators';
@@ -62,12 +63,14 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
     // write values from game to the form
     this.categoriesFromGame$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((categories) =>
-        this.form.setControl(
-          'categories',
-          new FormArray(categories.map((c) => new FormControl(c)))
-        )
-      );
+      .subscribe((categories) => this.replaceCategoryFields(categories));
+  }
+
+  private replaceCategoryFields(categories: string[]) {
+    this.form.setControl(
+      'categories',
+      new FormArray(categories.map((c) => new FormControl(c)))
+    );
   }
 
   get categoriesFormArray(): FormArray {
@@ -80,6 +83,20 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
 
   removeField(index: number) {
     this.categoriesFormArray.removeAt(index);
+  }
+
+  setRandomCategories(n = 5) {
+    const categories = this.sls.getRandomElementsFromArray(
+      slfConfig.categories,
+      n
+    );
+    this.replaceCategoryFields(categories);
+  }
+
+  setRandomCategoriesDiceRoll() {
+    timer(0, 150)
+      .pipe(take(6), takeUntil(this.destroy$))
+      .subscribe(() => this.setRandomCategories());
   }
 
   getCategoryValuesFiltered() {
