@@ -324,11 +324,27 @@ export class StadtlandService {
 
   /** set points for a single answer in the current round */
   setRoundPoints(answerId: string, position: number, points: number) {
-    return this.currentRoundRef$.pipe(
-      take(1),
+    const answerDoc$ = this.currentRoundRef$.pipe(
       map((roundRef) => roundRef.collection<Answer>('answers').doc(answerId)),
+      take(1)
+    );
+
+    const currentPoints$ = answerDoc$.pipe(
       concatMap((answerDoc) =>
-        answerDoc.update({ [`points.${position}`]: points })
+        answerDoc.valueChanges().pipe(map((a) => a.points))
+      )
+    );
+
+    return currentPoints$.pipe(
+      take(1),
+      map((pointsArray) => {
+        const newPointsArray = [...pointsArray];
+        newPointsArray[position] = points;
+        return newPointsArray;
+      }),
+      withLatestFrom(answerDoc$),
+      concatMap(([newPointsArray, answerDoc]) =>
+        answerDoc.update({ points: newPointsArray })
       )
     );
   }
