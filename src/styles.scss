@@ -26,10 +26,6 @@ button {
   &.disabled {
     @apply bg-opacity-20 bg-green-800 text-opacity-70 cursor-not-allowed;
   }
-
-  &:focus {
-    @apply border-green-800 border-4;
-  }
 }
 
 input[type="text"] {
