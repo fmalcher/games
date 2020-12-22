@@ -15,7 +15,7 @@ button {
   }
 
   &:disabled {
-    @apply bg-opacity-20 bg-green-800 text-opacity-70;
+    @apply bg-opacity-20 bg-green-800 text-opacity-70 cursor-not-allowed;
   }
 
   &:focus {
