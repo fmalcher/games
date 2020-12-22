@@ -1,95 +1,119 @@
-<table
-  *ngIf="data$ | async as data"
-  class="row-points min-w-full divide-y divide-gray-200"
->
-  <thead class="bg-gray-50">
-    <tr>
-      <th
-        scope="col"
-        class="px-6 py-3 text-left text-xs font-normal text-gray-500 uppercase tracking-wider"
-      >
-        Spieler
-      </th>
-      <th
-        scope="col"
-        class="px-6 py-3 text-left text-xs font-normal text-gray-500 uppercase tracking-wider"
-      >
-        Punkte
-      </th>
-      <th
-        *ngFor="let c of data.categories"
-        scope="col"
-        class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider"
-      >
-        {{ c }}
-      </th>
-    </tr>
-  </thead>
-  <tbody class="bg-white divide-y divide-gray-200">
-    <tr *ngFor="let row of data.answerRows">
-      <td
-        class="px-6 py-4 whitespace-nowrap"
-        [ngClass]="{
-          'player-stopped-border': row.player.id === data.stoppedByPlayer
-        }"
-      >
-        <div class="flex items-center">
-          <div class="flex-shrink-0 h-10 w-10 text-2xl">
-            {{ row.player.emoji }}
-          </div>
-          <div class="ml-2 text-sm font-medium text-gray-900">
-            {{ row.player.name }}
-          </div>
-        </div>
-      </td>
-      <!-- Row points -->
-      <td class="px-6 py-4 whitespace-nowrap">
-        <span
-          class="px-2 inline-flex text-lg leading-5 font-semibold rounded-full py-1 px-2"
+<div class="w-full overflow-x-auto">
+  <table
+    *ngIf="data$ | async as data"
+    class="row-points min-w-full divide-y divide-gray-200"
+  >
+    <thead class="bg-gray-50">
+      <tr>
+        <th
+          scope="col"
+          class="px-6 py-3 text-left text-xs font-normal text-gray-500 uppercase tracking-wider"
+        >
+          Spieler
+        </th>
+        <th
+          scope="col"
+          class="px-6 py-3 text-left text-xs font-normal text-gray-500 uppercase tracking-wider"
+        >
+          Punkte
+        </th>
+        <th
+          *ngFor="let c of data.categories"
+          scope="col"
+          class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider"
+        >
+          {{ c }}
+        </th>
+      </tr>
+    </thead>
+    <tbody class="bg-white divide-y divide-gray-200">
+      <tr *ngFor="let row of data.answerRows">
+        <td
+          class="px-6 py-4 whitespace-nowrap"
           [ngClass]="{
-            'row-points-gray': row.rowPoints === 0,
-            'row-points-green': row.rowPoints > 0
+            'player-stopped-border': row.player.id === data.stoppedByPlayer
           }"
         >
-          {{ row.rowPoints }}
-        </span>
-      </td>
-      <!-- Answer cells -->
-      <td
-        class="px-6 py-4 whitespace-nowrap"
-        *ngFor="let a of row.answers; index as i"
-      >
-        <div>
-          <span class="text-lg text-gray-900 mr-2">{{ a.value }}</span>
-          <!-- Answer points pill -->
+          <div class="flex items-center">
+            <div class="flex-shrink-0 h-10 w-10 text-2xl">
+              {{ row.player.emoji }}
+            </div>
+            <div class="ml-2 text-sm font-medium text-gray-900">
+              {{ row.player.name }}
+            </div>
+          </div>
+        </td>
+        <!-- Row points -->
+        <td class="px-6 py-4 whitespace-nowrap">
           <span
-            *ngIf="a.points >= 0"
-            [ngClass]="getPointClasses(a.points)"
-            class="px-2 py-1 text-md leading-5 font-semibold rounded-full text-center"
+            class="px-2 inline-flex text-lg leading-5 font-semibold rounded-full py-1 px-2"
+            [ngClass]="{
+              'row-points-gray': row.rowPoints === 0,
+              'row-points-green': row.rowPoints > 0
+            }"
           >
-            {{ a.points }}
+            {{ row.rowPoints }}
           </span>
-        </div>
-        <!-- Points buttons -->
-        <div
-          *ngIf="gameCreatedByMe$ | async"
-          class="relative z-0 inline-flex -space-x-px"
+        </td>
+        <!-- Answer cells -->
+        <td
+          class="px-6 py-4 whitespace-nowrap"
+          *ngFor="let a of row.answers; index as i"
         >
-          <button
-            type="button"
-            *ngFor="let points of [0, 5, 10, 20]; first as f; last as l"
-            class="relative inline-flex items-center px-2 py-1 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-            (click)="setPoints(row.answerId, i, points)"
-            [ngClass]="{ 'rounded-l-md': f, 'rounded-r-md': l }"
+          <div>
+            <span class="text-lg text-gray-900 mr-2">{{ a.value }}</span>
+            <!-- Answer points pill -->
+            <span
+              *ngIf="a.points >= 0"
+              [ngClass]="getPointClasses(a.points)"
+              class="px-2 py-1 text-md leading-5 font-semibold rounded-full text-center"
+            >
+              {{ a.points }}
+            </span>
+          </div>
+          <!-- Points buttons -->
+          <div
+            *ngIf="gameCreatedByMe$ | async"
+            class="relative z-0 inline-flex -space-x-px"
           >
-            {{ points }}
-          </button>
-        </div>
-      </td>
-    </tr>
-  </tbody>
-</table>
+            <button
+              type="button"
+              *ngFor="let points of [0, 5, 10, 20]; first as f; last as l"
+              class="relative px-2 py-1 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-100"
+              (click)="setPoints(row.answerId, i, points)"
+              [ngClass]="{
+                'rounded-l-md': f,
+                'rounded-r-md': l,
+                'bg-gray-100': points === a.points
+              }"
+            >
+              {{ points }}
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
-<button (click)="finishRound()" *ngIf="gameCreatedByMe$ | async" class="mt-4">
-  Punkte speichern und Runde beenden
+<button
+  (click)="finishRound()"
+  *ngIf="gameCreatedByMe$ | async"
+  class="primary inline-flex items-center mt-6"
+  type="button"
+>
+  <svg
+    class="m-0 -ml-1 mr-2 h-6 w-6"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 20 20"
+    fill="currentColor"
+  >
+    <path
+      fill-rule="evenodd"
+      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+      clip-rule="evenodd"
+    />
+  </svg>
+
+  <span class="text-xl">Punkte speichern und Runde beenden</span>
 </button>

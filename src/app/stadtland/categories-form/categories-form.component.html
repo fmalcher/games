@@ -1,10 +1,9 @@
 <h2 class="sub-headline">Kategorien festlegen</h2>
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+  <!-- Category choice panel -->
   <div>
-    <div
-      class="p-3 rounded-md bg-gray-200 flex flex-wrap justify-items-stretch"
-    >
+    <div class="p-3 rounded-md bg-gray-200 flex flex-wrap">
       <button
         type="button"
         class="category-pill"
@@ -19,6 +18,7 @@
   </div>
 
   <form [formGroup]="form">
+    <!-- Button back -->
     <button
       class="primary inline-flex items-center mr-2 mb-2"
       type="button"
@@ -45,6 +45,7 @@
     </span>
 
     <div class="mb-2" *ngIf="gameCreatedByMe$ | async">
+      <!-- Button Random -->
       <button
         type="button"
         class="inline-flex items-center secondary mr-2 mb-2"
@@ -64,6 +65,7 @@
         <div>Zufall</div>
       </button>
 
+      <!-- button remove all -->
       <button
         type="button"
         class="inline-flex items-center secondary mr-2 mb-2"
@@ -85,6 +87,7 @@
         <div>Alle entfernen</div>
       </button>
 
+      <!-- Button add field -->
       <button
         class="secondary inline-flex items-center mr-2 mb-2"
         type="button"
@@ -107,6 +110,7 @@
       </button>
     </div>
 
+    <!-- Input fields-->
     <div formArrayName="categories">
       <div
         class="mt-1 relative rounded-md shadow-sm"
