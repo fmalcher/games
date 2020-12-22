@@ -6,6 +6,8 @@
         [disabled]="c.added">{{ c.value }}</button>
 </div>
 
+<button type="button" (click)="setRandomCategoriesDiceRoll()">5 zufällige Kategorien</button>
+
 <form [formGroup]="form" (ngSubmit)="save()">
     <div formArrayName="categories">
         <button type="button" (click)="addField()">+</button>
