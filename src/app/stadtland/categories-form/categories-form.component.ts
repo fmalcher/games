@@ -85,6 +85,15 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
     this.categoriesFormArray.removeAt(index);
   }
 
+  removeFieldByValue(value: string) {
+    const index = (this.categoriesFormArray.value as string[]).findIndex(
+      (e) => e === value
+    );
+    if (index >= 0) {
+      this.removeField(index);
+    }
+  }
+
   setRandomCategories(n = 5) {
     const categories = this.sls.getRandomElementsFromArray(
       slfConfig.categories,
