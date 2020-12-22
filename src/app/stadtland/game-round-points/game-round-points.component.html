@@ -1,14 +1,14 @@
 <table *ngIf="data$ | async as data" class="row-points min-w-full divide-y divide-gray-200">
     <thead class="bg-gray-50">
         <tr>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th scope="col" class="px-6 py-3 text-left text-xs font-normal text-gray-500 uppercase tracking-wider">
                 Spieler
             </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th scope="col" class="px-6 py-3 text-left text-xs font-normal text-gray-500 uppercase tracking-wider">
                 Punkte
             </th>
             <th *ngFor="let c of data.categories" scope="col"
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
                 {{ c }}
             </th>
         </tr>
