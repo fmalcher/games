@@ -9,6 +9,7 @@ import {
   map,
   pairwise,
   share,
+  startWith,
   switchMap,
   take,
   takeUntil,

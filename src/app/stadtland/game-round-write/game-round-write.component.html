@@ -1,8 +1,11 @@
 <div class="flex justify-center w-full">
-    <div
-        class="write-letter text-gray-100 font-bold text-8xl flex justify-center align-middle p-6 rounded-full bg-red-400">
-        {{ letter$ | async }}
-    </div>
+    <app-alarm-pulse *ngIf="countDown$ | async as countDown; else letterDisplay" [value]="countDown.value"></app-alarm-pulse>
+    <ng-template #letterDisplay>
+        <div
+            class="write-letter text-gray-100 font-bold text-8xl flex justify-center align-middle p-6 rounded-full bg-gray-400">
+            {{ letter$ | async }}
+        </div>
+    </ng-template>
 </div>
 
 <form [formGroup]="form">
@@ -17,6 +20,3 @@
     <button type="button" (click)="stop()"
         [disabled]="(stopped$ | async) || (form.invalid && !(gameCreatedByMe$ | async))">STOP</button>
 </form>
-
-<div style="font-size: 2em; color: red" *ngIf="countDown$ | async as countDown">Runde vorbei in {{ countDown.value }} s
-</div>

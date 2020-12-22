@@ -17,6 +17,7 @@ import { GameRoundLetterComponent } from './game-round-letter/game-round-letter.
 import { GameRoundWriteComponent } from './game-round-write/game-round-write.component';
 import { GameRoundPointsComponent } from './game-round-points/game-round-points.component';
 import { UrlCopyComponent } from './url-copy/url-copy.component';
+import { AlarmPulseComponent } from './alarm-pulse/alarm-pulse.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { UrlCopyComponent } from './url-copy/url-copy.component';
     GameRoundWriteComponent,
     GameRoundPointsComponent,
     UrlCopyComponent,
+    AlarmPulseComponent,
   ],
   imports: [
     CommonModule,
