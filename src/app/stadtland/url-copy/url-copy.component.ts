@@ -36,6 +36,17 @@ export class UrlCopyComponent implements OnInit {
     return url;
   }
 
+  canShare() {
+    return !!navigator.share;
+  }
+
+  share() {
+    navigator.share({
+      title: 'Stadt Land Fluss',
+      text: `Spiel mit uns eine Runde "Stadt Land Fluss"! 🏘 🌍 🐳 ${this.url}`,
+    });
+  }
+
   copy() {
     this.copyEvent$.next();
   }
