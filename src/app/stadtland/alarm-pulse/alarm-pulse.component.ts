@@ -6,7 +6,7 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./alarm-pulse.component.scss'],
 })
 export class AlarmPulseComponent implements OnInit {
-  @Input() value: any;
+  @Input() value: string | number;
 
   constructor() {}
 

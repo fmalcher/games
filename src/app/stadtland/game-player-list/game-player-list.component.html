@@ -1,19 +1,12 @@
 <h3 class="sub-headline">Spieler</h3>
 
-<table
-  *ngIf="players$ | async as players"
-  class="min-w-full divide-y divide-gray-200"
->
+<table *ngIf="players$ | async as players" class="min-w-full divide-y divide-gray-200">
   <thead class="bg-gray-50">
     <tr>
-      <th
-        class="px-6 py-3 text-left text-xs font-normal text-gray-500 uppercase tracking-wider"
-      >
+      <th class="px-6 py-3 text-left text-xs font-normal text-gray-500 uppercase tracking-wider">
         Name
       </th>
-      <th
-        class="px-6 py-3 text-left text-xs font-normal text-gray-500 uppercase tracking-wider"
-      >
+      <th class="px-6 py-3 text-left text-xs font-normal text-gray-500 uppercase tracking-wider">
         Punkte
       </th>
     </tr>
@@ -33,10 +26,7 @@
             <button
               class="btn btn-xs danger icon ml-2"
               (click)="removePlayer(p.id)"
-              *ngIf="
-                (p.isMe || (gameCreatedByMe$ | async)) &&
-                !(gameStarted$ | async)
-              "
+              *ngIf="(p.isMe || (gameCreatedByMe$ | async)) && !(gameStarted$ | async)"
             >
               <svg
                 class="w-1 h-1"

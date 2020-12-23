@@ -1,8 +1,5 @@
 <div class="w-full overflow-x-auto">
-  <table
-    *ngIf="data$ | async as data"
-    class="row-points min-w-full divide-y divide-gray-200"
-  >
+  <table *ngIf="data$ | async as data" class="row-points min-w-full divide-y divide-gray-200">
     <thead class="bg-gray-50">
       <tr>
         <th
@@ -56,10 +53,7 @@
           </span>
         </td>
         <!-- Answer cells -->
-        <td
-          class="px-6 py-4 whitespace-nowrap"
-          *ngFor="let a of row.answers; index as i"
-        >
+        <td class="px-6 py-4 whitespace-nowrap" *ngFor="let a of row.answers; index as i">
           <div>
             <span class="text-lg text-gray-900 mr-2">{{ a.value }}</span>
             <!-- Answer points pill -->
@@ -72,10 +66,7 @@
             </span>
           </div>
           <!-- Points buttons -->
-          <div
-            *ngIf="gameCreatedByMe$ | async"
-            class="relative z-0 inline-flex -space-x-px"
-          >
+          <div *ngIf="gameCreatedByMe$ | async" class="relative z-0 inline-flex -space-x-px">
             <button
               type="button"
               *ngFor="let points of [0, 5, 10, 20]; first as f; last as l"
@@ -102,11 +93,7 @@
   class="btn primary icon icon-left mt-6"
   type="button"
 >
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 20 20"
-    fill="currentColor"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
     <path
       fill-rule="evenodd"
       d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"

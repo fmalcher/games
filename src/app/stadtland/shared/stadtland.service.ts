@@ -45,19 +45,19 @@ export class StadtlandService {
 
   /** reference to the current game doc */
   private currentGameRef$ = this.currentGameId$.pipe(
-    filter((e) => !!e),
-    map((gameId) => this.afs.collection<Game>(this.gamesCollection).doc(gameId))
+    filter(e => !!e),
+    map(gameId => this.afs.collection<Game>(this.gamesCollection).doc(gameId))
   );
 
   /** the current game data */
   game$ = this.currentGameRef$.pipe(
-    switchMap((game) => game.valueChanges()),
+    switchMap(game => game.valueChanges()),
     shareReplay(1)
   );
 
   /** state of the current game */
   state$ = this.game$.pipe(
-    map((game) => game.state),
+    map(game => game.state),
     distinctUntilChanged()
   );
 
@@ -65,22 +65,20 @@ export class StadtlandService {
    * flag that indicates whether the current game has been started.
    * after start the player list cannot be changed anymore
    */
-  gameStarted$ = this.state$.pipe(
-    map((state) => state === GameState.StartedIdle)
-  );
+  gameStarted$ = this.state$.pipe(map(state => state === GameState.StartedIdle));
 
   /** list of categories of the current game */
-  categories$ = this.game$.pipe(map((game) => game.categories));
+  categories$ = this.game$.pipe(map(game => game.categories));
 
   /** list of all players in the current game */
   players$ = this.currentGameRef$.pipe(
-    switchMap((game) =>
+    switchMap(game =>
       game
-        .collection<Player>('players', (ref) => ref.orderBy('score', 'desc'))
+        .collection<Player>('players', ref => ref.orderBy('score', 'desc'))
         .valueChanges({ idField: 'id' })
         .pipe(
-          map((players) =>
-            players.map((player) => ({
+          map(players =>
+            players.map(player => ({
               ...player,
               isMe: this.cis.isMyClientId(player.client),
             }))
@@ -92,25 +90,23 @@ export class StadtlandService {
 
   /** my player */
   myPlayer$ = this.currentGameRef$.pipe(
-    switchMap((game) =>
+    switchMap(game =>
       game
-        .collection<Player>('players', (ref) =>
-          ref.where('client', '==', this.cis.clientId)
-        )
+        .collection<Player>('players', ref => ref.where('client', '==', this.cis.clientId))
         .valueChanges({ idField: 'id' })
-        .pipe(map((players) => players[0] || null))
+        .pipe(map(players => players[0] || null))
     ),
     shareReplay(1)
   );
 
   /** score of my player */
-  myScore$ = this.myPlayer$.pipe(map((p) => p?.score));
+  myScore$ = this.myPlayer$.pipe(map(p => p?.score));
 
   /** flag that describes whether I am the game master */
   gameCreatedByMe$ = this.game$.pipe(
-    map((g) => g.client),
+    map(g => g.client),
     distinctUntilChanged(),
-    map((cid) => this.cis.isMyClientId(cid)),
+    map(cid => this.cis.isMyClientId(cid)),
     shareReplay(1)
   );
 
@@ -121,13 +117,11 @@ export class StadtlandService {
 
   /** the current round (is always the latest created) */
   currentRound$ = this.currentGameRef$.pipe(
-    switchMap((game) =>
+    switchMap(game =>
       game
-        .collection<Round>('rounds', (ref) =>
-          ref.orderBy('started', 'desc').limit(1)
-        )
+        .collection<Round>('rounds', ref => ref.orderBy('started', 'desc').limit(1))
         .valueChanges({ idField: 'id' })
-        .pipe(map((rounds) => rounds[0] || null))
+        .pipe(map(rounds => rounds[0] || null))
     ),
     shareReplay(1)
   );
@@ -135,30 +129,28 @@ export class StadtlandService {
   /** reference to the current round document */
   currentRoundRef$ = this.currentRound$.pipe(
     switchMap(({ id: roundId }) =>
-      this.currentGameRef$.pipe(
-        map((gameRef) => gameRef.collection('rounds').doc(roundId))
-      )
+      this.currentGameRef$.pipe(map(gameRef => gameRef.collection('rounds').doc(roundId)))
     ),
     shareReplay(1)
   );
 
   /** categories of the current round */
-  currentRoundCategories$ = this.currentRound$.pipe(map((r) => r.categories));
+  currentRoundCategories$ = this.currentRound$.pipe(map(r => r.categories));
 
   /** letter of the current round */
-  currentRoundLetter$ = this.currentRound$.pipe(map((r) => r.letter));
+  currentRoundLetter$ = this.currentRound$.pipe(map(r => r.letter));
 
   /** all data from the round necessary to display the points/results table */
   cumulatedRoundData$ = this.currentRoundRef$.pipe(
-    switchMap((roundRef) =>
+    switchMap(roundRef =>
       combineLatest([
         this.currentRound$,
         this.players$,
         roundRef.collection<Answer>('answers').valueChanges({ idField: 'id' }),
       ]).pipe(
         map(([round, players, answers]) => {
-          const answerRows = answers.map((a) => {
-            const player = players.find((p) => p.id === a.playerId);
+          const answerRows = answers.map(a => {
+            const player = players.find(p => p.id === a.playerId);
             return {
               player,
               answerId: a.id,
@@ -205,22 +197,20 @@ export class StadtlandService {
           state: 0,
           client: this.cis.clientId,
         })
-        .then((docRef) => docRef.id)
+        .then(docRef => docRef.id)
     );
   }
 
   /** change the state of the game */
   setGameState(state: GameState) {
-    return this.currentGameRef$
-      .pipe(take(1))
-      .pipe(switchMap((game) => game.update({ state })));
+    return this.currentGameRef$.pipe(take(1)).pipe(switchMap(game => game.update({ state })));
   }
 
   /** set the category list of the current game */
   setCategories(categories: string[]) {
     return this.currentGameRef$.pipe(
       take(1),
-      mergeMap((game) => game.update({ categories }))
+      mergeMap(game => game.update({ categories }))
     );
   }
 
@@ -228,11 +218,11 @@ export class StadtlandService {
   addPlayer(name: string, emoji: string): Observable<string> {
     return this.currentGameRef$.pipe(
       take(1),
-      switchMap((game) =>
+      switchMap(game =>
         game
           .collection<Player>('players')
           .add({ name, emoji, score: 0, client: this.cis.clientId })
-          .then((docRef) => docRef.id)
+          .then(docRef => docRef.id)
       )
     );
   }
@@ -241,7 +231,7 @@ export class StadtlandService {
   removePlayer(id: string): Observable<any> {
     return this.currentGameRef$.pipe(
       take(1),
-      switchMap((game) => game.collection<Player>('players').doc(id).delete())
+      switchMap(game => game.collection<Player>('players').doc(id).delete())
     );
   }
 
@@ -257,7 +247,7 @@ export class StadtlandService {
         gameRef
           .collection<Round>('rounds')
           .add({ letter, started, categories, stoppedByPlayer: null })
-          .then((docRef) => docRef.id)
+          .then(docRef => docRef.id)
       )
     );
   }
@@ -274,15 +264,12 @@ export class StadtlandService {
 
     return this.currentRound$.pipe(
       take(1),
-      filter((e) => !!e),
-      switchMap((round) =>
+      filter(e => !!e),
+      switchMap(round =>
         this.currentGameRef$.pipe(
           take(1),
-          switchMap((game) =>
-            game
-              .collection<Round>('rounds')
-              .doc(round.id)
-              .update({ letter, started })
+          switchMap(game =>
+            game.collection<Round>('rounds').doc(round.id).update({ letter, started })
           )
         )
       )
@@ -294,9 +281,7 @@ export class StadtlandService {
     return this.currentRoundRef$.pipe(
       take(1),
       withLatestFrom(this.myPlayer$),
-      mergeMap(([roundRef, player]) =>
-        roundRef.update({ stoppedByPlayer: player.id })
-      ),
+      mergeMap(([roundRef, player]) => roundRef.update({ stoppedByPlayer: player.id })),
       mergeMap(() => this.setGameState(GameState.RoundGivingPoints))
     );
   }
@@ -306,18 +291,18 @@ export class StadtlandService {
     const points = answers.map(() => null);
     return this.currentRound$.pipe(
       take(1),
-      filter((e) => !!e),
+      filter(e => !!e),
       withLatestFrom(this.myPlayer$),
       concatMap(([round, player]) =>
         this.currentGameRef$.pipe(
           take(1),
-          concatMap((game) =>
+          concatMap(game =>
             game
               .collection<Round>('rounds')
               .doc(round.id)
               .collection<Answer>('answers')
               .add({ answers, points, playerId: player.id })
-              .then((docRef) => docRef.id)
+              .then(docRef => docRef.id)
           )
         )
       )
@@ -327,27 +312,23 @@ export class StadtlandService {
   /** set points for a single answer in the current round */
   setRoundPoints(answerId: string, position: number, points: number) {
     const answerDoc$ = this.currentRoundRef$.pipe(
-      map((roundRef) => roundRef.collection<Answer>('answers').doc(answerId)),
+      map(roundRef => roundRef.collection<Answer>('answers').doc(answerId)),
       take(1)
     );
 
     const currentPoints$ = answerDoc$.pipe(
-      concatMap((answerDoc) =>
-        answerDoc.valueChanges().pipe(map((a) => a.points))
-      )
+      concatMap(answerDoc => answerDoc.valueChanges().pipe(map(a => a.points)))
     );
 
     return currentPoints$.pipe(
       take(1),
-      map((pointsArray) => {
+      map(pointsArray => {
         const newPointsArray = [...pointsArray];
         newPointsArray[position] = points;
         return newPointsArray;
       }),
       withLatestFrom(answerDoc$),
-      concatMap(([newPointsArray, answerDoc]) =>
-        answerDoc.update({ points: newPointsArray })
-      )
+      concatMap(([newPointsArray, answerDoc]) => answerDoc.update({ points: newPointsArray }))
     );
   }
 
@@ -355,8 +336,8 @@ export class StadtlandService {
   moveRoundPointsToPlayerScore() {
     return this.cumulatedRoundData$.pipe(
       take(1),
-      mergeMap((data) =>
-        data.answerRows.map((row) => ({
+      mergeMap(data =>
+        data.answerRows.map(row => ({
           playerId: row.player.id,
           points: row.answers.reduce((acc, item) => acc + item.points, 0),
         }))
@@ -406,7 +387,7 @@ export class StadtlandService {
   generateCountdown(seconds: number = 5): Observable<number> {
     return timer(0, 1000).pipe(
       take(seconds + 1),
-      map((i) => seconds - i)
+      map(i => seconds - i)
     );
   }
 
