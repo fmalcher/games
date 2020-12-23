@@ -13,6 +13,7 @@ export class GameLandingComponent implements OnInit {
   gameStarted$ = this.sls.gameStarted$;
   myPlayer$ = this.sls.myPlayer$;
   categories$ = this.sls.categories$;
+  players$ = this.sls.players$;
 
   pathToRunningRound$ = this.sls.state$.pipe(
     map((state) => {
