@@ -7,7 +7,11 @@
     #input
     (focus)="input.select()"
   />
-  <button type="button" class="secondary icon icon-right ml-2" (click)="copy()">
+  <button
+    type="button"
+    class="btn secondary icon icon-right ml-2"
+    (click)="copy()"
+  >
     Kopieren
     <ng-container *ngIf="copyTextState$ | async">
       <svg

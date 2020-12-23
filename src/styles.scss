@@ -9,39 +9,46 @@ input {
 button {
   @apply outline-none focus:outline-none;
 
-  &.primary,
-  &.secondary {
+  &.btn {
     @apply px-4 py-2 border rounded-md shadow-sm text-sm font-medium;
+
+    &.btn-xs {
+      @apply text-xs px-2 py-1;
+    }
+
+    &.primary {
+      @apply border-green-700 text-white bg-green-800 hover:bg-green-700 focus:ring-green-500;
+    }
+
+    &.secondary {
+      @apply border-gray-300 text-gray-700 bg-white hover:bg-gray-100 focus:ring-indigo-500;
+    }
+
+    &.danger {
+      @apply border-red-700 text-white bg-red-800 hover:bg-red-700 focus:ring-red-500;
+    }
+
+    &.icon {
+      @apply inline-flex items-center;
+
+      svg {
+        @apply m-0 h-5 w-5;
+      }
+
+      &-right svg {
+        @apply -mr-1 ml-2;
+      }
+
+      &-left svg {
+        @apply -ml-1 mr-2;
+      }
+    }
   }
 
-  &.primary {
-    @apply border-green-700 text-white bg-green-800 hover:bg-green-700 focus:ring-green-500;
-  }
-
-  &.secondary {
-    @apply border-gray-300 text-gray-700 bg-white hover:bg-gray-100 focus:ring-indigo-500;
-  }
-
-  &:disabled,
+  /*&:disabled,
   &.disabled {
     @apply bg-opacity-20 bg-green-800 text-opacity-70 cursor-not-allowed;
-  }
-
-  &.icon {
-    @apply inline-flex items-center;
-
-    svg {
-      @apply m-0 h-5 w-5;
-    }
-
-    &-right svg {
-      @apply -mr-1 ml-2;
-    }
-
-    &-left svg {
-      @apply -ml-1 mr-2;
-    }
-  }
+  }*/
 }
 
 input[type="text"] {

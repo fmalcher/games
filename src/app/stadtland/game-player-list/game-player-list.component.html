@@ -1,21 +1,60 @@
 <h3 class="sub-headline">Spieler</h3>
 
-<table *ngIf="players$ | async as players" class="table-fixed w-full max-w-sm text-left p-2">
-    <thead class="bg-gray-100">
-        <tr>
-            <th>Name</th>
-            <th>💰 Punkte</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let p of players">
-            <td>
-                {{ p.emoji }} {{ p.name }}
-                <ng-container *ngIf="p.isMe">(ich)</ng-container>
-                <button (click)="removePlayer(p.id)"
-                    *ngIf="(p.isMe || (gameCreatedByMe$ | async)) && !(gameStarted$ | async)">X</button>
-            </td>
-            <td>{{ p.score }}</td>
-        </tr>
-    </tbody>
+<table
+  *ngIf="players$ | async as players"
+  class="min-w-full divide-y divide-gray-200"
+>
+  <thead class="bg-gray-50">
+    <tr>
+      <th
+        class="px-6 py-3 text-left text-xs font-normal text-gray-500 uppercase tracking-wider"
+      >
+        Name
+      </th>
+      <th
+        class="px-6 py-3 text-left text-xs font-normal text-gray-500 uppercase tracking-wider"
+      >
+        Punkte
+      </th>
+    </tr>
+  </thead>
+  <tbody class="bg-white divide-y divide-gray-200">
+    <tr *ngFor="let p of players">
+      <td class="px-6 py-4 whitespace-nowrap">
+        <div class="flex items-center">
+          <div class="flex-shrink-0 h-10 w-10 text-4xl">
+            {{ p.emoji }}
+          </div>
+          <div class="ml-2 text-base font-medium text-gray-900">
+            {{ p.name }}
+            <span class="text-gray-500" *ngIf="p.isMe">(ich)</span>
+          </div>
+          <div>
+            <button
+              class="btn btn-xs danger icon ml-2"
+              (click)="removePlayer(p.id)"
+              *ngIf="
+                (p.isMe || (gameCreatedByMe$ | async)) &&
+                !(gameStarted$ | async)
+              "
+            >
+              <svg
+                class="w-1 h-1"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </td>
+      <td class="px-6 py-4 whitespace-nowrap font-bold">{{ p.score }}</td>
+    </tr>
+  </tbody>
 </table>
