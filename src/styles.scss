@@ -26,17 +26,44 @@ button {
   &.disabled {
     @apply bg-opacity-20 bg-green-800 text-opacity-70 cursor-not-allowed;
   }
+
+  &.icon {
+    @apply inline-flex items-center;
+
+    svg {
+      @apply m-0 h-5 w-5;
+    }
+
+    &-right svg {
+      @apply -mr-1 ml-2;
+    }
+
+    &-left svg {
+      @apply -ml-1 mr-2;
+    }
+  }
 }
 
 input[type="text"] {
   // @apply border-2 p-2 my-2 border-opacity-30 h-10 rounded-none;
 }
 
-button.category-pill {
-  @apply rounded-md p-1 px-2 bg-green-800 m-1 bg-opacity-10 hover:bg-green-800 hover:bg-opacity-20 font-medium border border-green-600;
+.categories-form-panel {
+  @apply p-3 rounded-md bg-gray-200 flex flex-wrap;
 
-  &.added {
-    @apply bg-opacity-100 text-white;
+  button {
+    @apply rounded-md p-1 px-2 bg-green-800 m-1 bg-opacity-10 hover:bg-green-800 hover:bg-opacity-20 font-medium border border-green-600;
+
+    &.added {
+      @apply bg-opacity-100 text-white;
+    }
+  }
+}
+
+.categories-list {
+  @apply flex flex-wrap;
+  span {
+    @apply rounded-md p-1 px-2 bg-green-800 mb-1 mr-1 bg-opacity-10 font-medium border border-green-600 text-sm;
   }
 }
 
@@ -45,7 +72,7 @@ button.category-pill {
   height: 150px;
 }
 .letter {
-  font-size: 30rem;
+  font-size: 20rem;
   line-height: 1;
 
   &.final {
@@ -62,31 +89,35 @@ button.category-pill {
 }
 
 table.row-points {
-  .points0 {
-    @apply bg-red-200 text-red-900;
+  .points {
+    &0 {
+      @apply bg-red-200 text-red-900;
+    }
+
+    &5 {
+      @apply bg-yellow-600 bg-opacity-30 text-yellow-900;
+    }
+
+    &10 {
+      @apply bg-yellow-200 text-yellow-700;
+    }
+
+    &20 {
+      @apply bg-green-100 text-green-800;
+    }
   }
 
-  .points5 {
-    @apply bg-yellow-600 bg-opacity-30 text-yellow-900;
-  }
+  .row-points {
+    &-gray {
+      @apply bg-gray-100 text-gray-800;
+    }
 
-  .points10 {
-    @apply bg-yellow-200 text-yellow-700;
-  }
-
-  .points20 {
-    @apply bg-green-100 text-green-800;
+    &-green {
+      @apply bg-green-100 text-green-800;
+    }
   }
 
   .player-stopped-border {
     @apply border-l-8 border-red-300;
-  }
-
-  .row-points-gray {
-    @apply bg-gray-100 text-gray-800;
-  }
-
-  .row-points-green {
-    @apply bg-green-100 text-green-800;
   }
 }

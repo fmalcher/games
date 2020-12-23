@@ -3,10 +3,9 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
   <!-- Category choice panel -->
   <div>
-    <div class="p-3 rounded-md bg-gray-200 flex flex-wrap">
+    <div class="categories-form-panel">
       <button
         type="button"
-        class="category-pill"
         [class.added]="c.added"
         [disabled]="!(gameCreatedByMe$ | async)"
         (click)="c.added ? removeFieldByValue(c.value) : addField(c.value)"
@@ -20,12 +19,11 @@
   <form [formGroup]="form">
     <!-- Button back -->
     <button
-      class="primary inline-flex items-center mr-2 mb-2"
+      class="primary icon icon-left mr-2 mb-2"
       type="button"
       routerLink="../landing"
     >
       <svg
-        class="m-0 -ml-1 mr-2 h-5 w-5"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
         fill="currentColor"
@@ -48,11 +46,10 @@
       <!-- Button Random -->
       <button
         type="button"
-        class="inline-flex items-center secondary mr-2 mb-2"
+        class="secondary icon icon-left mr-2 mb-2"
         (click)="setRandomCategoriesDiceRoll()"
       >
         <svg
-          class="-ml-1 mr-2 h-5 w-5 text-gray-500"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"
@@ -68,11 +65,10 @@
       <!-- button remove all -->
       <button
         type="button"
-        class="inline-flex items-center secondary mr-2 mb-2"
+        class="secondary icon icon-left mr-2 mb-2"
         (click)="removeAllFields()"
       >
         <svg
-          class="-ml-1 mr-2 h-5 w-5 text-gray-500"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"
@@ -89,12 +85,11 @@
 
       <!-- Button add field -->
       <button
-        class="secondary inline-flex items-center mr-2 mb-2"
+        class="secondary icon icon-left mr-2 mb-2"
         type="button"
         (click)="addField()"
       >
         <svg
-          class="m-0 -ml-1 mr-2 h-5 w-5"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"
