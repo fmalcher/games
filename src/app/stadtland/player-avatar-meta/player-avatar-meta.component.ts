@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { timer } from 'rxjs';
+import { distinctUntilChanged, exhaustMap, map, mapTo, startWith } from 'rxjs/operators';
 import { StadtlandService } from '../shared/stadtland.service';
 
 @Component({
@@ -9,6 +11,12 @@ import { StadtlandService } from '../shared/stadtland.service';
 export class PlayerAvatarMetaComponent implements OnInit {
   myPlayer$ = this.sls.myPlayer$;
   gameCreatedByMe$ = this.sls.gameCreatedByMe$;
+
+  scoreChanged$ = this.myPlayer$.pipe(
+    map(p => p.score),
+    distinctUntilChanged(),
+    exhaustMap(() => timer(400).pipe(mapTo(false), startWith(true)))
+  );
 
   constructor(private sls: StadtlandService) {}
 

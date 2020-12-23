@@ -3,6 +3,7 @@
     <span class="block md:text-8xl sm:text-6xl text-5xl">{{ myPlayer.emoji }}</span>
     <span class="absolute inset-0 object-right-top -mr-16">
       <div
+        [class.animate-score]="scoreChanged$ | async"
         class="inline-flex items-center px-1.5 py-0.5 border-2 border-white rounded-full text-xs font-semibold leading-4 bg-red-500 text-white"
       >
         {{ myPlayer.score }}
