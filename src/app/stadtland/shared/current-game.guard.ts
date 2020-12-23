@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  CanActivate,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
-  UrlTree,
-} from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { StadtlandService } from './stadtland.service';
 
 @Injectable({
@@ -13,10 +8,7 @@ import { StadtlandService } from './stadtland.service';
 export class CurrentGameGuard implements CanActivate {
   constructor(private sls: StadtlandService) {}
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): boolean {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const params = this.collectParams(route);
     this.sls.setCurrentGame(params.gameId);
     return true;

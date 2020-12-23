@@ -17,7 +17,7 @@ export class StartComponent implements OnInit {
   ngOnInit(): void {}
 
   createNewGame(): void {
-    this.sls.createNewGame().subscribe((id) => {
+    this.sls.createNewGame().subscribe(id => {
       this.router.navigate([id, 'landing'], { relativeTo: this.route });
     });
   }

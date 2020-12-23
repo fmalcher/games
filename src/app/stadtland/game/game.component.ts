@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { delay, map, takeUntil, tap } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { GameState } from '../shared/models';
 import { StadtlandService } from '../shared/stadtland.service';
 
@@ -25,7 +25,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // when game state changes, redirect accordingly
-    this.state$.pipe(takeUntil(this.destroy$)).subscribe((state) => {
+    this.state$.pipe(takeUntil(this.destroy$)).subscribe(state => {
       const redirectPath = this.getRedirects(state);
       if (redirectPath) {
         this.router.navigate([redirectPath], { relativeTo: this.route });

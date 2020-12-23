@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of, Subject, timer } from 'rxjs';
@@ -45,11 +40,11 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
   saveMessage$: Observable<boolean>;
 
   categoriesListTagged$ = this.form.valueChanges.pipe(
-    map((value) => value.categories),
+    map(value => value.categories),
     startWith(this.categoriesFormArray.value),
-    filter((e) => !!e),
+    filter(e => !!e),
     map((formValues: string[]) =>
-      slfConfig.categories.map((value) => {
+      slfConfig.categories.map(value => {
         const added = formValues.includes(value);
         return { value, added };
       })
@@ -70,23 +65,21 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
     this.categoriesFromGame$
       .pipe(
         filter(
-          (gameCats) =>
+          gameCats =>
             !this.categoryListsEqual(
               gameCats,
-              this.categoriesFormArray.value.filter((e) => !!e)
+              this.categoriesFormArray.value.filter(e => !!e)
             )
         ),
         takeUntil(this.destroy$)
       )
-      .subscribe((categories) => this.replaceCategoryFields(categories));
+      .subscribe(categories => this.replaceCategoryFields(categories));
 
     this.saveMessage$ = this.form.valueChanges.pipe(
       debounceTime(500),
-      map((value) => value.categories.filter((e) => !!e)),
+      map(value => value.categories.filter(e => !!e)),
       withLatestFrom(this.categoriesFromGame$),
-      filter(
-        ([formCats, gameCats]) => !this.categoryListsEqual(formCats, gameCats)
-      ),
+      filter(([formCats, gameCats]) => !this.categoryListsEqual(formCats, gameCats)),
       switchMap(([categories]) => this.sls.setCategories(categories)),
       switchMap(() => timer(1000).pipe(mapTo(false), startWith(true)))
     );
@@ -100,10 +93,7 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
   }
 
   private replaceCategoryFields(categories: string[]) {
-    this.form.setControl(
-      'categories',
-      new FormArray(categories.map((c) => new FormControl(c)))
-    );
+    this.form.setControl('categories', new FormArray(categories.map(c => new FormControl(c))));
   }
 
   get categoriesFormArray(): FormArray {
@@ -119,9 +109,7 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
   }
 
   removeFieldByValue(value: string) {
-    const index = (this.categoriesFormArray.value as string[]).findIndex(
-      (e) => e === value
-    );
+    const index = (this.categoriesFormArray.value as string[]).findIndex(e => e === value);
     if (index >= 0) {
       this.removeField(index);
     }
@@ -132,10 +120,7 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
   }
 
   setRandomCategories(n = 5) {
-    const categories = this.sls.getRandomElementsFromArray(
-      slfConfig.categories,
-      n
-    );
+    const categories = this.sls.getRandomElementsFromArray(slfConfig.categories, n);
     this.replaceCategoryFields(categories);
   }
 
@@ -144,7 +129,7 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
   }
 
   getCategoryValuesFiltered() {
-    return this.categoriesFormArray.value.filter((e) => !!e);
+    return this.categoriesFormArray.value.filter(e => !!e);
   }
 
   private categoryListsEqual(a: string[], b: string[]) {

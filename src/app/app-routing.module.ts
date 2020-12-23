@@ -3,11 +3,14 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   { path: '', redirectTo: 'slf', pathMatch: 'full' },
-  { path: 'slf', loadChildren: () => import('./stadtland/stadtland.module').then(m => m.StadtlandModule) }
+  {
+    path: 'slf',
+    loadChildren: () => import('./stadtland/stadtland.module').then(m => m.StadtlandModule),
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

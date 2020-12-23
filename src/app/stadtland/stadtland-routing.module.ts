@@ -8,7 +8,6 @@ import { GameRoundWriteComponent } from './game-round-write/game-round-write.com
 import { GameComponent } from './game/game.component';
 import { CurrentGameGuard } from './shared/current-game.guard';
 import { GameState } from './shared/models';
-import { OnlyCreatedByMeGuard } from './shared/only-created-by-me.guard';
 import { StateRedirectGuard } from './shared/state-redirect.guard';
 import { StartComponent } from './start/start.component';
 

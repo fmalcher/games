@@ -25,6 +25,6 @@ export class ClientIdService {
   private generateRandomId(len = 32): string {
     const arr = new Uint8Array((len || 40) / 2);
     window.crypto.getRandomValues(arr);
-    return Array.from(arr, (dec) => dec.toString(16).padStart(2, '0')).join('');
+    return Array.from(arr, dec => dec.toString(16).padStart(2, '0')).join('');
   }
 }

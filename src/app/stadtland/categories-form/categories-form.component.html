@@ -18,16 +18,8 @@
 
   <form [formGroup]="form">
     <!-- Button back -->
-    <button
-      class="btn primary icon icon-left mr-2 mb-2"
-      type="button"
-      routerLink="../landing"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-      >
+    <button class="btn primary icon icon-left mr-2 mb-2" type="button" routerLink="../landing">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
         <path
           fill-rule="evenodd"
           d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
@@ -38,9 +30,7 @@
       Zurück zur Übersicht
     </button>
 
-    <span class="font-bold text-green-700 mb-3" *ngIf="saveMessage$ | async">
-      Gespeichert
-    </span>
+    <span class="font-bold text-green-700 mb-3" *ngIf="saveMessage$ | async"> Gespeichert </span>
 
     <div class="mb-2" *ngIf="gameCreatedByMe$ | async">
       <!-- Button Random -->
@@ -49,11 +39,7 @@
         class="btn secondary icon icon-left mr-2 mb-2"
         (click)="setRandomCategoriesDiceRoll()"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
           <path
             d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z"
           />
@@ -68,11 +54,7 @@
         class="btn secondary icon icon-left mr-2 mb-2"
         (click)="removeAllFields()"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
           <path
             fill-rule="evenodd"
             d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
@@ -84,16 +66,8 @@
       </button>
 
       <!-- Button add field -->
-      <button
-        class="btn secondary icon icon-left mr-2 mb-2"
-        type="button"
-        (click)="addField()"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
+      <button class="btn secondary icon icon-left mr-2 mb-2" type="button" (click)="addField()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
           <path
             fill-rule="evenodd"
             d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
@@ -119,10 +93,7 @@
           [readonly]="!(gameCreatedByMe$ | async)"
           class="form-control pr-10"
         />
-        <div
-          class="absolute inset-y-0 right-0 flex items-center"
-          *ngIf="gameCreatedByMe$ | async"
-        >
+        <div class="absolute inset-y-0 right-0 flex items-center" *ngIf="gameCreatedByMe$ | async">
           <button
             type="button"
             class="focus:ring-green-500 h-full py-0 px-3 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md"

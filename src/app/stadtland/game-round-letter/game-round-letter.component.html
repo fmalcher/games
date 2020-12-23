@@ -7,16 +7,8 @@
 
 <div class="flex space-x-3 mx-auto my-0 justify-center w-full">
   <!-- Button start -->
-  <button
-    *ngIf="gameCreatedByMe$ | async"
-    class="btn primary icon icon-left"
-    (click)="start()"
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 20 20"
-      fill="currentColor"
-    >
+  <button *ngIf="gameCreatedByMe$ | async" class="btn primary icon icon-left" (click)="start()">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
       <path
         fill-rule="evenodd"
         d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
@@ -33,11 +25,7 @@
     [disabled]="renewDisabled$ | async"
     class="btn secondary icon icon-left"
   >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 20 20"
-      fill="currentColor"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
       <path
         d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z"
       />
@@ -47,7 +35,5 @@
   </button>
 
   <!-- Button cancel -->
-  <button *ngIf="gameCreatedByMe$ | async" (click)="cancel()" class="text-sm">
-    Abbrechen
-  </button>
+  <button *ngIf="gameCreatedByMe$ | async" (click)="cancel()" class="text-sm">Abbrechen</button>
 </div>

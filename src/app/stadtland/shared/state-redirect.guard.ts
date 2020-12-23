@@ -27,7 +27,7 @@ export class StateRedirectGuard implements CanActivate {
     }
 
     return this.sls.state$.pipe(
-      map((state) => {
+      map(state => {
         const redirect = redirects[state];
         if (!redirect) {
           return true;

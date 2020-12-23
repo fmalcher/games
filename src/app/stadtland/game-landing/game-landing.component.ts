@@ -16,7 +16,7 @@ export class GameLandingComponent implements OnInit {
   players$ = this.sls.players$;
 
   pathToRunningRound$ = this.sls.state$.pipe(
-    map((state) => {
+    map(state => {
       switch (state) {
         case GameState.RoundDicing:
           return 'dice';
@@ -26,7 +26,7 @@ export class GameLandingComponent implements OnInit {
           return 'points';
       }
     }),
-    filter((e) => !!e)
+    filter(e => !!e)
   );
 
   constructor(private sls: StadtlandService) {}
@@ -34,11 +34,7 @@ export class GameLandingComponent implements OnInit {
   ngOnInit(): void {}
 
   startGame() {
-    if (
-      window.confirm(
-        'Spiel starten? Danach können die Spieler nicht mehr gelöscht werden.'
-      )
-    ) {
+    if (window.confirm('Spiel starten? Danach können die Spieler nicht mehr gelöscht werden.')) {
       this.sls.setGameState(GameState.StartedIdle).subscribe();
     }
   }
