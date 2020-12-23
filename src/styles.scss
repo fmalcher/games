@@ -56,7 +56,9 @@ button {
 }
 
 input[type="text"] {
-  // @apply border-2 p-2 my-2 border-opacity-30 h-10 rounded-none;
+  &.form-control {
+    @apply focus:ring-green-500 focus:border-green-500 block w-full py-2 sm:text-sm border-gray-300 rounded-md;
+  }
 }
 
 .categories-form-panel {
