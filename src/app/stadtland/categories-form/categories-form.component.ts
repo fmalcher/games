@@ -6,10 +6,10 @@ import {
 } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { interval, Observable, of, Subject, timer } from 'rxjs';
+import { Observable, of, Subject, timer } from 'rxjs';
 import {
-  concatMap,
   debounceTime,
+  exhaustMap,
   filter,
   map,
   mapTo,
@@ -18,7 +18,6 @@ import {
   switchMap,
   take,
   takeUntil,
-  tap,
   withLatestFrom,
 } from 'rxjs/operators';
 import { slfConfig } from '../shared/config';
@@ -32,6 +31,7 @@ import { StadtlandService } from '../shared/stadtland.service';
 })
 export class CategoriesFormComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject();
+  private randomCatDiceRoll$ = new Subject();
 
   categoriesFromGame$ = this.sls.categories$;
   gameCreatedByMe$ = this.sls.gameCreatedByMe$;
@@ -45,7 +45,6 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
   saveMessage$: Observable<boolean>;
 
   categoriesListTagged$ = this.form.valueChanges.pipe(
-    // tap((e) => console.log(e)),
     map((value) => value.categories),
     startWith(this.categoriesFormArray.value),
     filter((e) => !!e),
@@ -91,6 +90,13 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
       switchMap(([categories]) => this.sls.setCategories(categories)),
       switchMap(() => timer(1000).pipe(mapTo(false), startWith(true)))
     );
+
+    this.randomCatDiceRoll$
+      .pipe(
+        exhaustMap(() => timer(0, 150).pipe(take(6))),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => this.setRandomCategories());
   }
 
   private replaceCategoryFields(categories: string[]) {
@@ -134,20 +140,11 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
   }
 
   setRandomCategoriesDiceRoll() {
-    timer(0, 150)
-      .pipe(take(6), takeUntil(this.destroy$))
-      .subscribe(() => this.setRandomCategories());
+    this.randomCatDiceRoll$.next();
   }
 
   getCategoryValuesFiltered() {
     return this.categoriesFormArray.value.filter((e) => !!e);
-  }
-
-  save(): void {
-    this.sls.setCategories(this.getCategoryValuesFiltered()).subscribe(() => {
-      console.log('saved');
-      // this.router.navigate(['../landing'], { relativeTo: this.route });
-    });
   }
 
   private categoryListsEqual(a: string[], b: string[]) {
