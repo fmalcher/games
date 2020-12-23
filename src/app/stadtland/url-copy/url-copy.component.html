@@ -1,4 +1,39 @@
 <div class="flex">
-  <input class="w-full max-w-md" type="text" readonly [value]="url" #input (focus)="input.select();">
-  <button type="button" (click)="copy()">{{ copyText$ | async }}</button>
+  <input
+    class="w-full max-w-md"
+    type="text"
+    readonly
+    [value]="url"
+    #input
+    (focus)="input.select()"
+  />
+  <button type="button" class="secondary icon icon-right ml-2" (click)="copy()">
+    Kopieren
+    <ng-container *ngIf="copyTextState$ | async">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+          clip-rule="evenodd"
+        />
+      </svg>
+    </ng-container>
+
+    <ng-container *ngIf="!(copyTextState$ | async)">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path
+          d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z"
+        />
+        <path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h8a2 2 0 00-2-2H5z" />
+      </svg>
+    </ng-container>
+  </button>
 </div>

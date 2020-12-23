@@ -1,4 +1,3 @@
-<ul>
-    <li *ngFor="let c of categories$ | async">{{ c }}</li>
-</ul>
-
+<div class="categories-list">
+  <span *ngFor="let c of categories$ | async">{{ c }}</span>
+</div>

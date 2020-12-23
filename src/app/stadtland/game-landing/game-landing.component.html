@@ -3,20 +3,67 @@
 <h2 class="sub-headline">Übersicht</h2>
 
 <div>
-    <button *ngIf="!(gameStarted$ | async) && (gameCreatedByMe$ | async)" (click)="startGame()">Spiel starten</button>
-    <button *ngIf="(gameStarted$ | async) && (gameCreatedByMe$ | async)" (click)="newRound()">Neue Runde</button>
+  <button
+    *ngIf="!(gameStarted$ | async) && (gameCreatedByMe$ | async)"
+    (click)="startGame()"
+  >
+    Spiel starten
+  </button>
+  <button
+    *ngIf="(gameStarted$ | async) && (gameCreatedByMe$ | async)"
+    (click)="newRound()"
+  >
+    Neue Runde
+  </button>
 </div>
 
 <app-game-add-my-player *ngIf="!(myPlayer$ | async)"></app-game-add-my-player>
 
 <div *ngIf="pathToRunningRound$ | async as roundPath">
-    Es läuft gerade eine Runde. <a [routerLink]="['..', roundPath]">Mitmachen</a>
+  Es läuft gerade eine Runde. <a [routerLink]="['..', roundPath]">Mitmachen</a>
 </div>
 
 <h3 class="sub-headline">Kategorien</h3>
-<ng-container *ngIf="(gameCreatedByMe$ | async)">
-    <a routerLink="../categories">Kategorien bearbeiten</a>
-</ng-container>
+
+<!-- Button for game master -->
+<button
+  *ngIf="gameCreatedByMe$ | async"
+  class="secondary icon icon-right mr-2 mb-2"
+  type="button"
+  routerLink="../categories"
+>
+  Bearbeiten
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 20 20"
+    fill="currentColor"
+  >
+    <path
+      d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"
+    />
+  </svg>
+</button>
+
+<!-- Button for normal users -->
+<button
+  *ngIf="!(gameCreatedByMe$ | async)"
+  class="secondary icon icon-right mr-2 mb-2"
+  type="button"
+  routerLink="../categories"
+>
+  Kategorieauswahl öffnen
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 20 20"
+    fill="currentColor"
+  >
+    <path
+      fill-rule="evenodd"
+      d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+      clip-rule="evenodd"
+    />
+  </svg>
+</button>
 
 <app-categories-list></app-categories-list>
 
