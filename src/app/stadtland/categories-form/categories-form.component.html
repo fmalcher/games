@@ -1,21 +1,6 @@
 <h2 class="sub-headline">Kategorien festlegen</h2>
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
-  <!-- Category choice panel -->
-  <div>
-    <div class="categories-form-panel">
-      <button
-        type="button"
-        [class.added]="c.added"
-        [disabled]="!(gameCreatedByMe$ | async)"
-        (click)="c.added ? removeFieldByValue(c.value) : addField(c.value)"
-        *ngFor="let c of categoriesListTagged$ | async"
-      >
-        {{ c.value }}
-      </button>
-    </div>
-  </div>
-
   <form [formGroup]="form">
     <!-- Button back -->
     <button class="btn primary icon icon-left mr-2 mb-2" type="button" routerLink="../landing">
@@ -116,4 +101,19 @@
       </div>
     </div>
   </form>
+
+  <!-- Category choice panel -->
+  <div>
+    <div class="categories-form-panel">
+      <button
+        type="button"
+        [class.added]="c.added"
+        [disabled]="!(gameCreatedByMe$ | async)"
+        (click)="c.added ? removeFieldByValue(c.value) : addField(c.value)"
+        *ngFor="let c of categoriesListTagged$ | async"
+      >
+        {{ c.value }}
+      </button>
+    </div>
+  </div>
 </div>

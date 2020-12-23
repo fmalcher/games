@@ -13,26 +13,25 @@
 </div>
 
 <form [formGroup]="form">
-  <div formArrayName="answers" class="grid grid-cols-3 my-5">
+  <div formArrayName="answers" class="grid lg:grid-cols-3 md:grid-cols-2 gap-x-2 my-4">
     <div *ngFor="let c of categories$ | async; index as i">
-      <label class="text-2xl">{{ c }}</label>
+      <label class="block text-md mt-2">{{ c }}</label>
       <input
         type="text"
-        [name]="'answer' + i"
         [formControlName]="i"
-        class="w-full max-w-md text-2xl"
+        class="w-full text-2xl form-control mb-4"
         autocomplete="off"
       />
     </div>
   </div>
 
-  <button
-    class="btn danger w-full max-w-screen-md"
-    [disabled]="
-      (stopped$ | async) || (form.invalid && !(gameCreatedByMe$ | async))
-    "
-    (click)="stop()"
-  >
-    <div class="text-5xl py-3">STOP</div>
-  </button>
+  <div class="flex justify-center w-full">
+    <button
+      class="btn danger max-w-screen-md w-full lg:w-1/3"
+      [disabled]="(stopped$ | async) || (form.invalid && !(gameCreatedByMe$ | async))"
+      (click)="stop()"
+    >
+      <div class="text-3xl py-3 px-20">STOP</div>
+    </button>
+  </div>
 </form>
