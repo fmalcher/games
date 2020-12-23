@@ -25,7 +25,7 @@
   <button
     class="btn primary icon icon-left"
     *ngIf="(gameStarted$ | async) && (gameCreatedByMe$ | async)"
-    [disabled]="!(categories$ | async)?.length"
+    [disabled]="!(categories$ | async)?.length || !(players$ | async)?.length"
     (click)="newRound()"
   >
     <svg
