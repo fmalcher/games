@@ -43,6 +43,10 @@ button {
         @apply -ml-1 mr-2;
       }
     }
+
+    &:disabled {
+      @apply cursor-not-allowed text-opacity-70;
+    }
   }
 
   /*&:disabled,
