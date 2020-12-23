@@ -1,4 +1,4 @@
-<app-url-copy></app-url-copy>
+<app-url-copy *ngIf="gameCreatedByMe$ | async"></app-url-copy>
 
 <div class="my-5">
   <!-- Button start game -->
@@ -25,6 +25,7 @@
   <button
     class="btn primary icon icon-left"
     *ngIf="(gameStarted$ | async) && (gameCreatedByMe$ | async)"
+    [disabled]="!(categories$ | async)?.length"
     (click)="newRound()"
   >
     <svg
@@ -102,6 +103,9 @@
         />
       </svg>
     </button>
-    <app-categories-list></app-categories-list>
+    <app-categories-list
+      *ngIf="categories$ | async as categories"
+      [categories]="categories"
+    ></app-categories-list>
   </div>
 </div>
