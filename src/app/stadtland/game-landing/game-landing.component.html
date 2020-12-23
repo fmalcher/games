@@ -1,6 +1,7 @@
 <app-url-copy></app-url-copy>
 
 <div class="my-5">
+  <!-- Button start game -->
   <button
     class="btn danger icon icon-left"
     *ngIf="!(gameStarted$ | async) && (gameCreatedByMe$ | async)"
@@ -19,6 +20,8 @@
     </svg>
     <span class="text-xl">Spiel starten</span>
   </button>
+
+  <!-- Button new round -->
   <button
     class="btn primary icon icon-left"
     *ngIf="(gameStarted$ | async) && (gameCreatedByMe$ | async)"
@@ -44,8 +47,14 @@
 
 <app-game-add-my-player *ngIf="!(myPlayer$ | async)"></app-game-add-my-player>
 
-<div *ngIf="pathToRunningRound$ | async as roundPath">
-  Es läuft gerade eine Runde. <a [routerLink]="['..', roundPath]">Mitmachen</a>
+<div
+  *ngIf="pathToRunningRound$ | async as roundPath"
+  class="font-medium text-green-900"
+>
+  Es läuft gerade eine Runde.
+  <button class="btn secondary btn-xs" [routerLink]="['..', roundPath]">
+    Mitmachen
+  </button>
 </div>
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">

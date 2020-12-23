@@ -1,22 +1,38 @@
 <div class="flex justify-center w-full">
-    <app-alarm-pulse *ngIf="countDown$ | async as countDown; else letterDisplay" [value]="countDown.value"></app-alarm-pulse>
-    <ng-template #letterDisplay>
-        <div
-            class="write-letter text-gray-100 font-bold text-8xl flex justify-center align-middle p-6 rounded-full bg-gray-400">
-            {{ letter$ | async }}
-        </div>
-    </ng-template>
+  <app-alarm-pulse
+    *ngIf="countDown$ | async as countDown; else letterDisplay"
+    [value]="countDown.value"
+  ></app-alarm-pulse>
+  <ng-template #letterDisplay>
+    <div
+      class="write-letter text-gray-100 font-bold text-8xl flex justify-center align-middle p-6 rounded-full bg-gray-400"
+    >
+      {{ letter$ | async }}
+    </div>
+  </ng-template>
 </div>
 
 <form [formGroup]="form">
-    <div formArrayName="answers" class="grid grid-cols-3 my-5">
-        <div *ngFor="let c of categories$ | async; index as i">
-            <label class="text-2xl">{{ c }}</label>
-            <input type="text" [name]="'answer' + i" [formControlName]="i" class="w-full max-w-md text-2xl"
-                autocomplete="off">
-        </div>
+  <div formArrayName="answers" class="grid grid-cols-3 my-5">
+    <div *ngFor="let c of categories$ | async; index as i">
+      <label class="text-2xl">{{ c }}</label>
+      <input
+        type="text"
+        [name]="'answer' + i"
+        [formControlName]="i"
+        class="w-full max-w-md text-2xl"
+        autocomplete="off"
+      />
     </div>
+  </div>
 
-    <button type="button" (click)="stop()"
-        [disabled]="(stopped$ | async) || (form.invalid && !(gameCreatedByMe$ | async))">STOP</button>
+  <button
+    class="btn danger w-full max-w-screen-md"
+    [disabled]="
+      (stopped$ | async) || (form.invalid && !(gameCreatedByMe$ | async))
+    "
+    (click)="stop()"
+  >
+    <div class="text-5xl py-3">STOP</div>
+  </button>
 </form>
