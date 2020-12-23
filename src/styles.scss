@@ -142,3 +142,17 @@ table.row-points {
     font-size: 1.5em;
   }
 }
+
+.animate-score {
+  animation: pulse-score 0.4s ease-in;
+}
+
+@keyframes pulse-score {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(3);
+  }
+}
