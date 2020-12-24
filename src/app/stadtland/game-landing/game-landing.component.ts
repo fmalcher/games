@@ -11,6 +11,7 @@ import { StadtlandService } from '../shared/stadtland.service';
 export class GameLandingComponent implements OnInit {
   gameCreatedByMe$ = this.sls.gameCreatedByMe$;
   gameStarted$ = this.sls.gameStarted$;
+  gameCreated$ = this.sls.gameCreated$;
   myPlayer$ = this.sls.myPlayer$;
   categories$ = this.sls.categories$;
   players$ = this.sls.players$;
@@ -44,5 +45,9 @@ export class GameLandingComponent implements OnInit {
       .createNewRoundWithRandomLetter()
       .pipe(concatMap(() => this.sls.setGameState(GameState.RoundDicing)))
       .subscribe();
+  }
+
+  finishGame() {
+    this.sls.setGameState(GameState.GameFinished).subscribe();
   }
 }

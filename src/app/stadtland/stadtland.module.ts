@@ -19,6 +19,8 @@ import { UrlCopyComponent } from './url-copy/url-copy.component';
 import { AlarmPulseComponent } from './alarm-pulse/alarm-pulse.component';
 import { HeadlineComponent } from './headline/headline.component';
 import { PlayerAvatarMetaComponent } from './player-avatar-meta/player-avatar-meta.component';
+import { GameWinnerComponent } from './game-winner/game-winner.component';
+import { GameWinnerGraphicComponent } from './game-winner-graphic/game-winner-graphic.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,8 @@ import { PlayerAvatarMetaComponent } from './player-avatar-meta/player-avatar-me
     AlarmPulseComponent,
     HeadlineComponent,
     PlayerAvatarMetaComponent,
+    GameWinnerComponent,
+    GameWinnerGraphicComponent,
   ],
   imports: [CommonModule, StadtlandRoutingModule, ReactiveFormsModule, ClipboardModule],
 })

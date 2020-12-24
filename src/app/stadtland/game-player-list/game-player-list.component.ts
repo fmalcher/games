@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { map } from 'rxjs/operators';
+import { GameState } from '../shared/models';
 import { StadtlandService } from '../shared/stadtland.service';
 
 @Component({
@@ -7,7 +9,7 @@ import { StadtlandService } from '../shared/stadtland.service';
   styleUrls: ['./game-player-list.component.scss'],
 })
 export class GamePlayerListComponent implements OnInit {
-  gameStarted$ = this.sls.gameStarted$;
+  gameCreated$ = this.sls.gameCreated$;
   players$ = this.sls.players$;
   myPlayer$ = this.sls.myPlayer$;
   gameCreatedByMe$ = this.sls.gameCreatedByMe$;
