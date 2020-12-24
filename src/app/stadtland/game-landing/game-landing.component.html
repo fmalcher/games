@@ -4,7 +4,7 @@
   <!-- Button start game -->
   <button
     class="btn danger icon icon-left"
-    *ngIf="!(gameStarted$ | async) && (gameCreatedByMe$ | async)"
+    *ngIf="(gameCreated$ | async) && (gameCreatedByMe$ | async)"
     (click)="startGame()"
   >
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -35,6 +35,24 @@
 
     <span class="text-xl">Neue Runde</span>
   </button>
+
+  <!-- Button finish game -->
+  <button
+    class="btn danger icon icon-left ml-2"
+    *ngIf="(gameStarted$ | async) && (gameCreatedByMe$ | async)"
+    (click)="finishGame()"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+      />
+    </svg>
+
+    <span class="text-xl">Spiel beenden</span>
+  </button>
 </div>
 
 <app-game-add-my-player *ngIf="!(myPlayer$ | async)"></app-game-add-my-player>
@@ -45,7 +63,10 @@
 </div>
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
-  <app-game-player-list></app-game-player-list>
+  <div>
+    <h3 class="sub-headline">Spieler</h3>
+    <app-game-player-list></app-game-player-list>
+  </div>
 
   <div>
     <h3 class="sub-headline">Kategorien</h3>

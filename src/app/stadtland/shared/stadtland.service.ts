@@ -61,11 +61,9 @@ export class StadtlandService {
     distinctUntilChanged()
   );
 
-  /**
-   * flag that indicates whether the current game has been started.
-   * after start the player list cannot be changed anymore
-   */
+  /** flags that indicates whether the current game is in a specific state */
   gameStarted$ = this.state$.pipe(map(state => state === GameState.StartedIdle));
+  gameCreated$ = this.state$.pipe(map(state => state === GameState.Created));
 
   /** list of categories of the current game */
   categories$ = this.game$.pipe(map(game => game.categories));

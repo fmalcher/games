@@ -5,6 +5,7 @@ import { GameLandingComponent } from './game-landing/game-landing.component';
 import { GameRoundLetterComponent } from './game-round-letter/game-round-letter.component';
 import { GameRoundPointsComponent } from './game-round-points/game-round-points.component';
 import { GameRoundWriteComponent } from './game-round-write/game-round-write.component';
+import { GameWinnerComponent } from './game-winner/game-winner.component';
 import { GameComponent } from './game/game.component';
 import { CurrentGameGuard } from './shared/current-game.guard';
 import { GameState } from './shared/models';
@@ -59,6 +60,10 @@ const routes: Routes = [
           },
         },
         canActivate: [StateRedirectGuard],
+      },
+      {
+        path: 'winner',
+        component: GameWinnerComponent,
       },
     ],
   },

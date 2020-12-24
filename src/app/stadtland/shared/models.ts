@@ -33,6 +33,7 @@ export enum GameState {
   RoundDicing,
   RoundWriting,
   RoundGivingPoints,
+  GameFinished,
 }
 
 export interface DiceRollStep {

@@ -1,0 +1,12 @@
+<div class="flex justify-center flex-col">
+  <!--<img src="assets/undraw_winners_ao2o.svg" alt="Gewinner" class="" />-->
+
+  <app-game-winner-graphic
+    *ngIf="firstPlayer$ | async as winner"
+    [name]="winner.name"
+    [emoji]="winner.emoji"
+    class="w-full max-w-screen-md mx-auto mb-5"
+  ></app-game-winner-graphic>
+
+  <app-game-player-list></app-game-player-list>
+</div>
