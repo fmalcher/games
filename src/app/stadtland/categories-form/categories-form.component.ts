@@ -26,7 +26,7 @@ import { StadtlandService } from '../shared/stadtland.service';
 })
 export class CategoriesFormComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject();
-  private randomCatDiceRoll$ = new Subject();
+  private randomCatDiceRoll$ = new Subject<number>();
 
   categoriesFromGame$ = this.sls.categories$;
   gameCreatedByMe$ = this.sls.gameCreatedByMe$;
@@ -52,11 +52,7 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
     shareReplay(1)
   );
 
-  constructor(
-    private sls: StadtlandService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
+  constructor(private sls: StadtlandService) {}
 
   ngOnInit(): void {
     this.categoriesListTagged$.subscribe(); // first trigger
@@ -86,10 +82,10 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
 
     this.randomCatDiceRoll$
       .pipe(
-        exhaustMap(() => timer(0, 150).pipe(take(6))),
+        exhaustMap(n => timer(0, 150).pipe(take(6), mapTo(n))),
         takeUntil(this.destroy$)
       )
-      .subscribe(() => this.setRandomCategories());
+      .subscribe(n => this.setRandomCategories(n));
   }
 
   private replaceCategoryFields(categories: string[]) {
@@ -123,13 +119,14 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
     this.replaceCategoryFields(slfConfig.categories);
   }
 
-  setRandomCategories(n = 5) {
-    const categories = this.sls.getRandomElementsFromArray(slfConfig.categories, n);
+  setRandomCategories(n: number) {
+    const num = Math.max(Math.min(n, slfConfig.categories.length), 1);
+    const categories = this.sls.getRandomElementsFromArray(slfConfig.categories, num);
     this.replaceCategoryFields(categories);
   }
 
-  setRandomCategoriesDiceRoll() {
-    this.randomCatDiceRoll$.next();
+  setRandomCategoriesDiceRoll(n: number) {
+    this.randomCatDiceRoll$.next(n);
   }
 
   getCategoryValuesFiltered() {
