@@ -31,21 +31,16 @@ export class GameRoundWriteComponent implements OnInit, OnDestroy {
   letter$ = this.sls.currentRoundLetter$;
   gameCreatedByMe$ = this.sls.gameCreatedByMe$;
 
-  /** signal for tate transition from "writing" to "givingspoints". this happens when someone hits "STOP" */
+  /** signal for state transition from "writing" to "givingspoints". this happens when someone hits "STOP" */
   stopped$ = this.sls.state$.pipe(
     pairwise(),
-    filter(
-      ([a, b]) =>
-        a === GameState.RoundWriting && b === GameState.RoundGivingPoints
-    ),
+    filter(([a, b]) => a === GameState.RoundWriting && b === GameState.RoundGivingPoints),
     share()
   );
 
   countDown$ = this.stopped$.pipe(
-    exhaustMap(() =>
-      this.sls.generateCountdown(slfConfig.roundEndCountdownSeconds)
-    ),
-    map((value) => ({ value }))
+    exhaustMap(() => this.sls.generateCountdown(slfConfig.roundEndCountdownSeconds)),
+    map(value => ({ value }))
   );
 
   constructor(
@@ -60,12 +55,10 @@ export class GameRoundWriteComponent implements OnInit, OnDestroy {
     });
 
     // create form fields from categories
-    this.categories$.pipe(take(1)).subscribe((categories) => {
+    this.categories$.pipe(take(1)).subscribe(categories => {
       this.form.setControl(
         'answers',
-        new FormArray(
-          categories.map(() => new FormControl('', Validators.required))
-        )
+        new FormArray(categories.map(() => new FormControl('', Validators.required)))
       );
     });
 
