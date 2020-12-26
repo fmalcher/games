@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest, fromEvent, interval, of, range, Subject, timer, zip } from 'rxjs';
+import { fromEvent, Subject } from 'rxjs';
 import {
   delay,
   exhaustMap,

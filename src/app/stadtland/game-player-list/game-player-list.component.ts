@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { map } from 'rxjs/operators';
-import { GameState } from '../shared/models';
 import { StadtlandService } from '../shared/stadtland.service';
 
 @Component({
