@@ -3,7 +3,7 @@
 <div class="my-5">
   <!-- Button start game -->
   <button
-    class="btn danger icon icon-left"
+    class="btn danger icon icon-left mt-2"
     *ngIf="(gameCreated$ | async) && (gameCreatedByMe$ | async)"
     (click)="startGame()"
   >
@@ -19,7 +19,7 @@
 
   <!-- Button new round -->
   <button
-    class="btn primary icon icon-left"
+    class="btn primary icon icon-left mr-2 mt-2"
     *ngIf="(gameStarted$ | async) && (gameCreatedByMe$ | async)"
     [disabled]="!(categories$ | async)?.length || !(players$ | async)?.length"
     (click)="newRound()"
@@ -38,7 +38,7 @@
 
   <!-- Button finish game -->
   <button
-    class="btn danger icon icon-left ml-2"
+    class="btn danger icon icon-left mt-2"
     *ngIf="(gameStarted$ | async) && (gameCreatedByMe$ | async)"
     (click)="finishGame()"
   >
