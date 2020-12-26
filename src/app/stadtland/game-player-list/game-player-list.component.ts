@@ -17,7 +17,7 @@ export class GamePlayerListComponent implements OnInit {
   ngOnInit(): void {}
 
   removePlayer(id: string): void {
-    if (window.confirm('Der Spieler wird aus dem Spiel entfernt. Fortfahren?')) {
+    if (window.confirm('Spieler:in wird aus dem Spiel entfernt. Fortfahren?')) {
       this.sls.removePlayer(id).subscribe();
     }
   }

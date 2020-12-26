@@ -35,7 +35,9 @@ export class GameLandingComponent implements OnInit {
   ngOnInit(): void {}
 
   startGame() {
-    if (window.confirm('Spiel starten? Danach können die Spieler nicht mehr gelöscht werden.')) {
+    if (
+      window.confirm('Spiel starten? Danach können die Spieler:innen nicht mehr gelöscht werden.')
+    ) {
       this.sls.setGameState(GameState.StartedIdle).subscribe();
     }
   }
