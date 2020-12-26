@@ -48,6 +48,8 @@ export class GameLandingComponent implements OnInit {
   }
 
   finishGame() {
-    this.sls.setGameState(GameState.GameFinished).subscribe();
+    if (window.confirm('Soll das Spiel beendet werden?')) {
+      this.sls.setGameState(GameState.GameFinished).subscribe();
+    }
   }
 }
