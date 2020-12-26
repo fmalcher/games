@@ -80,6 +80,14 @@ input[type='text'] {
   }
 }
 
+form.write-form {
+  &.stopped {
+    input {
+      @apply bg-red-800 bg-opacity-10 border-red-700 focus:ring-red-500 focus:border-red-500 text-red-900;
+    }
+  }
+}
+
 .write-letter {
   width: 150px;
   height: 150px;
