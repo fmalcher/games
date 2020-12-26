@@ -130,7 +130,7 @@
         "deploy": {
           "builder": "angular-cli-ghpages:deploy",
           "options": {
-            "cname": "games-b8pwixcxq6nbx8ifsue92mpdgwz.rls23.de"
+            "cname": "games-z629iklgdziuw83bcgtw8elshza662hs9erb3hkd.rls23.de"
           }
         }
       }
