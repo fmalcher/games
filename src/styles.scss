@@ -66,6 +66,10 @@ input[type='text'] {
     &.added {
       @apply bg-opacity-100 text-white;
     }
+
+    &:disabled {
+      @apply cursor-default;
+    }
   }
 }
 
