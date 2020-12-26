@@ -151,6 +151,14 @@ table.row-points {
   }
 }
 
+footer {
+  @apply mb-6 text-gray-400 text-xs mt-8 text-center;
+
+  a {
+    @apply hover:underline;
+  }
+}
+
 .animate-score {
   animation: pulse-score 0.4s ease-in;
 }
