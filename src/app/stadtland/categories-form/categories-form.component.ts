@@ -115,8 +115,12 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  removeAllFields() {
+  removeAll() {
     this.replaceCategoryFields([]);
+  }
+
+  addAllCategories() {
+    this.replaceCategoryFields(slfConfig.categories);
   }
 
   setRandomCategories(n = 5) {
