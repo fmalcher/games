@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest, interval, of, range, Subject, timer, zip } from 'rxjs';
+import { combineLatest, fromEvent, interval, of, range, Subject, timer, zip } from 'rxjs';
 import {
   delay,
   exhaustMap,
@@ -75,6 +75,13 @@ export class GameRoundWriteComponent implements OnInit, OnDestroy {
       )
       .subscribe(() => {
         this.router.navigate(['..', 'points'], { relativeTo: this.route });
+      });
+
+    fromEvent<BeforeUnloadEvent>(window, 'beforeunload')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(e => {
+        e.preventDefault();
+        e.returnValue = '';
       });
   }
 
