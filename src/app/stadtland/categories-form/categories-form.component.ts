@@ -125,7 +125,8 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
   }
 
   setRandomCategoriesDiceRoll(n: number) {
-    this.randomCatDiceRoll$.next(n);
+    const num = Number(n);
+    this.randomCatDiceRoll$.next(num);
   }
 
   getCategoryValuesFiltered() {
