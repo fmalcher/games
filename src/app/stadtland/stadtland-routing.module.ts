@@ -7,6 +7,7 @@ import { GameRoundPointsComponent } from './game-round-points/game-round-points.
 import { GameRoundWriteComponent } from './game-round-write/game-round-write.component';
 import { GameWinnerComponent } from './game-winner/game-winner.component';
 import { GameComponent } from './game/game.component';
+import { ConfirmLeaveWriteGuard } from './shared/confirm-leave-write.guard';
 import { CurrentGameGuard } from './shared/current-game.guard';
 import { GameState } from './shared/models';
 import { StateRedirectGuard } from './shared/state-redirect.guard';
@@ -48,6 +49,7 @@ const routes: Routes = [
           },
         },
         canActivate: [StateRedirectGuard],
+        canDeactivate: [ConfirmLeaveWriteGuard],
       },
       {
         path: 'points',

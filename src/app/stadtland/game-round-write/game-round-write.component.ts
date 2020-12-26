@@ -4,15 +4,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { fromEvent, Subject } from 'rxjs';
 import {
   delay,
+  distinctUntilChanged,
   exhaustMap,
   filter,
   map,
-  pairwise,
-  share,
-  startWith,
+  shareReplay,
   switchMap,
   take,
   takeUntil,
+  tap,
 } from 'rxjs/operators';
 import { slfConfig } from '../shared/config';
 import { GameState } from '../shared/models';
@@ -31,14 +31,15 @@ export class GameRoundWriteComponent implements OnInit, OnDestroy {
   letter$ = this.sls.currentRoundLetter$;
   gameCreatedByMe$ = this.sls.gameCreatedByMe$;
 
-  /** signal for state transition from "writing" to "givingspoints". this happens when someone hits "STOP" */
+  /** signal for state transition to "givingpoints". this happens when someone hits "STOP" */
   stopped$ = this.sls.state$.pipe(
-    pairwise(),
-    filter(([a, b]) => a === GameState.RoundWriting && b === GameState.RoundGivingPoints),
-    share()
+    map(state => state === GameState.RoundGivingPoints),
+    distinctUntilChanged(),
+    shareReplay(1)
   );
 
   countDown$ = this.stopped$.pipe(
+    filter(e => e),
     exhaustMap(() => this.sls.generateCountdown(slfConfig.roundEndCountdownSeconds)),
     map(value => ({ value }))
   );
@@ -66,6 +67,7 @@ export class GameRoundWriteComponent implements OnInit, OnDestroy {
     // after this: save my answers and and navigate to points view
     this.stopped$
       .pipe(
+        filter(e => e),
         delay(slfConfig.roundEndCountdownSeconds * 1000),
         switchMap(() => {
           const answers = this.form.get('answers').value as string[];
