@@ -1,7 +1,7 @@
 export const slfConfig = {
   alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', // alphabet for dice rolls
   roundEndCountdownSeconds: 4, // seconds to wait before a round ends after stop
-  roundRenewTimeout: 3, // seconds to wait after dice roll countdown where nobody can renew the round
+  roundRenewTimeout: 2, // seconds to wait after dice roll countdown where nobody can renew the round
   emojis: [
     '🦊',
     '🐻',
