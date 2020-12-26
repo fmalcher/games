@@ -1,5 +1,30 @@
-<div
-  class="container bg-gray-100 px-5 md:px-12 py-10 m-auto mt-0 sm:mt-5 mb-6 overflow-x-hidden h-full shadow-lg rounded-md"
->
-  <router-outlet></router-outlet>
+<div class="container m-auto mt-0 sm:mt-5 mb-6">
+  <div class="md:px-12 py-10 px-5 bg-gray-100 overflow-x-hidden h-full shadow-lg rounded-md">
+    <router-outlet></router-outlet>
+  </div>
+
+  <footer>
+    <p>
+      Made with
+      <svg
+        class="w-4 h-4 mb-1 inline text-red-600"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+          clip-rule="evenodd"
+        />
+      </svg>
+      by <a href="https://ferdinand-malcher.de" target="_blank">Ferdinand Malcher</a> &
+      <a href="https://moeller.media/" target="_blank">Lisa Möller</a>
+    </p>
+    <p>
+      <a href="https://ferdinand-malcher.de/impressum/index.html" target="_blank">Impressum</a>
+      |
+      <a href="https://ferdinand-malcher.de/datenschutz/index.html" target="_blank">Datenschutz</a>
+    </p>
+  </footer>
 </div>
