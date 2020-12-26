@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { combineLatest, EMPTY, of, timer } from 'rxjs';
+import { combineLatest, of, timer } from 'rxjs';
 import { delayWhen, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 import { slfConfig } from '../shared/config';
 import { GameState } from '../shared/models';

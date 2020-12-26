@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, of, Subject, timer } from 'rxjs';
+import { Observable, Subject, timer } from 'rxjs';
 import {
   debounceTime,
   exhaustMap,
