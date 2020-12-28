@@ -139,7 +139,9 @@ table.round-points {
   }
 
   .player-stopped-border {
-    @apply border-l-8 border-red-300;
+    @apply box-border; // border-l-8 border-red-300;
+    -webkit-box-shadow: inset 8px 0 0 0 theme('colors.red.300');
+    box-shadow: inset 8px 0 0 0 theme('colors.red.300');
   }
 }
 
