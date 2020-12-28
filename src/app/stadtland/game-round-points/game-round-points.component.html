@@ -4,7 +4,7 @@
       <tr class="h-16 border-r border-gray-200">
         <th
           scope="col"
-          class="px-6 py-3 text-left text-xs font-normal text-gray-500 uppercase tracking-wider bg-gray-50 h-12"
+          class="px-4 md:px-6 py-3 text-left text-xs font-normal text-gray-500 uppercase tracking-wider bg-gray-50 h-12"
         >
           Spieler:in
         </th>
@@ -13,16 +13,16 @@
     <tbody class="bg-gray-50 divide-y divide-gray-200">
       <tr *ngFor="let row of data.answerRows" class="border-r border-gray-200">
         <td
-          class="px-6 py-4 whitespace-nowrap h-24"
+          class="px-2 md:px-6 py-4 whitespace-nowrap h-24"
           [ngClass]="{
             'player-stopped-border': row.player.id === data.stoppedByPlayer
           }"
         >
-          <div class="flex items-center">
-            <div class="flex-shrink-0 h-10 w-10 text-2xl">
+          <div class="flex items-center flex-col md:flex-row">
+            <div class="flex-shrink-0 text-2xl">
               {{ row.player.emoji }}
             </div>
-            <div class="ml-2 text-sm font-medium text-gray-900">
+            <div class="md:ml-2 text-sm font-medium text-gray-900">
               {{ row.player.name }}
             </div>
           </div>
