@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { concatMap } from 'rxjs/operators';
+import { timer } from 'rxjs';
+import { concatMap, mapTo, startWith } from 'rxjs/operators';
 import { GameState } from '../shared/models';
 import { StadtlandService } from '../shared/stadtland.service';
 
@@ -13,6 +14,8 @@ export class GameRoundPointsComponent implements OnInit {
   data$ = this.sls.cumulatedRoundData$;
   players$ = this.sls.players$;
   gameCreatedByMe$ = this.sls.gameCreatedByMe$;
+
+  btnDisabled$ = timer(3000).pipe(mapTo(false), startWith(true));
 
   constructor(private sls: StadtlandService) {}
 

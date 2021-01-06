@@ -107,6 +107,7 @@
   *ngIf="gameCreatedByMe$ | async"
   class="btn primary icon icon-left mt-6"
   type="button"
+  [disabled]="btnDisabled$ | async"
 >
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
     <path
