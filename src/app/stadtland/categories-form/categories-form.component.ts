@@ -36,6 +36,12 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
     { updateOn: 'blur' }
   );
 
+  // initial value for the "random categories" field, based on the current number of categories
+  randomCategoriesInitialNum$ = this.categoriesFromGame$.pipe(
+    take(1),
+    map(({ length }) => (length > 5 ? length : 5))
+  );
+
   saveMessage$: Observable<boolean>;
 
   categoriesListTagged$ = this.form.valueChanges.pipe(
