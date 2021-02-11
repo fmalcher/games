@@ -1,19 +1,14 @@
-module.exports = (isProd) => ({
-  prefix: '',
+module.exports = {
   purge: {
-    enabled: isProd,
+    enabled: process.env.NODE_ENV === 'production',
     content: [
       '**/*.html',
       '**/*.ts',
     ]
   },
-  darkMode: false, // or 'media' or 'class'
+  darkMode: false,
   theme: {
-    extend: {},
-    /*colors: theme => ({
-      ...theme('colors'),
-      'primary': 'teal',
-    })*/
+    extend: {}
   },
   variants: {
     extend: {},
@@ -21,4 +16,4 @@ module.exports = (isProd) => ({
   plugins: [
     require('@tailwindcss/forms')
   ],
-});
+};
