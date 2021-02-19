@@ -8,7 +8,7 @@
     class="w-full max-w-screen-md mx-auto mb-5"
   ></app-game-winner-graphic>
 
-  <div class="text-center">
+  <div class="text-center" *ngIf="gameCreatedByMe$ | async">
     <button class="btn primary mt-2 mb-5" (click)="createNewGame()">
       <span class="text-lg lg:text-xl px-2">Neues Spiel</span>
     </button>

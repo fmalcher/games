@@ -10,6 +10,7 @@ import { StadtlandService } from '../shared/stadtland.service';
 })
 export class GameWinnerComponent implements OnInit {
   firstPlayer$ = this.sls.players$.pipe(map(players => players?.[0]));
+  gameCreatedByMe$ = this.sls.gameCreatedByMe$;
 
   constructor(
     private sls: StadtlandService,
