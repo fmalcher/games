@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { StadtlandService } from '../shared/stadtland.service';
 
@@ -10,7 +11,20 @@ import { StadtlandService } from '../shared/stadtland.service';
 export class GameWinnerComponent implements OnInit {
   firstPlayer$ = this.sls.players$.pipe(map(players => players?.[0]));
 
-  constructor(private sls: StadtlandService) {}
+  constructor(
+    private sls: StadtlandService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {}
+
+  createNewGame(): void {
+    if (!window.confirm('Neues Spiel starten?')) {
+      return;
+    }
+    this.sls.createNewGame().subscribe(id => {
+      this.router.navigate(['../..', id, 'landing'], { relativeTo: this.route });
+    });
+  }
 }
