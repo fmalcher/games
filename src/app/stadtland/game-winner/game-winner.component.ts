@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs';
 
@@ -8,6 +8,7 @@ import { StadtlandService } from '../shared/stadtland.service';
   selector: 'app-game-winner',
   templateUrl: './game-winner.component.html',
   styleUrls: ['./game-winner.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameWinnerComponent {
   firstPlayer$ = this.sls.players$.pipe(map(players => players?.[0]));

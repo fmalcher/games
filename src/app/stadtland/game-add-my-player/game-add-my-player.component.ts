@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { slfConfig } from '../shared/config';
 import { StadtlandService } from '../shared/stadtland.service';
@@ -7,6 +7,7 @@ import { StadtlandService } from '../shared/stadtland.service';
   selector: 'app-game-add-my-player',
   templateUrl: './game-add-my-player.component.html',
   styleUrls: ['./game-add-my-player.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameAddMyPlayerComponent {
   form: FormGroup;

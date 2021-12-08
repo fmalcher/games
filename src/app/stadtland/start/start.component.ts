@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StadtlandService } from '../shared/stadtland.service';
 
@@ -6,6 +6,7 @@ import { StadtlandService } from '../shared/stadtland.service';
   selector: 'app-start',
   templateUrl: './start.component.html',
   styleUrls: ['./start.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StartComponent {
   constructor(

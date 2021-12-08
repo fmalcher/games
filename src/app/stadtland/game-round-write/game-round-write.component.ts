@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -14,6 +14,7 @@ import {
   take,
   takeUntil,
 } from 'rxjs';
+
 import { slfConfig } from '../shared/config';
 import { GameState } from '../shared/models';
 import { StadtlandService } from '../shared/stadtland.service';
@@ -22,6 +23,7 @@ import { StadtlandService } from '../shared/stadtland.service';
   selector: 'app-game-round-write',
   templateUrl: './game-round-write.component.html',
   styleUrls: ['./game-round-write.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameRoundWriteComponent implements OnDestroy {
   private destroy$ = new Subject<void>();

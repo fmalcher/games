@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   timer,
   delay,
@@ -16,6 +16,7 @@ import { StadtlandService } from '../shared/stadtland.service';
   selector: 'app-player-avatar-meta',
   templateUrl: './player-avatar-meta.component.html',
   styleUrls: ['./player-avatar-meta.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayerAvatarMetaComponent {
   myPlayer$ = this.sls.myPlayer$;

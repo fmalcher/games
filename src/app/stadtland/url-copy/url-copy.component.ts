@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { merge, Subject, timer, mapTo, shareReplay, startWith, switchMap } from 'rxjs';
 
@@ -6,6 +6,7 @@ import { merge, Subject, timer, mapTo, shareReplay, startWith, switchMap } from 
   selector: 'app-url-copy',
   templateUrl: './url-copy.component.html',
   styleUrls: ['./url-copy.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UrlCopyComponent {
   url = this.getUrl();

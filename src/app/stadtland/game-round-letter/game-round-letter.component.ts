@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   combineLatest,
   of,
@@ -9,6 +9,7 @@ import {
   map,
   switchMap,
 } from 'rxjs';
+
 import { slfConfig } from '../shared/config';
 import { GameState } from '../shared/models';
 import { StadtlandService } from '../shared/stadtland.service';
@@ -17,6 +18,7 @@ import { StadtlandService } from '../shared/stadtland.service';
   selector: 'app-game-round-letter',
   templateUrl: './game-round-letter.component.html',
   styleUrls: ['./game-round-letter.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameRoundLetterComponent {
   currentRound$ = this.sls.currentRound$;

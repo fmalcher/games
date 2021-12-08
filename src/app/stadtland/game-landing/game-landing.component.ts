@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { concatMap, filter, map } from 'rxjs';
+
 import { GameState } from '../shared/models';
 import { StadtlandService } from '../shared/stadtland.service';
 
@@ -7,6 +8,7 @@ import { StadtlandService } from '../shared/stadtland.service';
   selector: 'app-game-landing',
   templateUrl: './game-landing.component.html',
   styleUrls: ['./game-landing.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameLandingComponent {
   gameCreatedByMe$ = this.sls.gameCreatedByMe$;
