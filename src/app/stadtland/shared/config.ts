@@ -126,5 +126,7 @@ export const slfConfig = {
     'Todesursache',
     'Schlagzeile',
     'Sprichwort/Bauernregel',
+    'Gegenstand unter 5 EUR',
+    'etwas Stinkendes',
   ],
 };
