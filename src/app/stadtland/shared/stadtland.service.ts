@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import {
   BehaviorSubject,
   combineLatest,
@@ -24,8 +24,7 @@ import {
 } from 'rxjs/operators';
 import { Answer, DiceRollStep, Game, GameState, Player, Round } from './models';
 import { ClientIdService } from './clientid.service';
-import firebase from 'firebase/app';
-import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
+import firebase from 'firebase/compat/app';
 import { slfConfig } from './config';
 
 @Injectable({
