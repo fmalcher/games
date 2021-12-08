@@ -1,14 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-alarm-pulse',
   templateUrl: './alarm-pulse.component.html',
   styleUrls: ['./alarm-pulse.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AlarmPulseComponent implements OnInit {
-  @Input() value: string | number;
-
-  constructor() {}
-
-  ngOnInit(): void {}
+export class AlarmPulseComponent {
+  @Input() value?: string | number;
 }

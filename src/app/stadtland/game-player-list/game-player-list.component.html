@@ -24,7 +24,7 @@
             <button
               class="btn btn-xs danger icon ml-2"
               (click)="removePlayer(p.id)"
-              *ngIf="(p.isMe || (gameCreatedByMe$ | async)) && gameCreated$ | async"
+              *ngIf="showRemoveBtnForPlayer(p) | async"
             >
               <svg
                 class="w-1 h-1"

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import firebase from 'firebase/compat/app';
 import {
   BehaviorSubject,
   combineLatest,
@@ -9,8 +10,6 @@ import {
   Observable,
   of,
   timer,
-} from 'rxjs';
-import {
   concatMap,
   delay,
   distinctUntilChanged,
@@ -21,11 +20,10 @@ import {
   switchMap,
   take,
   withLatestFrom,
-} from 'rxjs/operators';
+} from 'rxjs';
+
 import { Answer, DiceRollStep, Game, GameState, Player, Round } from './models';
 import { ClientIdService } from './clientid.service';
-import firebase from 'firebase/app';
-import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { slfConfig } from './config';
 
 @Injectable({
@@ -41,7 +39,7 @@ export class StadtlandService {
    */
 
   /** ID of the currently active game, can be set with `setCurrentGame()` */
-  private currentGameId$ = new BehaviorSubject<string>(null);
+  private currentGameId$ = new BehaviorSubject<string | undefined>(undefined);
 
   /** reference to the current game doc */
   private currentGameRef$ = this.currentGameId$.pipe(
@@ -57,7 +55,7 @@ export class StadtlandService {
 
   /** state of the current game */
   state$ = this.game$.pipe(
-    map(game => game.state),
+    map(game => game?.state),
     distinctUntilChanged()
   );
 
@@ -66,7 +64,7 @@ export class StadtlandService {
   gameCreated$ = this.state$.pipe(map(state => state === GameState.Created));
 
   /** list of categories of the current game */
-  categories$ = this.game$.pipe(map(game => game.categories));
+  categories$ = this.game$.pipe(map(game => game?.categories));
 
   /** list of all players in the current game */
   players$ = this.currentGameRef$.pipe(
@@ -102,6 +100,7 @@ export class StadtlandService {
 
   /** flag that describes whether I am the game master */
   gameCreatedByMe$ = this.game$.pipe(
+    filter((g): g is Game => !!g),
     map(g => g.client),
     distinctUntilChanged(),
     map(cid => this.cis.isMyClientId(cid)),
@@ -152,10 +151,10 @@ export class StadtlandService {
             return {
               player,
               answerId: a.id,
-              rowPoints: a.points.reduce((acc, item) => acc + item, 0),
+              rowPoints: a.points.reduce((acc, item) => (acc || 0) + (item || 0), 0),
               answers: a.answers.map((value, i) => ({
                 value,
-                points: a.points[i] >= 0 ? a.points[i] : null,
+                points: Number(a.points[i]) >= 0 ? a.points[i] : null,
               })),
             };
           });
@@ -244,7 +243,7 @@ export class StadtlandService {
       switchMap(([gameRef, categories]) =>
         gameRef
           .collection<Round>('rounds')
-          .add({ letter, started, categories, stoppedByPlayer: null })
+          .add({ letter, started, categories: categories || [], stoppedByPlayer: '' })
           .then(docRef => docRef.id)
       )
     );
@@ -315,12 +314,17 @@ export class StadtlandService {
     );
 
     const currentPoints$ = answerDoc$.pipe(
-      concatMap(answerDoc => answerDoc.valueChanges().pipe(map(a => a.points)))
+      concatMap(answerDoc =>
+        answerDoc.valueChanges().pipe(
+          map(a => a?.points),
+          filter((e): e is (number | null)[] => !!e)
+        )
+      )
     );
 
     return currentPoints$.pipe(
       take(1),
-      map(pointsArray => {
+      map((pointsArray: (number | null)[]) => {
         const newPointsArray = [...pointsArray];
         newPointsArray[position] = points;
         return newPointsArray;
@@ -336,8 +340,8 @@ export class StadtlandService {
       take(1),
       mergeMap(data =>
         data.answerRows.map(row => ({
-          playerId: row.player.id,
-          points: row.answers.reduce((acc, item) => acc + item.points, 0),
+          playerId: row?.player?.id,
+          points: row.answers.reduce((acc, item) => acc + (item.points || 0), 0),
         }))
       ),
       withLatestFrom(this.currentGameRef$),

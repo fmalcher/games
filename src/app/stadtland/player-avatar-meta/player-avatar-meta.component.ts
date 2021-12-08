@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { timer } from 'rxjs';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
+  timer,
   delay,
   distinctUntilChanged,
   exhaustMap,
@@ -8,15 +8,17 @@ import {
   map,
   mapTo,
   startWith,
-} from 'rxjs/operators';
+} from 'rxjs';
+
 import { StadtlandService } from '../shared/stadtland.service';
 
 @Component({
   selector: 'app-player-avatar-meta',
   templateUrl: './player-avatar-meta.component.html',
   styleUrls: ['./player-avatar-meta.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlayerAvatarMetaComponent implements OnInit {
+export class PlayerAvatarMetaComponent {
   myPlayer$ = this.sls.myPlayer$;
   gameCreatedByMe$ = this.sls.gameCreatedByMe$;
 
@@ -28,6 +30,4 @@ export class PlayerAvatarMetaComponent implements OnInit {
   );
 
   constructor(private sls: StadtlandService) {}
-
-  ngOnInit(): void {}
 }

@@ -1,7 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, takeUntil } from 'rxjs';
 import { GameState } from '../shared/models';
 import { StadtlandService } from '../shared/stadtland.service';
 
@@ -9,13 +8,14 @@ import { StadtlandService } from '../shared/stadtland.service';
   selector: 'app-game',
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameComponent implements OnInit, OnDestroy {
   state$ = this.sls.state$;
   myPlayer$ = this.sls.myPlayer$;
   gameCreatedByMe$ = this.sls.gameCreatedByMe$;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private route: ActivatedRoute,
@@ -26,14 +26,14 @@ export class GameComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // when game state changes, redirect accordingly
     this.state$.pipe(takeUntil(this.destroy$)).subscribe(state => {
-      const redirectPath = this.getRedirects(state);
+      const redirectPath = !!state && this.getRedirects(state);
       if (redirectPath) {
         this.router.navigate([redirectPath], { relativeTo: this.route });
       }
     });
   }
 
-  private getRedirects(state: GameState): string {
+  private getRedirects(state: GameState): string | undefined {
     switch (state) {
       case GameState.StartedIdle:
         return 'landing';
@@ -43,6 +43,8 @@ export class GameComponent implements OnInit, OnDestroy {
         return 'write';
       case GameState.GameFinished:
         return 'winner';
+      default:
+        return;
       // transition to "points" is done in the writing component
       // case GameState.RoundGivingPoints: return 'points';
     }

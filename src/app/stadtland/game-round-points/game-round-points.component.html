@@ -4,7 +4,18 @@
       <tr class="h-16 border-r border-gray-200">
         <th
           scope="col"
-          class="px-4 md:px-6 py-3 text-left text-xs font-normal text-gray-500 uppercase tracking-wider bg-gray-50 h-12"
+          class="
+            px-4
+            md:px-6
+            py-3
+            text-left text-xs
+            font-normal
+            text-gray-500
+            uppercase
+            tracking-wider
+            bg-gray-50
+            h-12
+          "
         >
           Spieler:in
         </th>
@@ -13,6 +24,7 @@
     <tbody class="bg-gray-50 divide-y divide-gray-200">
       <tr *ngFor="let row of data.answerRows" class="border-r border-gray-200">
         <td
+          *ngIf="row.player"
           class="px-2 md:px-6 py-4 whitespace-nowrap h-24"
           [ngClass]="{
             'player-stopped-border': row.player.id === data.stoppedByPlayer
@@ -59,7 +71,7 @@
               class="px-2 inline-flex text-lg leading-5 font-semibold rounded-full py-1 px-2"
               [ngClass]="{
                 'row-points-gray': row.rowPoints === 0,
-                'row-points-green': row.rowPoints > 0
+                'row-points-green': row.rowPoints !== 0
               }"
             >
               {{ row.rowPoints }}
@@ -72,7 +84,7 @@
               <span class="text-lg text-gray-900 mr-2">{{ a.value }}</span>
               <!-- Answer points pill -->
               <span
-                *ngIf="a.points >= 0"
+                *ngIf="(a.points || 0) >= 0"
                 [ngClass]="getPointClasses(a.points)"
                 class="px-2 py-1 text-md leading-5 font-semibold rounded-full text-center"
               >
@@ -84,7 +96,17 @@
               <button
                 type="button"
                 *ngFor="let points of [0, 5, 10, 20]; first as f; last as l"
-                class="relative px-2 py-1 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-100"
+                class="
+                  relative
+                  px-2
+                  py-1
+                  border border-gray-300
+                  bg-white
+                  text-sm
+                  font-medium
+                  text-gray-500
+                  hover:bg-gray-100
+                "
                 (click)="setPoints(row.answerId, i, points)"
                 [ngClass]="{
                   'rounded-l-md': f,

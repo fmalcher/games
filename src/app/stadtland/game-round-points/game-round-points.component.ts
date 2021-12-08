@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { timer } from 'rxjs';
-import { concatMap, mapTo, startWith } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { timer, concatMap, mapTo, startWith } from 'rxjs';
+
 import { GameState } from '../shared/models';
 import { StadtlandService } from '../shared/stadtland.service';
 
@@ -10,7 +10,7 @@ import { StadtlandService } from '../shared/stadtland.service';
   styleUrls: ['./game-round-points.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GameRoundPointsComponent implements OnInit {
+export class GameRoundPointsComponent {
   data$ = this.sls.cumulatedRoundData$;
   players$ = this.sls.players$;
   gameCreatedByMe$ = this.sls.gameCreatedByMe$;
@@ -18,8 +18,6 @@ export class GameRoundPointsComponent implements OnInit {
   btnDisabled$ = timer(3000).pipe(mapTo(false), startWith(true));
 
   constructor(private sls: StadtlandService) {}
-
-  ngOnInit(): void {}
 
   finishRound() {
     this.sls
@@ -32,7 +30,7 @@ export class GameRoundPointsComponent implements OnInit {
     this.sls.setRoundPoints(answerId, position, points).subscribe();
   }
 
-  getPointClasses(points: number) {
+  getPointClasses(points: number | null) {
     return {
       points0: points === 0,
       points5: points === 5,

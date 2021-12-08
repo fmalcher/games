@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
+
 import { StadtlandService } from '../shared/stadtland.service';
 
 @Component({
   selector: 'app-game-winner',
   templateUrl: './game-winner.component.html',
   styleUrls: ['./game-winner.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GameWinnerComponent implements OnInit {
+export class GameWinnerComponent {
   firstPlayer$ = this.sls.players$.pipe(map(players => players?.[0]));
   gameCreatedByMe$ = this.sls.gameCreatedByMe$;
 
@@ -17,8 +19,6 @@ export class GameWinnerComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute
   ) {}
-
-  ngOnInit(): void {}
 
   createNewGame(): void {
     if (!window.confirm('Neues Spiel starten?')) {

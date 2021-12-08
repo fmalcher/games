@@ -1,8 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { fromEvent, Subject } from 'rxjs';
 import {
+  fromEvent,
+  Subject,
   delay,
   distinctUntilChanged,
   exhaustMap,
@@ -12,8 +13,8 @@ import {
   switchMap,
   take,
   takeUntil,
-  tap,
-} from 'rxjs/operators';
+} from 'rxjs';
+
 import { slfConfig } from '../shared/config';
 import { GameState } from '../shared/models';
 import { StadtlandService } from '../shared/stadtland.service';
@@ -22,9 +23,10 @@ import { StadtlandService } from '../shared/stadtland.service';
   selector: 'app-game-round-write',
   templateUrl: './game-round-write.component.html',
   styleUrls: ['./game-round-write.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GameRoundWriteComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject();
+export class GameRoundWriteComponent implements OnDestroy {
+  private destroy$ = new Subject<void>();
 
   form: FormGroup;
   categories$ = this.sls.currentRoundCategories$;
@@ -48,9 +50,7 @@ export class GameRoundWriteComponent implements OnInit, OnDestroy {
     private sls: StadtlandService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
-
-  ngOnInit(): void {
+  ) {
     this.form = new FormGroup({
       answers: new FormArray([]),
     });
@@ -70,7 +70,7 @@ export class GameRoundWriteComponent implements OnInit, OnDestroy {
         filter(e => e),
         delay(slfConfig.roundEndCountdownSeconds * 1000),
         switchMap(() => {
-          const answers = this.form.get('answers').value as string[];
+          const answers = this.form.get('answers')!.value as string[];
           return this.sls.submitMyAnswers(answers);
         }),
         takeUntil(this.destroy$)

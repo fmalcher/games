@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { concatMap, filter, map } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { concatMap, filter, map } from 'rxjs';
+
 import { GameState } from '../shared/models';
 import { StadtlandService } from '../shared/stadtland.service';
 
@@ -7,8 +8,9 @@ import { StadtlandService } from '../shared/stadtland.service';
   selector: 'app-game-landing',
   templateUrl: './game-landing.component.html',
   styleUrls: ['./game-landing.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GameLandingComponent implements OnInit {
+export class GameLandingComponent {
   gameCreatedByMe$ = this.sls.gameCreatedByMe$;
   gameStarted$ = this.sls.gameStarted$;
   gameCreated$ = this.sls.gameCreated$;
@@ -25,14 +27,14 @@ export class GameLandingComponent implements OnInit {
           return 'write';
         case GameState.RoundGivingPoints:
           return 'points';
+        default:
+          return;
       }
     }),
     filter(e => !!e)
   );
 
   constructor(private sls: StadtlandService) {}
-
-  ngOnInit(): void {}
 
   startGame() {
     if (
