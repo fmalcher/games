@@ -1,14 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-alarm-pulse',
   templateUrl: './alarm-pulse.component.html',
   styleUrls: ['./alarm-pulse.component.scss'],
 })
-export class AlarmPulseComponent implements OnInit {
+export class AlarmPulseComponent {
   @Input() value?: string | number;
-
-  constructor() {}
-
-  ngOnInit(): void {}
 }

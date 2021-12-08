@@ -11,6 +11,7 @@ export class UrlCopyComponent {
   url = this.getUrl();
 
   private copyEvent$ = new Subject<void>();
+
   copyTextState$ = merge(
     this.copyEvent$.pipe(mapTo(true)),
     this.copyEvent$.pipe(switchMap(() => timer(1000).pipe(mapTo(false))))

@@ -71,8 +71,7 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-          },
+          "options": {},
           "configurations": {
             "production": {
               "browserTarget": "games:build:production"
@@ -126,9 +125,21 @@
           "options": {
             "cname": "games-z629iklgdziuw83bcgtw8elshza662hs9erb3hkd.rls23.de"
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
-  "defaultProject": "games"
+  "defaultProject": "games",
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  }
 }
