@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { slfConfig } from '../shared/config';
 import { StadtlandService } from '../shared/stadtland.service';
@@ -8,14 +8,12 @@ import { StadtlandService } from '../shared/stadtland.service';
   templateUrl: './game-add-my-player.component.html',
   styleUrls: ['./game-add-my-player.component.scss'],
 })
-export class GameAddMyPlayerComponent implements OnInit {
+export class GameAddMyPlayerComponent {
   form: FormGroup;
   emojiPanelVisible = false;
   emojis = slfConfig.emojis;
 
-  constructor(private sls: StadtlandService) {}
-
-  ngOnInit(): void {
+  constructor(private sls: StadtlandService) {
     this.form = new FormGroup({
       name: new FormControl(''),
       emoji: new FormControl(this.randomEmoji(this.emojis)),
@@ -32,13 +30,13 @@ export class GameAddMyPlayerComponent implements OnInit {
   }
 
   setEmoji(emoji: string) {
-    this.form.get('emoji').setValue(emoji);
+    this.form.get('emoji')!.setValue(emoji);
     this.emojiPanelVisible = false;
   }
 
   submitForm(): void {
-    const name = this.form.get('name').value;
-    const emoji = this.form.get('emoji').value;
+    const name = this.form.get('name')!.value;
+    const emoji = this.form.get('emoji')!.value;
     if (!name || !emoji) {
       return;
     }

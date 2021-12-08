@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { Observable, Subject, timer } from 'rxjs';
 import {
@@ -23,8 +23,8 @@ import { StadtlandService } from '../shared/stadtland.service';
   styleUrls: ['./categories-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CategoriesFormComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject();
+export class CategoriesFormComponent implements OnDestroy {
+  private destroy$ = new Subject<void>();
   private randomCatDiceRoll$ = new Subject<number>();
 
   categoriesFromGame$ = this.sls.categories$;
@@ -39,6 +39,7 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
   // initial value for the "random categories" field, based on the current number of categories
   randomCategoriesInitialNum$ = this.categoriesFromGame$.pipe(
     take(1),
+    filter((e): e is string[] => !!e),
     map(({ length }) => (length > 5 ? length : 5))
   );
 
@@ -57,9 +58,7 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
     shareReplay(1)
   );
 
-  constructor(private sls: StadtlandService) {}
-
-  ngOnInit(): void {
+  constructor(private sls: StadtlandService) {
     this.categoriesListTagged$.subscribe(); // first trigger
 
     // write values from game to the form
@@ -69,16 +68,16 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
           gameCats =>
             !this.categoryListsEqual(
               gameCats,
-              this.categoriesFormArray.value.filter(e => !!e)
+              this.categoriesFormArray.value.filter((e: string) => !!e)
             )
         ),
         takeUntil(this.destroy$)
       )
-      .subscribe(categories => this.replaceCategoryFields(categories));
+      .subscribe(categories => !!categories && this.replaceCategoryFields(categories));
 
     this.saveMessage$ = this.form.valueChanges.pipe(
       debounceTime(500),
-      map(value => value.categories.filter(e => !!e)),
+      map(value => value.categories.filter((e: string) => !!e)),
       withLatestFrom(this.categoriesFromGame$),
       filter(([formCats, gameCats]) => !this.categoryListsEqual(formCats, gameCats)),
       switchMap(([categories]) => this.sls.setCategories(categories)),
@@ -130,16 +129,19 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
     this.replaceCategoryFields(categories);
   }
 
-  setRandomCategoriesDiceRoll(n: number) {
+  setRandomCategoriesDiceRoll(n: number | string) {
     const num = Number(n);
     this.randomCatDiceRoll$.next(num);
   }
 
   getCategoryValuesFiltered() {
-    return this.categoriesFormArray.value.filter(e => !!e);
+    return this.categoriesFormArray.value.filter((e: string) => !!e);
   }
 
-  private categoryListsEqual(a: string[], b: string[]) {
+  private categoryListsEqual(a: string[] | undefined, b: string[] | undefined) {
+    if (!a || !b) {
+      return false;
+    }
     return JSON.stringify(a) == JSON.stringify(b);
   }
 

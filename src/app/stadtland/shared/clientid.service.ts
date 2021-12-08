@@ -11,15 +11,15 @@ export class ClientIdService {
   }
 
   get clientId(): string {
-    return localStorage.getItem('slfClientId');
+    return localStorage.getItem('slfClientId') || '';
   }
 
   set clientId(id: string) {
     localStorage.setItem('slfClientId', id);
   }
 
-  isMyClientId(id: string) {
-    return id === this.clientId;
+  isMyClientId(id: string): boolean {
+    return !!id && id === this.clientId;
   }
 
   private generateRandomId(len = 32): string {

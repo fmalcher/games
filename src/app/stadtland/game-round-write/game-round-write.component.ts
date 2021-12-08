@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { fromEvent, Subject } from 'rxjs';
@@ -23,8 +23,8 @@ import { StadtlandService } from '../shared/stadtland.service';
   templateUrl: './game-round-write.component.html',
   styleUrls: ['./game-round-write.component.scss'],
 })
-export class GameRoundWriteComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject();
+export class GameRoundWriteComponent implements OnDestroy {
+  private destroy$ = new Subject<void>();
 
   form: FormGroup;
   categories$ = this.sls.currentRoundCategories$;
@@ -48,9 +48,7 @@ export class GameRoundWriteComponent implements OnInit, OnDestroy {
     private sls: StadtlandService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
-
-  ngOnInit(): void {
+  ) {
     this.form = new FormGroup({
       answers: new FormArray([]),
     });
@@ -70,7 +68,7 @@ export class GameRoundWriteComponent implements OnInit, OnDestroy {
         filter(e => e),
         delay(slfConfig.roundEndCountdownSeconds * 1000),
         switchMap(() => {
-          const answers = this.form.get('answers').value as string[];
+          const answers = this.form.get('answers')!.value as string[];
           return this.sls.submitMyAnswers(answers);
         }),
         takeUntil(this.destroy$)

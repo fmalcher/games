@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { merge, Subject, timer } from 'rxjs';
-import { map, mapTo, shareReplay, startWith, switchMap } from 'rxjs/operators';
+import { mapTo, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-url-copy',
   templateUrl: './url-copy.component.html',
   styleUrls: ['./url-copy.component.scss'],
 })
-export class UrlCopyComponent implements OnInit {
+export class UrlCopyComponent {
   url = this.getUrl();
 
   private copyEvent$ = new Subject();
@@ -17,9 +17,7 @@ export class UrlCopyComponent implements OnInit {
     this.copyEvent$.pipe(switchMap(() => timer(1000).pipe(mapTo(false))))
   ).pipe(startWith(false), shareReplay(1));
 
-  constructor(private clipboard: Clipboard) {}
-
-  ngOnInit(): void {
+  constructor(private clipboard: Clipboard) {
     this.copyEvent$.subscribe(() => {
       this.clipboard.copy(this.url);
     });

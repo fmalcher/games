@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { timer } from 'rxjs';
 import {
   delay,
@@ -16,7 +16,7 @@ import { StadtlandService } from '../shared/stadtland.service';
   templateUrl: './player-avatar-meta.component.html',
   styleUrls: ['./player-avatar-meta.component.scss'],
 })
-export class PlayerAvatarMetaComponent implements OnInit {
+export class PlayerAvatarMetaComponent {
   myPlayer$ = this.sls.myPlayer$;
   gameCreatedByMe$ = this.sls.gameCreatedByMe$;
 
@@ -28,6 +28,4 @@ export class PlayerAvatarMetaComponent implements OnInit {
   );
 
   constructor(private sls: StadtlandService) {}
-
-  ngOnInit(): void {}
 }

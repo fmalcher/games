@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { concatMap, filter, map } from 'rxjs/operators';
 import { GameState } from '../shared/models';
 import { StadtlandService } from '../shared/stadtland.service';
@@ -8,7 +8,7 @@ import { StadtlandService } from '../shared/stadtland.service';
   templateUrl: './game-landing.component.html',
   styleUrls: ['./game-landing.component.scss'],
 })
-export class GameLandingComponent implements OnInit {
+export class GameLandingComponent {
   gameCreatedByMe$ = this.sls.gameCreatedByMe$;
   gameStarted$ = this.sls.gameStarted$;
   gameCreated$ = this.sls.gameCreated$;
@@ -25,14 +25,13 @@ export class GameLandingComponent implements OnInit {
           return 'write';
         case GameState.RoundGivingPoints:
           return 'points';
+        default: return;
       }
     }),
     filter(e => !!e)
   );
 
   constructor(private sls: StadtlandService) {}
-
-  ngOnInit(): void {}
 
   startGame() {
     if (

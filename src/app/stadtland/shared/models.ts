@@ -21,7 +21,7 @@ export interface Round {
 
 export interface Answer {
   answers: string[];
-  points: number[];
+  points: (number | null)[];
   playerId: string;
 }
 

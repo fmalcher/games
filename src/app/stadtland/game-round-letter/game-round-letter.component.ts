@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { combineLatest, of, timer } from 'rxjs';
 import { delayWhen, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 import { slfConfig } from '../shared/config';
@@ -10,7 +10,7 @@ import { StadtlandService } from '../shared/stadtland.service';
   templateUrl: './game-round-letter.component.html',
   styleUrls: ['./game-round-letter.component.scss'],
 })
-export class GameRoundLetterComponent implements OnInit {
+export class GameRoundLetterComponent {
   currentRound$ = this.sls.currentRound$;
   gameCreatedByMe$ = this.sls.gameCreatedByMe$;
 
@@ -44,8 +44,6 @@ export class GameRoundLetterComponent implements OnInit {
   );
 
   constructor(private sls: StadtlandService) {}
-
-  ngOnInit(): void {}
 
   renew() {
     this.sls.renewCurrentRound().subscribe();
