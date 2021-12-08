@@ -1,6 +1,14 @@
 import { Component } from '@angular/core';
-import { combineLatest, of, timer } from 'rxjs';
-import { delayWhen, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
+import {
+  combineLatest,
+  of,
+  timer,
+  delayWhen,
+  distinctUntilChanged,
+  filter,
+  map,
+  switchMap,
+} from 'rxjs';
 import { slfConfig } from '../shared/config';
 import { GameState } from '../shared/models';
 import { StadtlandService } from '../shared/stadtland.service';

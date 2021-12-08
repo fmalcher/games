@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import firebase from 'firebase/compat/app';
 import {
   BehaviorSubject,
   combineLatest,
@@ -9,8 +10,6 @@ import {
   Observable,
   of,
   timer,
-} from 'rxjs';
-import {
   concatMap,
   delay,
   distinctUntilChanged,
@@ -21,10 +20,10 @@ import {
   switchMap,
   take,
   withLatestFrom,
-} from 'rxjs/operators';
+} from 'rxjs';
+
 import { Answer, DiceRollStep, Game, GameState, Player, Round } from './models';
 import { ClientIdService } from './clientid.service';
-import firebase from 'firebase/compat/app';
 import { slfConfig } from './config';
 
 @Injectable({

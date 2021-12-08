@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { concatMap, filter, map } from 'rxjs/operators';
+import { concatMap, filter, map } from 'rxjs';
 import { GameState } from '../shared/models';
 import { StadtlandService } from '../shared/stadtland.service';
 
@@ -25,7 +25,8 @@ export class GameLandingComponent {
           return 'write';
         case GameState.RoundGivingPoints:
           return 'points';
-        default: return;
+        default:
+          return;
       }
     }),
     filter(e => !!e)

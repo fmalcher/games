@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { merge, Subject, timer } from 'rxjs';
-import { mapTo, shareReplay, startWith, switchMap } from 'rxjs/operators';
+import { merge, Subject, timer, mapTo, shareReplay, startWith, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-url-copy',
@@ -11,7 +10,7 @@ import { mapTo, shareReplay, startWith, switchMap } from 'rxjs/operators';
 export class UrlCopyComponent {
   url = this.getUrl();
 
-  private copyEvent$ = new Subject();
+  private copyEvent$ = new Subject<void>();
   copyTextState$ = merge(
     this.copyEvent$.pipe(mapTo(true)),
     this.copyEvent$.pipe(switchMap(() => timer(1000).pipe(mapTo(false))))

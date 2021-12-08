@@ -5,10 +5,9 @@ import {
   RouterStateSnapshot,
   UrlTree,
   Router,
-  ActivatedRoute,
 } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of, map } from 'rxjs';
+
 import { StadtlandService } from './stadtland.service';
 
 @Injectable({

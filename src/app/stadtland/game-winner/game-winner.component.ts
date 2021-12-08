@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
+
 import { StadtlandService } from '../shared/stadtland.service';
 
 @Component({

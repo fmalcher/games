@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { Observable, Subject, timer } from 'rxjs';
 import {
+  Observable,
+  Subject,
+  timer,
   debounceTime,
   exhaustMap,
   filter,
@@ -13,7 +15,7 @@ import {
   take,
   takeUntil,
   withLatestFrom,
-} from 'rxjs/operators';
+} from 'rxjs';
 import { slfConfig } from '../shared/config';
 import { StadtlandService } from '../shared/stadtland.service';
 

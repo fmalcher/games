@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { timer } from 'rxjs';
-import { concatMap, mapTo, startWith } from 'rxjs/operators';
+import { timer, concatMap, mapTo, startWith } from 'rxjs';
+
 import { GameState } from '../shared/models';
 import { StadtlandService } from '../shared/stadtland.service';
 

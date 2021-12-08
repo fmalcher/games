@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { timer } from 'rxjs';
 import {
+  timer,
   delay,
   distinctUntilChanged,
   exhaustMap,
@@ -8,7 +8,8 @@ import {
   map,
   mapTo,
   startWith,
-} from 'rxjs/operators';
+} from 'rxjs';
+
 import { StadtlandService } from '../shared/stadtland.service';
 
 @Component({

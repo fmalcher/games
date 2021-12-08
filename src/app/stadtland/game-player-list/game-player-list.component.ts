@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { combineLatest, Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { combineLatest, Observable, of, map } from 'rxjs';
 import { Player } from '../shared/models';
 import { StadtlandService } from '../shared/stadtland.service';
 

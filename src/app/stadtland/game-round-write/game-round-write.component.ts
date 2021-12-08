@@ -1,8 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { fromEvent, Subject } from 'rxjs';
 import {
+  fromEvent,
+  Subject,
   delay,
   distinctUntilChanged,
   exhaustMap,
@@ -12,8 +13,7 @@ import {
   switchMap,
   take,
   takeUntil,
-  tap,
-} from 'rxjs/operators';
+} from 'rxjs';
 import { slfConfig } from '../shared/config';
 import { GameState } from '../shared/models';
 import { StadtlandService } from '../shared/stadtland.service';
