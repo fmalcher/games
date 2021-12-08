@@ -13,7 +13,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "~12.2.14",
-    "@angular/cdk": "^11.2.0",
+    "@angular/cdk": "^12.2.13",
     "@angular/common": "~12.2.14",
     "@angular/compiler": "~12.2.14",
     "@angular/core": "~12.2.14",
@@ -35,7 +35,7 @@
     "@angular/compiler-cli": "~12.2.14",
     "@types/jasmine": "~3.6.0",
     "@types/node": "^12.11.1",
-    "angular-cli-ghpages": "^1.0.0-rc.1",
+    "angular-cli-ghpages": "^1.0.0",
     "autoprefixer": "10.1.0",
     "codelyzer": "^6.0.0",
     "cross-env": "^7.0.3",
